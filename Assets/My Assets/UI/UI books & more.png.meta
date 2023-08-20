@@ -1,0 +1,465 @@
+fileFormatVersion: 2
+guid: d0d2ed210ee05f647aa04868f360ccdc
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 20
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: UI books & more_7
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 400
+        width: 48
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 7, y: 7, z: 7, w: 7}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f5783d873ec0af84da88fc9d5cc9f2eb
+      internalID: 488519420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI books & more_11
+      rect:
+        serializedVersion: 2
+        x: 721
+        y: 369
+        width: 46
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 7, y: 7, z: 7, w: 7}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7288212a80026554684121bc1cdb1164
+      internalID: -282971172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI books & more_12
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 368
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 5, y: 5, z: 5, w: 5}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5913a800edf856a48acaab5ee13d3df7
+      internalID: -818076111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI books & more_17
+      rect:
+        serializedVersion: 2
+        x: 611
+        y: 339
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 13, y: 13, z: 13, w: 13}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4187f585fa836241ae2aacce5146f70
+      internalID: -1050235593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI books & more_0
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 192
+        width: 32
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 10, y: 3, z: 10, w: 3}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1bcdccd4a51bb2e4086d5c3d17c94cea
+      internalID: 1225218701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      UI books & more_62: -504375989
+      UI books & more_52: -1411537308
+      UI books & more_170: -221696743
+      UI books & more_223: 1991881333
+      UI books & more_233: 1720583527
+      UI books & more_66: 2040929460
+      UI books & more_80: 956893272
+      UI books & more_228: -2002761840
+      UI books & more_96: 2071472686
+      UI books & more_163: -1761371863
+      UI books & more_16: 1863098515
+      UI books & more_90: -2146449644
+      UI books & more_105: 1478687063
+      UI books & more_191: -1756921770
+      UI books & more_8: -926438824
+      UI books & more_47: 1848199407
+      UI books & more_232: 1816674775
+      UI books & more_68: -1419901547
+      UI books & more_146: -1791810902
+      UI books & more_128: 1155752573
+      UI books & more_190: -497127355
+      UI books & more_44: 645324261
+      UI books & more_151: -1144176734
+      UI books & more_7: 488519420
+      UI books & more_216: 1943940486
+      UI books & more_157: -183910389
+      UI books & more_167: 573039102
+      UI books & more_154: -931248608
+      UI books & more_93: -1694464161
+      UI books & more_65: -1246167217
+      UI books & more_5: -1804255863
+      UI books & more_54: 735780017
+      UI books & more_73: -478817956
+      UI books & more_183: 746512693
+      UI books & more_118: -1169752884
+      UI books & more_187: -819497877
+      UI books & more_148: -515746810
+      UI books & more_85: -606739205
+      UI books & more_109: -2042041779
+      UI books & more_160: -1724176230
+      UI books & more_45: -1234454386
+      UI books & more_51: 189630586
+      UI books & more_129: -458346459
+      UI books & more_40: 299510713
+      UI books & more_150: 347403042
+      UI books & more_53: -1398535046
+      UI books & more_207: -1623537804
+      UI books & more_185: 1499214441
+      UI books & more_130: -269435899
+      UI books & more_155: 1494814421
+      UI books & more_123: -1394728301
+      UI books & more_39: 755669918
+      UI books & more_214: 1094052362
+      UI books & more_1: 431948097
+      UI books & more_172: 77031013
+      UI books & more_231: -1423140524
+      UI books & more_165: -305065347
+      UI books & more_219: -1328704818
+      UI books & more_22: -1636426997
+      UI books & more_220: 1316894684
+      UI books & more_229: -1944584480
+      UI books & more_30: -281103422
+      UI books & more_138: 1940092068
+      UI books & more_161: 1016831482
+      UI books & more_177: 998736426
+      UI books & more_95: -453654085
+      UI books & more_6: -643646324
+      UI books & more_49: 52145498
+      UI books & more_182: 474574660
+      UI books & more_31: -1657046250
+      UI books & more_113: -1442608342
+      UI books & more_141: 1858070120
+      UI books & more_152: -439380232
+      UI books & more_175: 955012827
+      UI books & more_189: 242225936
+      UI books & more_25: 1137204519
+      UI books & more_201: -316640214
+      UI books & more_41: -1061723323
+      UI books & more_94: 1737164110
+      UI books & more_57: 2012360220
+      UI books & more_115: -1085458729
+      UI books & more_226: -116703241
+      UI books & more_99: -292824712
+      UI books & more_133: 1658815385
+      UI books & more_12: -818076111
+      UI books & more_153: 1413125447
+      UI books & more_194: 1020652217
+      UI books & more_137: -1407279282
+      UI books & more_14: 384300344
+      UI books & more_59: -1602195803
+      UI books & more_158: -1993476495
+      UI books & more_222: 2128574431
+      UI books & more_88: 1592386821
+      UI books & more_27: 1719413056
+      UI books & more_102: 577787559
+      UI books & more_136: 1803428642
+      UI books & more_192: -1323876210
+      UI books & more_208: 1019257693
+      UI books & more_107: 1066381610
+      UI books & more_121: 1247070166
+      UI books & more_178: -722451908
+      UI books & more_13: 1357125982
+      UI books & more_33: -940456936
+      UI books & more_83: -1426859205
+      UI books & more_91: -1466893798
+      UI books & more_23: -1770434621
+      UI books & more_106: -7788865
+      UI books & more_18: 1336571611
+      UI books & more_2: 1728324451
+      UI books & more_131: -1417357300
+      UI books & more_37: -1615292575
+      UI books & more_211: -1580511166
+      UI books & more_193: 1925615839
+      UI books & more_58: -338972706
+      UI books & more_50: 479155387
+      UI books & more_162: 23334674
+      UI books & more_77: -858926239
+      UI books & more_203: -1838560607
+      UI books & more_217: 1655824827
+      UI books & more_149: 2055867199
+      UI books & more_89: -1873814277
+      UI books & more_173: -356733724
+      UI books & more_125: -131568545
+      UI books & more_75: 1006121140
+      UI books & more_156: 1994256202
+      UI books & more_72: -1448290163
+      UI books & more_179: 214879677
+      UI books & more_145: -779689247
+      UI books & more_224: -1709312928
+      UI books & more_230: 1219348243
+      UI books & more_10: 1441439860
+      UI books & more_67: 1042012019
+      UI books & more_206: 836253003
+      UI books & more_71: -776602468
+      UI books & more_127: 1984544152
+      UI books & more_221: 2048615455
+      UI books & more_32: -1510262849
+      UI books & more_29: 2013904336
+      UI books & more_26: -1029872685
+      UI books & more_110: 381567202
+      UI books & more_24: 1505284273
+      UI books & more_168: 796911277
+      UI books & more_225: 1912579193
+      UI books & more_199: -1681437665
+      UI books & more_35: 1082275840
+      UI books & more_104: 47968669
+      UI books & more_202: 272318452
+      UI books & more_235: -849493667
+      UI books & more_56: -98933554
+      UI books & more_126: 131173616
+      UI books & more_60: 1941930111
+      UI books & more_81: 3014042
+      UI books & more_116: 1563030629
+      UI books & more_36: 890940716
+      UI books & more_17: -1050235593
+      UI books & more_198: -2063333953
+      UI books & more_63: -660454848
+      UI books & more_215: 958227595
+      UI books & more_103: -1725479788
+      UI books & more_64: -290469226
+      UI books & more_98: 1432667742
+      UI books & more_21: -340146410
+      UI books & more_100: 2136140051
+      UI books & more_166: -2136281401
+      UI books & more_169: -1152706791
+      UI books & more_119: -244917032
+      UI books & more_70: 1787376667
+      UI books & more_97: 70241552
+      UI books & more_87: 439307551
+      UI books & more_181: 40859560
+      UI books & more_197: -15848980
+      UI books & more_204: -1942683169
+      UI books & more_0: 1225218701
+      UI books & more_101: -1650050216
+      UI books & more_171: -761513638
+      UI books & more_212: -426823926
+      UI books & more_79: 1363548062
+      UI books & more_184: -720877510
+      UI books & more_209: 1483489243
+      UI books & more_15: 678775000
+      UI books & more_117: 2025873699
+      UI books & more_210: -788570287
+      UI books & more_205: -185469279
+      UI books & more_213: -1835054475
+      UI books & more_42: 1399921734
+      UI books & more_180: -1875169417
+      UI books & more_200: -1158140386
+      UI books & more_82: 1070839089
+      UI books & more_19: 2113810277
+      UI books & more_114: -1842090388
+      UI books & more_20: -2037512284
+      UI books & more_55: -1576242849
+      UI books & more_4: -952711191
+      UI books & more_112: 1385419387
+      UI books & more_28: 757520999
+      UI books & more_174: 998834971
+      UI books & more_76: -2140483149
+      UI books & more_78: -1860395375
+      UI books & more_234: 1670243182
+      UI books & more_218: 1340040088
+      UI books & more_3: -1526244643
+      UI books & more_86: -887772290
+      UI books & more_120: -1299119500
+      UI books & more_159: -1595829650
+      UI books & more_43: -405287128
+      UI books & more_144: -1412975114
+      UI books & more_69: -1226911367
+      UI books & more_143: -600164356
+      UI books & more_186: -1950445170
+      UI books & more_74: 879198595
+      UI books & more_140: -779396714
+      UI books & more_195: -118982096
+      UI books & more_142: -1486124427
+      UI books & more_227: -610473005
+      UI books & more_236: -438021195
+      UI books & more_147: -2086633608
+      UI books & more_122: -90905551
+      UI books & more_139: 1098698775
+      UI books & more_108: -197596262
+      UI books & more_196: -730383418
+      UI books & more_134: 2064402804
+      UI books & more_34: 727960678
+      UI books & more_61: -1010501779
+      UI books & more_84: -90357734
+      UI books & more_135: 1841241133
+      UI books & more_46: 236733950
+      UI books & more_164: 1625580146
+      UI books & more_38: 360374634
+      UI books & more_9: -1655685991
+      UI books & more_92: -1031029697
+      UI books & more_188: -910007634
+      UI books & more_176: -950229156
+      UI books & more_124: 1678468716
+      UI books & more_132: -170704445
+      UI books & more_111: -2021623494
+      UI books & more_48: -1148189259
+      UI books & more_11: -282971172
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

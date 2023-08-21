@@ -7,7 +7,8 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager _Instance;
     public bool isPaused; // 记录游戏是否暂停
-    public Dictionary<Items, int> itemsDict = new Dictionary<Items, int>();
+    public Dictionary<Items, int> itemsDict = new Dictionary<Items, int>(); // 玩家背包数据
+    public List<Mission> missionList = new List<Mission>(); // 玩家任务数据
     public SlotController[] slots;
 
     public static GameManager Instance

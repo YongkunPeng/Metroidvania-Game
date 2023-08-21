@@ -10,41 +10,123 @@ public class DialogueController : MonoBehaviour
     [SerializeField] private TextAsset textAsset;
 
     [SerializeField] private Text text;
-    [SerializeField] private List<string> textList = new List<string>();
-    [SerializeField] private int index;
+    [SerializeField] private List<string> textList = new List<string>(); // 存储本次对话所有文本
+    [SerializeField] private int index = 0;
     [SerializeField] private GameObject choosePanel;
-    [SerializeField] private bool isOver;
+    [SerializeField] private GameObject knight;
+    [SerializeField] private Mission.MissionStatus status;
+    [SerializeField] private bool isTyping = true; // 是否正在打字
+    public Tweener typeTween;
 
     private void Awake()
     {
         text = transform.GetChild(2).GetComponent<Text>();
+        knight = GameObject.FindObjectOfType<Knight>().gameObject;
         choosePanel = transform.GetChild(3).gameObject;
     }
 
     private void OnEnable()
     {
-        index = 1;
+        index = 0;
+
+        // 根据任务状态加载不同对话
+        status = knight.GetComponent<MissionDelegate>().mission.missionStatus;
+        if (status == Mission.MissionStatus.Unaccepted)
+        {
+            textAsset = Resources.Load<TextAsset>("Text/Knight/Knight Dialog1");
+        }
+        else if (status == Mission.MissionStatus.Accepted)
+        {
+            textAsset = Resources.Load<TextAsset>("Text/Knight/Knight Dialog2");
+        }
+        else if (status == Mission.MissionStatus.Completed)
+        {
+            textAsset = Resources.Load<TextAsset>("Text/Knight/Knight Dialog3");
+        }
+        else if (status == Mission.MissionStatus.Rewarded)
+        {
+            textAsset = Resources.Load<TextAsset>("Text/Knight/Knight Dialog4");
+        }
         GetTextByTXT(textAsset);
-        text.DOText(textList[0], textList[0].Length / 10);
-        isOver = false;
+
+        StartNextDialogue();
+        choosePanel.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && index != textList.Count)
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            text.DOText("", 0); // 清空文本框
-            text.DOText(textList[index], textList[index].Length / 10);
-            index++;
-        }
-        if (index == textList.Count && !isOver)
-        {
-            choosePanel.SetActive(true);
-            isOver = true;
+            if (!isTyping)
+            { // 未打字时按下E
+                StartNextDialogue();
+            }
+            else
+            { // 正在打字时按下E
+                SkipTyping();
+            }
         }
     }
 
+    /// <summary>
+    /// 切换到下一段对话，获取该段对话的文本
+    /// </summary>
+    private void StartNextDialogue()
+    {
+        if (index < textList.Count)
+        {
+            string currText = textList[index];
+            StartTyping(currText);
+        }
+    }
+
+    /// <summary>
+    /// 以打字机效果输出对话
+    /// </summary>
+    private void StartTyping(string currText)
+    {
+        isTyping = true;
+        if (text.text != "")
+        {
+            text.text = "";
+        }
+        typeTween = text.DOText(currText, currText.Length * 0.1f)
+            .OnComplete(() =>
+            {
+                isTyping = false;
+                index++;
+                if (index == textList.Count && choosePanel != null && status == Mission.MissionStatus.Unaccepted)
+                { // 承接任务前对话结束时，显示选择按钮
+                    choosePanel.SetActive(true);
+                }
+                else if (index == textList.Count && !isTyping)
+                { // 无选择需要，说完最后一句话时，启动携程数秒后关闭对话框
+                    if (status == Mission.MissionStatus.Completed)
+                    { // 若文本为完成任务文本，给予奖励，修改任务状态
+                        knight.GetComponent<MissionDelegate>().mission.missionStatus = Mission.MissionStatus.Rewarded;
+                    }
+                    StartCoroutine(HideDialogue());
+                }
+            });
+    }
+
+    /// <summary>
+    /// 跳过打字机效果
+    /// </summary>
+    private void SkipTyping()
+    {
+        if (typeTween != null && isTyping)
+        {
+            isTyping = false;
+            typeTween.Complete();
+        }
+    }
+
+    /// <summary>
+    /// 获取对话文本文件，并按换行符分割内容
+    /// </summary>
+    /// <param name="asset">文本文件</param>
     void GetTextByTXT(TextAsset asset)
     {
         textList.Clear();
@@ -56,24 +138,31 @@ public class DialogueController : MonoBehaviour
         }
     }
 
+    IEnumerator HideDialogue()
+    {
+        yield return new WaitForSeconds(2);
+        transform.parent.gameObject.SetActive(false);
+    }
+
     public void Accept()
     {
         text.DOText("", 0); // 清空文本框
-        text.DOText("嗯，我等你的消息！", 1);
+        text.DOText("嗯，我等你的消息！", 1)
+            .OnComplete(() =>
+            {
+                StartCoroutine(HideDialogue());
+            });
         choosePanel.SetActive(false);
     }
 
     public void Deny()
     {
         text.DOText("", 0); // 清空文本框
-        text.DOText("这样吗，那我不能让你过去。", 1);
-        choosePanel.SetActive(false);
-    }
-
-    public void Genshin()
-    {
-        text.DOText("", 0); // 清空文本框
-        text.DOText("卧槽，原！", 1);
+        text.DOText("这样吗，那我不能让你过去。", 1)
+            .OnComplete(() =>
+            {
+                StartCoroutine(HideDialogue());
+            });
         choosePanel.SetActive(false);
     }
 }

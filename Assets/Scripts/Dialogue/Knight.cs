@@ -5,11 +5,11 @@ using UnityEngine;
 public class Knight : MonoBehaviour
 {
     [SerializeField] private GameObject keyboardInfo;
-    [SerializeField] private GameObject knightDialogUI;
     [SerializeField] private bool isClose;
     [SerializeField] private Transform player;
+    [SerializeField] private GameObject dialog;
 
-    private void OnEnable()
+    private void Awake()
     {
         keyboardInfo = transform.GetChild(0).gameObject;
     }
@@ -33,13 +33,13 @@ public class Knight : MonoBehaviour
 
             // 激活失活相应物体
             keyboardInfo.SetActive(false);
-            knightDialogUI.SetActive(true);
+            dialog.SetActive(true);
         }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && !knightDialogUI.activeInHierarchy)
+        if (collision.CompareTag("Player") && !dialog.activeInHierarchy)
         { // 如果玩家接近且未交互
             player = collision.transform;
             isClose = true;
@@ -53,7 +53,7 @@ public class Knight : MonoBehaviour
         { // 玩家远离
             isClose = false;
             keyboardInfo.SetActive(false);
-            knightDialogUI.SetActive(false);
+            dialog.SetActive(false);
         }
     }
 }

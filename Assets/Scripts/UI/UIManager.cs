@@ -57,6 +57,7 @@ public class UIManager
         {
             {UIConst.PlayerInfo, "Player Info"},
             {UIConst.PlayerBag, "Bag"},
+            {UIConst.PlayerMission, "Missions"}
         };
     }
 
@@ -111,4 +112,5 @@ public class UIConst // 存储界面名常量
 {
     public const string PlayerInfo = "PlayerInfo";
     public const string PlayerBag = "PlayerBag";
+    public const string PlayerMission = "PlayerMission";
 }

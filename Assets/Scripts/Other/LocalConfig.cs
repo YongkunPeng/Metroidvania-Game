@@ -80,6 +80,7 @@ public class UserData
     public int arrowCnt; // 箭矢数量
     public int coinCnt; // 金币数量
     public Dictionary<Items, int> items;
+    public List<Mission> missionList;
 
     public UserData(string username, float health, int arrowCnt, int coinCnt)
     {

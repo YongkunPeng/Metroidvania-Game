@@ -56,7 +56,7 @@ public class DialogueController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && !GameManager.Instance.isPaused)
         {
             if (!isTyping)
             { // 未打字时按下E

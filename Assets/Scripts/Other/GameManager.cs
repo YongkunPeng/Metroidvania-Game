@@ -10,8 +10,8 @@ public class GameManager : MonoBehaviour
     public Dictionary<Items, int> itemsDict = new Dictionary<Items, int>(); // 玩家背包数据
     public List<Mission> missionList = new List<Mission>(); // 玩家任务数据
     public SlotController[] slots;
-    public UserData userData;
-    public string username;
+    // public UserData userData;
+    // public string username;
 
     public static GameManager Instance
     {
@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        userData = LocalConfig.LoadUserData(username); // 加载用户数据
+        // userData = LocalConfig.LoadUserData(username); // 加载用户数据
     }
 
     private void Awake()

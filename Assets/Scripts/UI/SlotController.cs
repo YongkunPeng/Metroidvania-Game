@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SlotController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class SlotController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDropHandler
 {
     public int slotID;
     public Items slotItem;
@@ -12,14 +12,26 @@ public class SlotController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V))
+        //if (Input.GetKeyDown(KeyCode.V))
+        //{
+        //    if (slotItem == Resources.Load<Items>("ItemData/Item_Arrow"))
+        //    {
+        //        GameManager.Instance.RemoveItem(Resources.Load<Items>("ItemData/Item_Arrow"));
+        //        itemTipUI.ShowItemTip();
+        //        itemTipUI.UpdateItemTip(slotItem.itemName, slotItem.itemDes, slotItem.sellPrice);
+        //    }
+        //}
+    }
+
+    public GameObject item
+    {
+        get
         {
-            if (slotItem == Resources.Load<Items>("ItemData/Item_Arrow"))
+            if (transform.childCount > 1)
             {
-                GameManager.Instance.RemoveItem(Resources.Load<Items>("ItemData/Item_Arrow"));
-                itemTipUI.ShowItemTip();
-                itemTipUI.UpdateItemTip(slotItem.itemName, slotItem.itemDes, slotItem.sellPrice);
+                return transform.GetChild(1).gameObject;
             }
+            return null;
         }
     }
 
@@ -43,7 +55,7 @@ public class SlotController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        transform.GetChild(2).gameObject.SetActive(true); // 选中图片显示
+        transform.GetChild(0).gameObject.SetActive(true); // 选中图片显示
 
         if (GetItem() != null)
         { // 该背包格内存在物品
@@ -56,8 +68,22 @@ public class SlotController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        transform.GetChild(2).gameObject.SetActive(false); // 选中图片关闭
+        transform.GetChild(0).gameObject.SetActive(false); // 选中图片关闭
 
         itemTipUI.HideItemTip();
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    { // 此处的transform为松开键鼠时的所处的游戏对象
+        if (!item)
+        { // 当前槽为空
+            ItemDrag.itemBeginDragged.transform.SetParent(transform);
+        }
+        else
+        { // 当前槽不为空
+            Transform temp = ItemDrag.startParent; // 记录该物体原来的槽
+            item.transform.SetParent(temp); // 该槽的原物体置换到拖动物体原来的槽
+            ItemDrag.itemBeginDragged.transform.SetParent(transform); // 被拖动的物体置换到新的槽
+        }
     }
 }

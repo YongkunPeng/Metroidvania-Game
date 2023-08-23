@@ -17,7 +17,7 @@ public class Knight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isClose && Input.GetKeyDown(KeyCode.E))
+        if (isClose && Input.GetKeyDown(KeyCode.E) && !GameManager.Instance.isPaused)
         {
             // 使NPC对话时始终面朝玩家
             if (transform.position.x - player.position.x > 0)

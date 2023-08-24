@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using My.SaveSystem;
 
 public class CMCmd
 {
@@ -11,18 +12,28 @@ public class CMCmd
     [MenuItem("CMCmd/SaveUserData")]
     public static void SaveUserData()
     {
-        Dictionary<Items, int> items = new Dictionary<Items, int>()
+        // AdditionalJSONConvert.AddAllConvert(); // 添加自定义序列化，防止序列化Vector3和Vector2报错
+
+        Dictionary<int, string> slotDic = new Dictionary<int, string> ()
         {
-            {Resources.Load<Items>("ItemData/Item_Arrow"), 5},
-            {Resources.Load<Items>("ItemData/Item_Mushroom_Chunks"), 3}
+            {0, "箭矢"},
+            {1, "蘑菇碎块"},
         };
+
+        Dictionary<string, int> itemDic = new Dictionary<string, int>()
+        {
+            {"箭矢", 5},
+            {"蘑菇碎块", 3},
+        };
+
         UserData data = new UserData();
+        data.slotDict = slotDic;
+        data.itemsDict = itemDic;
         data.username = "SuperDDV";
-        data.health = 100f;
-        data.arrowCnt = 5;
-        data.coinCnt = 300;
-        data.items = items;
+        data.health = 100;
+        data.coinCnt = 50;
         LocalConfig.SaveUserData(data);
+
         Debug.Log("保存完成!");
     }
 
@@ -39,11 +50,9 @@ public class CMCmd
         Debug.Log("生命值：" + data.health);
         Debug.Log("金币数：" + data.coinCnt);
 
-        foreach (KeyValuePair<Items, int> item in data.items)
+        foreach (KeyValuePair<int, string> pair in data.slotDict)
         {
-            Debug.Log("物品名：" + item.Key.itemName);
-            Debug.Log("物品描述：" + item.Key.itemDes);
-            Debug.Log("物品数量:" + item.Value);
+            Debug.Log("物品槽" + pair.Key + "含有物品：" + pair.Value + "，数量为：" + data.itemsDict[pair.Value]);
         }
 
         Debug.Log("加载完成!");
@@ -67,9 +76,15 @@ public class CMCmd
     [MenuItem("CMCmd/CheckBagDic")]
     public static void CheckBagDic()
     {
-        foreach (KeyValuePair<Items, int> dic in GameManager.Instance.itemsDict)
+        Debug.Log("物品槽字典");
+        foreach (KeyValuePair<int, string> slot in GameManager.Instance.slotDict)
         {
-            Debug.Log(dic.Key.itemName + " - " + dic.Value);
+            Debug.Log(slot.Key + " - " + slot.Value);
+        }
+        Debug.Log("物品槽字典");
+        foreach (KeyValuePair<string, int> item in GameManager.Instance.itemsDict)
+        {
+            Debug.Log(item.Key + " - " + item.Value);
         }
     }
 

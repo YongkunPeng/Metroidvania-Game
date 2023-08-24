@@ -12,15 +12,7 @@ public class SlotController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.V))
-        //{
-        //    if (slotItem == Resources.Load<Items>("ItemData/Item_Arrow"))
-        //    {
-        //        GameManager.Instance.RemoveItem(Resources.Load<Items>("ItemData/Item_Arrow"));
-        //        itemTipUI.ShowItemTip();
-        //        itemTipUI.UpdateItemTip(slotItem.itemName, slotItem.itemDes, slotItem.sellPrice);
-        //    }
-        //}
+        GetItem(); // 持续获取当前槽内物品信息
     }
 
     public GameObject item
@@ -41,16 +33,12 @@ public class SlotController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     /// <returns>该背包格子所含物品的Items</returns>
     private Items GetItem()
     {
-        int index = 0;
-        foreach (KeyValuePair<Items, int> keyValuePair in GameManager.Instance.itemsDict)
+        if (GameManager.Instance.slotDict.ContainsKey(slotID))
         {
-            if (slotID == index)
-            {
-                slotItem = keyValuePair.Key;
-            }
-            index++;
+            slotItem = GameManager.Instance.resourceDict[GameManager.Instance.slotDict[slotID]];
+            return slotItem;
         }
-        return slotItem;
+        return null;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -78,12 +66,19 @@ public class SlotController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         if (!item)
         { // 当前槽为空
             ItemDrag.itemBeginDragged.transform.SetParent(transform);
+            GameManager.Instance.slotDict.Add(slotID, GameManager.Instance.slotDict[ItemDrag.startID]);
+            GameManager.Instance.slotDict.Remove(ItemDrag.startID);
         }
         else
         { // 当前槽不为空
             Transform temp = ItemDrag.startParent; // 记录该物体原来的槽
             item.transform.SetParent(temp); // 该槽的原物体置换到拖动物体原来的槽
             ItemDrag.itemBeginDragged.transform.SetParent(transform); // 被拖动的物体置换到新的槽
+
+            // 字典值交换
+            string tempStr = GameManager.Instance.slotDict[ItemDrag.startID];
+            GameManager.Instance.slotDict[ItemDrag.startID] = GameManager.Instance.slotDict[slotID];
+            GameManager.Instance.slotDict[slotID] = tempStr;
         }
     }
 }

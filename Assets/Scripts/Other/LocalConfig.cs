@@ -79,7 +79,8 @@ public class UserData
     public float health; // 生命值
     public int arrowCnt; // 箭矢数量
     public int coinCnt; // 金币数量
-    public Dictionary<Items, int> items;
+    public Dictionary<int, string> slotDict; // 背包中物品所在槽
+    public Dictionary<string, int> itemsDict; // 背包中物品的数量
     public List<Mission> missionList;
 
     public UserData(string username, float health, int arrowCnt, int coinCnt)

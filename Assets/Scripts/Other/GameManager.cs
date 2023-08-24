@@ -7,7 +7,10 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager _Instance;
     public bool isPaused; // 记录游戏是否暂停
-    public Dictionary<Items, int> itemsDict = new Dictionary<Items, int>(); // 玩家背包数据
+    public Dictionary<int, string> slotDict = new Dictionary<int, string>(); // 物品槽所含物品
+    public Dictionary<string, int> itemsDict = new Dictionary<string, int>(); // 玩家背包数据
+    public Dictionary<string, Items> resourceDict = new Dictionary<string, Items>();
+    private Items[] itemsResource;
     public List<Mission> missionList = new List<Mission>(); // 玩家任务数据
     public SlotController[] slots;
     // public UserData userData;
@@ -34,6 +37,12 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         // userData = LocalConfig.LoadUserData(username); // 加载用户数据
+
+        itemsResource = Resources.LoadAll<Items>("ItemData");
+        foreach (Items item in itemsResource)
+        {
+            resourceDict.Add(item.itemName, item);
+        }
     }
 
     private void Awake()
@@ -63,26 +72,38 @@ public class GameManager : MonoBehaviour
     /// <param name="item">待添加的物品信息</param>
     public bool AddItem(Items item)
     {
-        if (itemsDict.ContainsKey(item) && itemsDict[item] < 99)
+        if (itemsDict.ContainsKey(item.itemName) && itemsDict[item.itemName] < 99)
         { // 背包中已经存在该物品，且数量小于99，则数量+1
-            itemsDict[item] += 1;
+            itemsDict[item.itemName] += 1;
             if (UIManager.Instance.panelDict.ContainsKey(UIConst.PlayerBag))
             { // 背包UI打开时，更新背包显示信息
                 GameObject.FindGameObjectWithTag("Bag").GetComponent<BagUI>().UpdateBagUI();
             }
             return true;
         }
-        else
-        {
-            if (itemsDict.Count <= 10 && !itemsDict.ContainsKey(item))
-            { // 不存在该物体且空间有余
-                itemsDict.Add(item, 1);
-                if (UIManager.Instance.panelDict.ContainsKey(UIConst.PlayerBag))
-                { // 背包UI打开时，更新背包显示信息
-                    GameObject.FindGameObjectWithTag("Bag").GetComponent<BagUI>().UpdateBagUI();
+        else if (!itemsDict.ContainsKey(item.itemName) && slotDict.Count < 10 && itemsDict.Count < 10)
+        { // 背包中不含该物品，且还有空间
+            for (int i = 0; i < 10; i++)
+            {
+                bool canUseSlot = true; // 表示该槽是否为空
+                foreach(KeyValuePair<int, string> pair in slotDict)
+                {
+                    if (i == pair.Key)
+                    { // 该槽已被占用，跳出内循环，进入下一个外循环
+                        canUseSlot = false;
+                        break;
+                    }
                 }
-                return true;
+
+                if (canUseSlot)
+                { // 当前i所指物品槽未被占用，跳出循环
+                    slotDict.Add(i, item.itemName);
+                    itemsDict.Add(item.itemName, 1);
+                    return true;
+                }
             }
+            Debug.LogWarning("无法拾取物品，已无空位！");
+            return false;
         }
         Debug.LogWarning("无法拾取物品，该物品已超出上限！");
         return false;
@@ -95,15 +116,23 @@ public class GameManager : MonoBehaviour
     /// <param name="item">待添加的物品信息</param>
     public void RemoveItem(Items item)
     {
-        if (itemsDict.ContainsKey(item))
+        if (itemsDict.ContainsKey(item.itemName))
         { // 存在该物品
-            if (itemsDict[item] > 1)
+            if (itemsDict[item.itemName] > 1)
             { // 数量大于1
-                itemsDict[item] -= 1;
+                itemsDict[item.itemName] -= 1;
             }
             else
             { // 数量等于1
-                itemsDict.Remove(item);
+                foreach (KeyValuePair<int, string> pair in slotDict)
+                {
+                    if (pair.Value == item.itemName)
+                    {
+                        slotDict.Remove(pair.Key);
+                        break;
+                    }
+                }
+                itemsDict.Remove(item.itemName);
             }
             if (UIManager.Instance.panelDict.ContainsKey(UIConst.PlayerBag))
             { // 背包UI打开时，更新背包显示信息
@@ -136,17 +165,9 @@ public class GameManager : MonoBehaviour
             #region 更新各个物品槽的slotItem的值
             for (int i = 0; i < slots.Length; i++)
             {
-                if (i < itemsDict.Count)
-                { // 槽内有物品
-                    int index = 0;
-                    foreach (KeyValuePair<Items, int> keyValue in itemsDict)
-                    {
-                        if (slots[i].slotID == index)
-                        {
-                            slots[i].slotItem = keyValue.Key;
-                        }
-                        index++;
-                    }
+                if (slotDict.ContainsKey(i))
+                {
+                    slots[i].slotItem = resourceDict[slotDict[i]];
                 }
                 else
                 { // 槽内无物品

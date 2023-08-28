@@ -64,8 +64,10 @@ public class PlayerControll : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // 设置玩家基础生命值和攻击力
-        playerBlackboard.health = 100;
+        playerBlackboard.playerID = GameManager.Instance.userData.username;
+        playerBlackboard.health = GameManager.Instance.userData.health;
+
+        // 设置玩家其他属性
         playerBlackboard.baseLightAttack = 5;
         playerBlackboard.baseHeavyAttack = 10;
         playerBlackboard.speed = 3;
@@ -73,9 +75,6 @@ public class PlayerControll : MonoBehaviour
         playerBlackboard.lightAttackOffset = 0.3f;
         playerBlackboard.heavtAttackOffset = 0.5f;
         playerBlackboard.lastDash = -3f;
-        playerBlackboard.goldCoinCnt = 0;
-        playerBlackboard.arrowCnt = 5;
-        playerBlackboard.playerID = "SuperDDV";
 
         // 为玩家黑板赋予刚体和动画控制器
         playerBlackboard.rb = GetComponent<Rigidbody2D>();
@@ -112,6 +111,8 @@ public class PlayerControll : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        UpdateChangeablePlayerData();
+
         CanDash();
         playerFSM.OnCheck();
         playerFSM.OnUpdate();
@@ -120,6 +121,22 @@ public class PlayerControll : MonoBehaviour
     private void FixedUpdate()
     {
         playerFSM.OnFixUpdate();
+    }
+
+    /// <summary>
+    /// 根据GameManager内userdata给予玩家相应生命值、箭矢数、金币数、用户名
+    /// </summary>
+    public void UpdateChangeablePlayerData()
+    {
+        playerBlackboard.goldCoinCnt = GameManager.Instance.userData.coinCnt;
+        if (GameManager.Instance.userData.itemsDict.ContainsKey(ItemsConst.Arrow))
+        {
+            playerBlackboard.arrowCnt = GameManager.Instance.userData.itemsDict[ItemsConst.Arrow];
+        }
+        else if (!GameManager.Instance.userData.itemsDict.ContainsKey(ItemsConst.Arrow))
+        {
+            playerBlackboard.arrowCnt = 0;
+        }
     }
 
     // 玩家是否接地(通过广播的方式获取子物体isGround信息)
@@ -195,12 +212,10 @@ public class PlayerControll : MonoBehaviour
         arrowCnt = playerBlackboard.arrowCnt;
     }
 
-    public void GetData(ref string name, ref float life, ref int goldCoinCnt, ref int arrowCnt)
+    public void GetData(ref float life, ref int goldCoinCnt)
     {
         life = playerBlackboard.health;
-        name = playerBlackboard.playerID;
         goldCoinCnt = playerBlackboard.goldCoinCnt;
-        arrowCnt = playerBlackboard.arrowCnt;
     }
 }
 
@@ -1505,7 +1520,7 @@ public class PlayerShootState : Istate
     {
         isShoot = true;
         arrow = null;
-        playerBlackboard.arrowCnt--;
+        GameManager.Instance.RemoveItem(GameManager.Instance.resourceDict[ItemsConst.Arrow]);
     }
 
     public void OnFixUpdate()

@@ -728,6 +728,15 @@ public class GoblinDeadState : Istate
         deadTimer = 0;
         goblinBlackboard.goblinAnimator.Play("Dead");
         goblinBlackboard.rb.velocity = new Vector2(-2f * goblinBlackboard.goblinTransform.localScale.x, 4);
+
+        foreach (Mission mission in GameManager.Instance.missionList)
+        {
+            if (((mission.missionType == Mission.MissionType.KillEnemy) || (mission.missionType == Mission.MissionType.KillGoblin))
+                && mission.missionStatus == Mission.MissionStatus.Accepted)
+            { // 有击杀敌人或击杀哥布林，且未完成的任务
+                mission.UpdateMissionData(1);
+            }
+        }
     }
 
     public void OnExit()

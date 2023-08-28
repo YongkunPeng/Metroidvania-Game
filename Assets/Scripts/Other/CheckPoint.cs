@@ -10,9 +10,7 @@ public class CheckPoint : MonoBehaviour
     private Color color;
     private AnimatorStateInfo info;
     private GameObject player;
-    private string id;
     private float life;
-    private int arrowCnt;
     private int coinCnt;
 
     private void Awake()
@@ -30,10 +28,8 @@ public class CheckPoint : MonoBehaviour
             Coroutine cor = StartCoroutine(ie);
             if (player != null)
             {
-                player.GetComponent<PlayerControll>().GetData(ref id, ref life, ref coinCnt, ref arrowCnt);
-                UserData data = new UserData(id, life, arrowCnt, coinCnt);
-                LocalConfig.SaveUserData(data);
-                Debug.Log("保存完成！");
+                player.GetComponent<PlayerControll>().GetData(ref life, ref coinCnt);
+                GameManager.Instance.SaveUserData(life, coinCnt);
             }
         }
     }
@@ -53,10 +49,15 @@ public class CheckPoint : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             keyboardInfo.SetActive(false);
+            player = null;
             isClose = false;
         }
     }
 
+    /// <summary>
+    /// 控制存档动画
+    /// </summary>
+    /// <returns></returns>
     IEnumerator SwitchAnimation()
     {
         yield return new WaitForEndOfFrame();

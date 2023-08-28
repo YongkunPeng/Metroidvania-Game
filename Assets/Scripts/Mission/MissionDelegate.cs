@@ -6,6 +6,17 @@ public class MissionDelegate : MonoBehaviour
 {
     public Mission mission;
 
+    private void Awake()
+    { // 判断任务列表中有无该任务，防止切换场景后重复接取
+        foreach (Mission mission in GameManager.Instance.missionList)
+        {
+            if (mission.missionName == this.mission.missionName)
+            {
+                this.mission = mission;
+            }
+        }
+    }
+
     /// <summary>
     /// 委派任务
     /// </summary>
@@ -14,11 +25,7 @@ public class MissionDelegate : MonoBehaviour
         if (mission.missionStatus == Mission.MissionStatus.Unaccepted)
         {
             GameManager.Instance.missionList.Add(mission);
-            mission.missionStatus = Mission.MissionStatus.Accepted;
-        }
-        else
-        {
-            Debug.Log("任务：" + mission.missionName + " 以被接受或已完成！");
+            mission.UpdateMissionAccept();
         }
     }
 }

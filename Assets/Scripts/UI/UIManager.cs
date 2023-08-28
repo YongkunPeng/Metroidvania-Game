@@ -55,6 +55,8 @@ public class UIManager
         // 配置界面和路径
         pathDict = new Dictionary<string, string>()
         {
+            {UIConst.MainMenu, "MainMenu"},
+            {UIConst.RegistrationMenu, "RegistrationMenu"},
             {UIConst.PlayerInfo, "Player Info"},
             {UIConst.PlayerBag, "Bag"},
             {UIConst.PlayerMission, "Missions"}
@@ -110,6 +112,8 @@ public class UIManager
 
 public class UIConst // 存储界面名常量
 {
+    public const string MainMenu = "MainMenu";
+    public const string RegistrationMenu = "RegistrationMenu";
     public const string PlayerInfo = "PlayerInfo";
     public const string PlayerBag = "PlayerBag";
     public const string PlayerMission = "PlayerMission";

@@ -42,7 +42,7 @@ public class LocalConfig
         // 转换为json字符串
         string jsonData = JsonConvert.SerializeObject(data);
         // 加密
-        jsonData = Encrypt(jsonData);
+        // jsonData = Encrypt(jsonData);
         // 写入json文件，按用户名分类
         File.WriteAllText(Application.persistentDataPath + string.Format("/users/{0}.json", data.username), jsonData);
     }
@@ -61,7 +61,7 @@ public class LocalConfig
             // 读取所有内容
             string jsonData = File.ReadAllText(path);
             // 解密
-            jsonData = Decrypt(jsonData);
+            // jsonData = Decrypt(jsonData);
             UserData data = JsonConvert.DeserializeObject<UserData>(jsonData);
             return data;
         }
@@ -77,7 +77,6 @@ public class UserData
 { // 用户数据类
     public string username; // 用户存档名
     public float health; // 生命值
-    public int arrowCnt; // 箭矢数量
     public int coinCnt; // 金币数量
     public Dictionary<int, string> slotDict; // 背包中物品所在槽
     public Dictionary<string, int> itemsDict; // 背包中物品的数量
@@ -87,7 +86,6 @@ public class UserData
     {
         this.username = username;
         this.health = health;
-        this.arrowCnt = arrowCnt;
         this.coinCnt = coinCnt;
     }
 

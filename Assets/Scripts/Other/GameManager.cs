@@ -7,14 +7,14 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager _Instance;
     public bool isPaused; // 记录游戏是否暂停
-    public Dictionary<int, string> slotDict = new Dictionary<int, string>(); // 物品槽所含物品
-    public Dictionary<string, int> itemsDict = new Dictionary<string, int>(); // 玩家背包数据
+    public Dictionary<int, string> slotDict; // 物品槽所含物品
+    public Dictionary<string, int> itemsDict; // 玩家背包数据
     public Dictionary<string, Items> resourceDict = new Dictionary<string, Items>();
     private Items[] itemsResource;
     public List<Mission> missionList = new List<Mission>(); // 玩家任务数据
     public SlotController[] slots;
-    // public UserData userData;
-    // public string username;
+    public UserData userData;
+    public string username;
 
     public static GameManager Instance
     {
@@ -36,8 +36,7 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        // userData = LocalConfig.LoadUserData(username); // 加载用户数据
-
+        // 加载所有ScriptsObject物品数据
         itemsResource = Resources.LoadAll<Items>("ItemData");
         foreach (Items item in itemsResource)
         {
@@ -60,10 +59,30 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+
+    }
+
+    private void FixedUpdate()
+    {
+        #region 更新收集任务状态
+        foreach ( Mission mission in missionList )
         {
-            SceneManager.LoadScene(1);
+            if (mission.missionStatus == Mission.MissionStatus.Accepted && mission.missionType == Mission.MissionType.Collect && itemsDict.ContainsKey(mission.collectItemName))
+            { // 物品数量字典中有该物体，且任务未完成
+                if (itemsDict[mission.collectItemName] >= mission.goalCnt)
+                {
+                    mission.UpdateMissionComplete();
+                }
+            }
+            else if (mission.missionStatus == Mission.MissionStatus.Completed && mission.missionType == Mission.MissionType.Collect)
+            { // 对于收集任务，进度完成但未领奖，期间数量有变化导致未达标时
+                if (!itemsDict.ContainsKey(mission.collectItemName) || itemsDict[mission.collectItemName] < mission.goalCnt)
+                {
+                    mission.UpdateMissionAccept();
+                }
+            }
         }
+        #endregion
     }
 
     /// <summary>
@@ -108,7 +127,6 @@ public class GameManager : MonoBehaviour
         Debug.LogWarning("无法拾取物品，该物品已超出上限！");
         return false;
     }
-
 
     /// <summary>
     /// 将背包数据中的指定物品丢弃，使之数量-1
@@ -176,5 +194,28 @@ public class GameManager : MonoBehaviour
             }
             #endregion
         }
+    }
+
+    /// <summary>
+    /// 玩家数据本地化存储
+    /// </summary>
+    /// <param name="life">玩家生命值</param>
+    /// <param name="coinCnt">玩家金币数</param>
+    public void SaveUserData(float life, int coinCnt)
+    {
+        userData.health = life;
+        userData.coinCnt = coinCnt;
+        LocalConfig.SaveUserData(userData);
+        Debug.Log("保存完成！");
+    }
+
+    public void InitUserData(UserData userData)
+    {
+        this.userData = userData;
+        username = userData.username;
+        slotDict = userData.slotDict;
+        itemsDict = userData.itemsDict;
+        missionList = userData.missionList;
+        SceneManager.LoadScene(1);
     }
 }

@@ -351,6 +351,15 @@ public class MushroomDeadState : Istate
     {
         deadTimer = 0;
         mushroomBlackboard.mushroomAnimator.Play("Dead");
+
+        foreach (Mission mission in GameManager.Instance.missionList)
+        {
+            if (((mission.missionType == Mission.MissionType.KillEnemy) || (mission.missionType == Mission.MissionType.KillMushroom))
+                && mission.missionStatus == Mission.MissionStatus.Accepted)
+            { // 有击杀敌人或击杀蘑菇人，且未完成的任务
+                mission.UpdateMissionData(1);
+            }
+        }
     }
 
     public void OnExit()

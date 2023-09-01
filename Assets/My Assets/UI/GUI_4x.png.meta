@@ -111,10 +111,10 @@ TextureImporter:
         x: 128
         y: 96
         width: 128
-        height: 127
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 36, y: 36, z: 36, w: 34}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 36, y: 36, z: 36, w: 36}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -134,7 +134,7 @@ TextureImporter:
         width: 100
         height: 96
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 16, y: 12, z: 12, w: 12}
       outline: []
       physicsShape: []
@@ -142,6 +142,27 @@ TextureImporter:
       bones: []
       spriteID: d2ca22014462d1e47b361b9a019f6ef9
       internalID: -2015292010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GUI_4x_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 100
+        width: 128
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed1c5e72bdebb7f46bda0bc0fe482b2a
+      internalID: 1317843180
       vertices: []
       indices: 
       edges: []
@@ -159,6 +180,7 @@ TextureImporter:
     nameFileIdTable:
       GUI_4x_0: -1010794204
       GUI_4x_1: -2015292010
+      GUI_4x_2: 1317843180
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

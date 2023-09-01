@@ -57,9 +57,12 @@ public class UIManager
         {
             {UIConst.MainMenu, "MainMenu"},
             {UIConst.RegistrationMenu, "RegistrationMenu"},
+            {UIConst.Archives, "Archives"},
+            {UIConst.Settings, "Settings"},
             {UIConst.PlayerInfo, "Player Info"},
             {UIConst.PlayerBag, "Bag"},
-            {UIConst.PlayerMission, "Missions"}
+            {UIConst.PlayerMission, "Missions"},
+            {UIConst.LoadScene, "LoadScene"}
         };
     }
 
@@ -114,7 +117,10 @@ public class UIConst // 存储界面名常量
 {
     public const string MainMenu = "MainMenu";
     public const string RegistrationMenu = "RegistrationMenu";
+    public const string Archives = "Archives";
     public const string PlayerInfo = "PlayerInfo";
     public const string PlayerBag = "PlayerBag";
     public const string PlayerMission = "PlayerMission";
+    public const string Settings = "Settings";
+    public const string LoadScene = "LoadScene";
 }

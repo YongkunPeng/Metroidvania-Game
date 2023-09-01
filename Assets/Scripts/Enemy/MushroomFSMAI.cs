@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
+using Cinemachine;
 
 [Serializable]
 public class MushroomBlackboard : Blackboard
@@ -34,10 +35,11 @@ public class MushroomBlackboard : Blackboard
     public bool isHit; // 是否受击
     public bool isGround; // 是否着地
 
-    // 攻击位移
+    [Header("攻击相关")]
     public float attack1Offset;
     public float attack2Offset;
     public float attack3Offset;
+    public int attackPause;
 
     // 受伤位移
     public float hurtOffset;
@@ -123,12 +125,15 @@ public class MushroomFSMAI : MonoBehaviour
         {
             PlayerControll player = collision.GetComponent<PlayerControll>();
             player.getHurt(mushroomBlackboard.attack, transform.position);
+            GameManager.Instance.HitPause(mushroomBlackboard.attackPause);
+            transform.GetChild(1).GetComponent<CinemachineImpulseSource>().GenerateImpulse();
         }
     }
 
     // 受击扣除血量方法(在玩家脚本中调用)
     public void getHurt(float damage)
     {
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.EnemyHurt);
         mushroomBlackboard.isHit = true;
         mushroomBlackboard.health -= damage;
     }
@@ -454,6 +459,8 @@ public class MushroomChaseState : Istate
         // 攻击逻辑判断
         if (mushroomBlackboard.chooseAttackSkill < 3)
         { // 使用攻击1
+            mushroomBlackboard.mushroomTransform.GetChild(1).GetComponent<CinemachineImpulseSource>().m_ImpulseDefinition.m_AmplitudeGain = 1;
+            mushroomBlackboard.attackPause = 4;
             if (Physics2D.OverlapCircle(mushroomBlackboard.attackPoint.position, mushroomBlackboard.radius1, mushroomBlackboard.attackLayerMask))
             {
                 mushroomFSM.SwitchState(StateType.Attack1);
@@ -461,6 +468,8 @@ public class MushroomChaseState : Istate
         }
         else if (mushroomBlackboard.chooseAttackSkill < 5)
         { // 使用攻击2
+            mushroomBlackboard.mushroomTransform.GetChild(1).GetComponent<CinemachineImpulseSource>().m_ImpulseDefinition.m_AmplitudeGain = 3;
+            mushroomBlackboard.attackPause = 8;
             if (Physics2D.OverlapCircle(mushroomBlackboard.attackPoint.position, mushroomBlackboard.radius2, mushroomBlackboard.attackLayerMask))
             {
                 mushroomFSM.SwitchState(StateType.Attack2);
@@ -468,6 +477,8 @@ public class MushroomChaseState : Istate
         }
         else if (mushroomBlackboard.chooseAttackSkill == 5)
         { // 使用攻击3
+            mushroomBlackboard.mushroomTransform.GetChild(1).GetComponent<CinemachineImpulseSource>().m_ImpulseDefinition.m_AmplitudeGain = 1;
+            mushroomBlackboard.attackPause = 4;
             if (Physics2D.OverlapCircle(mushroomBlackboard.mushroomTransform.position, mushroomBlackboard.radius3, mushroomBlackboard.attackLayerMask))
             {
                 mushroomFSM.SwitchState(StateType.Attack3);
@@ -627,10 +638,9 @@ public class MushroomAttack3State : Istate
 
     public void OnEnter()
     {
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.MushroomShoot);
         targetPosition = mushroomBlackboard.targetTransform.position;
-
         mushroomBlackboard.mushroomAnimator.Play("Attack3");
-
         canShoot = true;
     }
 

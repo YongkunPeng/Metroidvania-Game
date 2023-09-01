@@ -27,7 +27,6 @@ public class GameManager : MonoBehaviour
                 {
                     GameObject gameObject = new GameObject("GameManager");
                     _Instance = gameObject.AddComponent<GameManager>();
-                    DontDestroyOnLoad(gameObject);
                 }
             }
             return _Instance;
@@ -83,6 +82,11 @@ public class GameManager : MonoBehaviour
             }
         }
         #endregion
+    }
+
+    public void HitPause(int duration)
+    {
+        StartCoroutine(Pause(duration));
     }
 
     /// <summary>
@@ -209,6 +213,10 @@ public class GameManager : MonoBehaviour
         Debug.Log("保存完成！");
     }
 
+    /// <summary>
+    /// 加载玩家数据并跳转到游戏场景
+    /// </summary>
+    /// <param name="userData">玩家数据UserData</param>
     public void InitUserData(UserData userData)
     {
         this.userData = userData;
@@ -216,6 +224,19 @@ public class GameManager : MonoBehaviour
         slotDict = userData.slotDict;
         itemsDict = userData.itemsDict;
         missionList = userData.missionList;
-        SceneManager.LoadScene(1);
+        SceneLoadManager.Instance.LoadLevelByIndex(1);
+    }
+
+    /// <summary>
+    /// 攻击顿帧
+    /// </summary>
+    /// <param name="duration">停顿时间</param>
+    /// <returns></returns>
+    IEnumerator Pause(int duration)
+    {
+        float pauseTime = duration / 60f;
+        Time.timeScale = 0;
+        yield return new WaitForSecondsRealtime(pauseTime);
+        Time.timeScale = 1;
     }
 }

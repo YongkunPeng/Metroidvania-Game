@@ -25,17 +25,17 @@ public class MainMenuUI : BasePanel
         quitBtn = transform.GetChild(1).GetChild(4).GetComponent<Button>();
         ray = GetComponent<GraphicRaycaster>();
 
-        DirectoryInfo directoryInfo = new DirectoryInfo(Application.persistentDataPath + "/users");
-        files = directoryInfo.GetFiles("*.json")
-            .Where(file => file.Extension.ToLower() == ".json")
-            .ToArray();
-
         ContinueGameBtnControll();
     }
 
     private void FixedUpdate()
     {
         CheckCanRaycast();
+    }
+
+    private void OnDestroy()
+    {
+        ClosePanel();
     }
 
     /// <summary>
@@ -45,30 +45,34 @@ public class MainMenuUI : BasePanel
     {
         if (ray.IsActive())
         {
-            if (UIManager.Instance.panelDict.ContainsKey(UIConst.RegistrationMenu))
+            if (UIManager.Instance.panelDict.ContainsKey(UIConst.RegistrationMenu)
+                || UIManager.Instance.panelDict.ContainsKey(UIConst.Archives)
+                || UIManager.Instance.panelDict.ContainsKey(UIConst.Settings))
             {
                 ray.enabled = false;
             }
         }
         else
         {
-            if (!UIManager.Instance.panelDict.ContainsKey(UIConst.RegistrationMenu))
+            if (!UIManager.Instance.panelDict.ContainsKey(UIConst.RegistrationMenu)
+                && !UIManager.Instance.panelDict.ContainsKey(UIConst.Archives)
+                && !UIManager.Instance.panelDict.ContainsKey(UIConst.Settings))
             {
                 ray.enabled = true;
             }
         }
     }
 
-    private void OnDestroy()
-    {
-        ClosePanel();
-    }
-
     /// <summary>
     /// 管理继续游戏按钮是否可用
     /// </summary>
-    private void ContinueGameBtnControll()
+    public void ContinueGameBtnControll()
     {
+        DirectoryInfo directoryInfo = new DirectoryInfo(Application.persistentDataPath + "/users");
+        files = directoryInfo.GetFiles("*.json")
+            .Where(file => file.Extension.ToLower() == ".json")
+            .ToArray();
+
         if (files.Length == 0)
         {
             continueGameBtn.interactable = false;
@@ -87,6 +91,7 @@ public class MainMenuUI : BasePanel
     public void CreateNewGame()
     {
         // 打开建档界面
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.ClickSound);
         UIManager.Instance.OpenPanel(UIConst.RegistrationMenu);
     }
 
@@ -96,8 +101,8 @@ public class MainMenuUI : BasePanel
     public void ContinueExistGame()
     {
         // 显示存档列表
-        UserData userData = LocalConfig.LoadUserData("DDV");
-        GameManager.Instance.InitUserData(userData);
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.ClickSound);
+        UIManager.Instance.OpenPanel(UIConst.Archives);
     }
 
     /// <summary>
@@ -106,6 +111,8 @@ public class MainMenuUI : BasePanel
     public void SettingsOpen()
     {
         // 打开设置界面
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.ClickSound);
+        UIManager.Instance.OpenPanel(UIConst.Settings);
     }
 
     /// <summary>
@@ -113,6 +120,7 @@ public class MainMenuUI : BasePanel
     /// </summary>
     public void QuitGame()
     {
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.ClickSound);
         Application.Quit();
     }
 }

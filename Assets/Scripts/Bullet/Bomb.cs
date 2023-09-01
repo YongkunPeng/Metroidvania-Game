@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class Bomb : MonoBehaviour
 {
@@ -9,9 +10,9 @@ public class Bomb : MonoBehaviour
     public CircleCollider2D circleCollider;
     public float damage = 15;
     [SerializeField] private float waitTime = 5f;
+    [SerializeField] private int attackPause = 8;
     private IEnumerator ie;
     private Coroutine cor;
-    private AnimatorStateInfo info;
 
     private void Awake()
     {
@@ -33,7 +34,18 @@ public class Bomb : MonoBehaviour
         {
             PlayerControll player = collision.GetComponent<PlayerControll>();
             player.getHurt(damage, transform.position);
+            GameManager.Instance.HitPause(attackPause);
         }
+    }
+
+    public void PlayExplosionSound()
+    {
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.GoblinBombExplosion);
+    }
+
+    public void AttackPause()
+    {
+        transform.GetComponent<CinemachineImpulseSource>().GenerateImpulse();
     }
 
     IEnumerator WaitForExplosion(float waitTime)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
+using Cinemachine;
 
 [Serializable]
 public class GoblinBlackboard : Blackboard
@@ -37,6 +38,7 @@ public class GoblinBlackboard : Blackboard
     public float attack1Offset;
     public float attack2Offset;
     public float attack3Offset;
+    public int attackPause;
 
     // 受伤位移
     public float hurtOffset;
@@ -125,12 +127,15 @@ public class GoblinFSMAI : MonoBehaviour
         {
             PlayerControll player = collision.GetComponent<PlayerControll>();
             player.getHurt(goblinBlackboard.attack, transform.position);
+            GameManager.Instance.HitPause(goblinBlackboard.attackPause);
+            transform.GetChild(2).GetComponent<CinemachineImpulseSource>().GenerateImpulse();
         }
     }
 
     // 受击扣除血量方法(在玩家脚本中调用)
     public void getHurt(float damage)
     {
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.EnemyHurt);
         goblinBlackboard.isHit = true;
         goblinBlackboard.health -= damage;
     }
@@ -331,6 +336,8 @@ public class GoblinChaseState : Istate
         // 攻击逻辑判断
         if (goblinBlackboard.chooseAttackSkill < 2)
         { // 使用攻击1
+            goblinBlackboard.goblinTransform.GetChild(2).GetComponent<CinemachineImpulseSource>().m_ImpulseDefinition.m_AmplitudeGain = 0.6f;
+            goblinBlackboard.attackPause = 4;
             if (Physics2D.OverlapCircle(goblinBlackboard.attackPoint.position, goblinBlackboard.radius, goblinBlackboard.attackLayerMask))
             {
                 goblinFSM.SwitchState(StateType.Attack1);
@@ -576,6 +583,8 @@ public class GoblinEvadeState : Istate
         {
             if (target.collider != null)
             {
+                goblinBlackboard.goblinTransform.GetChild(2).GetComponent<CinemachineImpulseSource>().m_ImpulseDefinition.m_AmplitudeGain = 1f;
+                goblinBlackboard.attackPause = 8;
                 goblinFSM.SwitchState(StateType.Attack2);
             }
             else
@@ -728,6 +737,8 @@ public class GoblinDeadState : Istate
         deadTimer = 0;
         goblinBlackboard.goblinAnimator.Play("Dead");
         goblinBlackboard.rb.velocity = new Vector2(-2f * goblinBlackboard.goblinTransform.localScale.x, 4);
+
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.GoblinDead);
 
         foreach (Mission mission in GameManager.Instance.missionList)
         {

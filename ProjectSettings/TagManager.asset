@@ -11,6 +11,7 @@ TagManager:
   - NPC
   - Item
   - Bag
+  - MainMenu
   layers:
   - Default
   - TransparentFX

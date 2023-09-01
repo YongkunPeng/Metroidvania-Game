@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class PoisonBall : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class PoisonBall : MonoBehaviour
     public Animator animator;
     public CircleCollider2D circleCollider;
     public float damage = 8;
+    [SerializeField] private int attackPause = 3;
     [SerializeField] private float speed = 3f;
     [SerializeField] private float destroyTime = 0.3f; // 碰撞到目标的销毁时间
     [SerializeField] private float destroyTimeNoTarget = 3f; // 未碰撞到目标的销毁时间
@@ -30,12 +32,19 @@ public class PoisonBall : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.CompareTag("Player"))
         {
             ie = DestroyBullet(destroyTime);
             cor = StartCoroutine(ie);
             PlayerControll player = collision.GetComponent<PlayerControll>();
             player.getHurt(damage, transform.position);
+            transform.GetComponent<CinemachineImpulseSource>().GenerateImpulse();
+            GameManager.Instance.HitPause(attackPause);
+        }
+        else if (collision.CompareTag("Ground"))
+        {
+            ie = DestroyBullet(destroyTime);
+            cor = StartCoroutine(ie);
         }
     }
 

@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -22,10 +24,19 @@ public class RegistratioMenuUI : BasePanel
         ClosePanel();
     }
 
+    /// <summary>
+    /// 创建新存档
+    /// </summary>
     public void StartNewUserData()
     {
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.ClickSound);
+        DirectoryInfo directoryInfo = new DirectoryInfo(Application.persistentDataPath + "/users");
+        FileInfo[] files = directoryInfo.GetFiles("*.json")
+            .Where(file => file.Extension.ToLower() == ".json")
+            .ToArray();
+
         string username = inputtext.text;
-        if (ValidateUsername(username))
+        if (ValidateUsername(username) && !File.Exists(Application.persistentDataPath + "/users/" + username + ".json") && files.Length < 2)
         {
             // 创建新的玩家数据，保存到本地并将其中数据交予GameManager后，进入游戏场景
             UserData userData = new UserData();
@@ -45,17 +56,31 @@ public class RegistratioMenuUI : BasePanel
             GameManager.Instance.username = userData.username;
             SceneManager.LoadScene(1);
         }
-        else
+        else if (!ValidateUsername(username))
         {
             transform.GetChild(6).gameObject.SetActive(true);
+        }
+        else if (File.Exists(Application.persistentDataPath + "/users/" + username + ".json"))
+        {
+            transform.GetChild(7).gameObject.SetActive(true);
+        }
+        else if (files.Length >= 2)
+        {
+            transform.GetChild(8).gameObject.SetActive(true);
         }
     }
 
     public void CloseRegistrationMenu()
     {
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.ClickSound);
         Destroy(gameObject);
     }
 
+    /// <summary>
+    /// 检查玩家名
+    /// </summary>
+    /// <param name="username">玩家名</param>
+    /// <returns></returns>
     public bool ValidateUsername(string username)
     {
         return Regex.IsMatch(username, usernamePattern);

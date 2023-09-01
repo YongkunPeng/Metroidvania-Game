@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Cinemachine;
 
 [Serializable]
 public class PlayerBlackboard : Blackboard
@@ -18,8 +19,13 @@ public class PlayerBlackboard : Blackboard
     public bool isHit = false; // 是否受击
     public bool isGround; // 是否在地面
     public bool isClimb; // 是否爬墙
-    public bool isLightAttack; // 是否进行轻攻击
-    public bool isHeavyAttack; // 是否进行重攻击
+    public bool isLightAttack; // 是否追加轻攻击
+    public bool isHeavyAttack; // 是否追加重攻击
+    public bool light; // 当前处于轻攻击状态
+    public bool heavy; // 当前处于重攻击状态
+    public int lightAttackPause;
+    public int heavyAttackPause;
+    public bool isRun; // 是否奔跑
     public bool isDash; // 是否可以冲刺
 
     [Header("位移")]
@@ -58,12 +64,15 @@ public class PlayerControll : MonoBehaviour
 {
     private FSM playerFSM;
     public PlayerBlackboard playerBlackboard = new PlayerBlackboard();
+    public SpriteRenderer sprite;
 
     public LayerMask feetLayerMask; // 接触地面判断射线
 
     // Start is called before the first frame update
     void Start()
     {
+        sprite = transform.GetComponent<SpriteRenderer>();
+
         playerBlackboard.playerID = GameManager.Instance.userData.username;
         playerBlackboard.health = GameManager.Instance.userData.health;
 
@@ -159,21 +168,41 @@ public class PlayerControll : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        int currAttackPause = 0;
         MushroomFSMAI mushroom = collision.gameObject.GetComponent<MushroomFSMAI>();
         GoblinFSMAI goblin = collision.gameObject.GetComponent<GoblinFSMAI>();
+
+        if (playerBlackboard.light)
+        {
+            currAttackPause = playerBlackboard.lightAttackPause;
+            transform.GetChild(1).GetComponent<CinemachineImpulseSource>().m_ImpulseDefinition.m_AmplitudeGain = 0.2f;
+        }
+        else if(playerBlackboard.heavy)
+        {
+            currAttackPause = playerBlackboard.heavyAttackPause;
+            transform.GetChild(1).GetComponent<CinemachineImpulseSource>().m_ImpulseDefinition.m_AmplitudeGain = 0.5f;
+        }
+
         if (mushroom != null)
         {
+            transform.GetChild(1).GetComponent<CinemachineImpulseSource>().GenerateImpulse();
+            GameManager.Instance.HitPause(currAttackPause);
             mushroom.getHurt(playerBlackboard.attack);
         }
         if (goblin != null)
         {
+            transform.GetChild(1).GetComponent<CinemachineImpulseSource>().GenerateImpulse();
+            GameManager.Instance.HitPause(currAttackPause);
             goblin.getHurt(playerBlackboard.attack);
         }
     }
 
     public void getHurt(float damage, Vector3 damagePos)
     {
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.PlayerHurt);
         playerBlackboard.isHit = true;
+        StartCoroutine(CanBeHurt());
+
         if (playerBlackboard.health - damage >= 0f)
         {
             playerBlackboard.health -= damage;
@@ -216,6 +245,38 @@ public class PlayerControll : MonoBehaviour
     {
         life = playerBlackboard.health;
         goldCoinCnt = playerBlackboard.goldCoinCnt;
+    }
+
+    public void PlayHeavyAttackSound()
+    {
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.PlayerHeavyAttack);
+    }
+
+    public void HealLife()
+    {
+        if (playerBlackboard.health < 90)
+        {
+            playerBlackboard.health += 10;
+        }
+        else
+        {
+            playerBlackboard.health = 100f;
+        }
+    }
+
+    IEnumerator CanBeHurt()
+    {
+        float startTime = Time.time;
+        float endTime = startTime;
+        playerBlackboard.playerTransform.gameObject.layer = 12;
+        while (endTime - startTime <= 1f)
+        {
+            endTime = Time.time;
+            yield return new WaitForSeconds(0.1f);
+            sprite.enabled = !sprite.enabled;
+        }
+        sprite.enabled = true;
+        playerBlackboard.playerTransform.gameObject.layer = 7;
     }
 }
 
@@ -324,11 +385,12 @@ public class PlayerRunState : Istate
     public void OnEnter()
     {
         playerBlackboard.playerAnimator.Play("Run");
+        AudioSourceManager.Instance.PlayPlayerWalkSound();
     }
 
     public void OnExit()
     {
-        
+        AudioSourceManager.Instance.StopPlayerWalkSound();
     }
 
     public void OnFixUpdate()
@@ -395,6 +457,12 @@ public class PlayerRunState : Istate
         {
             playerFSM.SwitchState(StateType.Shoot);
         }
+
+        // 着地且速度竖直方向为负时，进入下落状态
+        if ((playerBlackboard.isGround == false) && (playerBlackboard.rb.velocity.y < 0))
+        {
+            playerFSM.SwitchState(StateType.Fall);
+        }
     }
 }
 
@@ -419,6 +487,7 @@ public class PlayerJumpState : Istate
     public void OnEnter()
     {
         // 跳跃
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.PlayerJump);
         playerBlackboard.playerAnimator.Play("Jump");
         playerBlackboard.rb.velocity = new Vector2(0, playerBlackboard.jumpSpeed);   
     }
@@ -704,6 +773,7 @@ public class PlayerLandState : Istate
 
     public void OnEnter()
     {
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.PlayerLand);
         // 落地时播放落地动画，并重置玩家速度使之为0
         playerBlackboard.rb.velocity = Vector2.zero;
         playerBlackboard.playerAnimator.Play("Land");
@@ -831,6 +901,7 @@ public class PlayerClimbJumpState : Istate
     public void OnEnter()
     {
         // 跳跃
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.PlayerJump);
         playerBlackboard.playerAnimator.Play("Jump");
         playerBlackboard.rb.velocity = new Vector2(-playerBlackboard.playerTransform.localScale.x * 4f, playerBlackboard.jumpSpeed);
         playerBlackboard.playerTransform.localScale = new Vector3(-playerBlackboard.playerTransform.localScale.x, 1, 1);
@@ -930,6 +1001,7 @@ public class PlayerDashState : Istate
 
     public void OnEnter()
     {
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.PlayerDash);
         playerBlackboard.lastDash = Time.time; // 记录最后冲刺的时间
         playerBlackboard.playerAnimator.Play("Dash");
     }
@@ -985,6 +1057,8 @@ public class PlayerLightAttack1State : Istate
 
     public void OnEnter()
     {
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.PlayerLightAttack);
+        playerBlackboard.light = true;
         playerBlackboard.attack = playerBlackboard.baseLightAttack; // 此时攻击力为基础轻攻击力
         playerBlackboard.playerAnimator.Play("LightAttack1");
         lastTime = Time.time;
@@ -992,6 +1066,8 @@ public class PlayerLightAttack1State : Istate
 
     public void OnExit()
     {
+        playerBlackboard.attack = 0f;
+        playerBlackboard.light = false;
         playerBlackboard.isLightAttack = false;
     }
 
@@ -1072,6 +1148,8 @@ public class PlayerLightAttack2State : Istate
 
     public void OnEnter()
     {
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.PlayerLightAttack);
+        playerBlackboard.light = true;
         playerBlackboard.attack = playerBlackboard.baseLightAttack; // 此时攻击力为基础轻攻击力
         playerBlackboard.playerAnimator.Play("LightAttack2");
         lastTime = Time.time;
@@ -1079,6 +1157,8 @@ public class PlayerLightAttack2State : Istate
 
     public void OnExit()
     {
+        playerBlackboard.attack = 0f;
+        playerBlackboard.light = false;
         playerBlackboard.isLightAttack = false;
     }
 
@@ -1160,6 +1240,8 @@ public class PlayerLightAttack3State : Istate
 
     public void OnEnter()
     {
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.PlayerLightAttack);
+        playerBlackboard.light = true;
         playerBlackboard.attack = playerBlackboard.baseLightAttack; // 此时攻击力为基础轻攻击力
         playerBlackboard.playerAnimator.Play("LightAttack3");
         lastTime = Time.time;
@@ -1167,8 +1249,9 @@ public class PlayerLightAttack3State : Istate
 
     public void OnExit()
     {
-        playerBlackboard.isLightAttack = false;
         playerBlackboard.attack = 0f;
+        playerBlackboard.light = false;
+        playerBlackboard.isLightAttack = false;
     }
 
     public void OnFixUpdate()
@@ -1249,6 +1332,7 @@ public class PlayerHeavyAttack1State : Istate
 
     public void OnEnter()
     {
+        playerBlackboard.heavy = true;
         playerBlackboard.attack = playerBlackboard.baseHeavyAttack; // 此时攻击力为基础重攻击力
         playerBlackboard.playerAnimator.Play("HeavyAttack1");
         lastTime = Time.time;
@@ -1257,6 +1341,7 @@ public class PlayerHeavyAttack1State : Istate
     public void OnExit()
     {
         playerBlackboard.attack = 0f;
+        playerBlackboard.heavy = false;
         playerBlackboard.isHeavyAttack = false;
     }
 
@@ -1337,6 +1422,7 @@ public class PlayerHeavyAttack2State : Istate
 
     public void OnEnter()
     {
+        playerBlackboard.heavy = true;
         playerBlackboard.attack = playerBlackboard.baseHeavyAttack; // 此时攻击力为基础重攻击力
         playerBlackboard.playerAnimator.Play("HeavyAttack2");
         lastTime = Time.time;
@@ -1345,6 +1431,7 @@ public class PlayerHeavyAttack2State : Istate
     public void OnExit()
     {
         playerBlackboard.attack = 0f;
+        playerBlackboard.heavy = false;
         playerBlackboard.isHeavyAttack = false;
     }
 
@@ -1425,6 +1512,7 @@ public class PlayerHeavyAttack3State : Istate
 
     public void OnEnter()
     {
+        playerBlackboard.heavy = true;
         playerBlackboard.attack = playerBlackboard.baseHeavyAttack; // 此时攻击力为基础重攻击力
         playerBlackboard.playerAnimator.Play("HeavyAttack3");
         lastTime = Time.time;
@@ -1433,6 +1521,7 @@ public class PlayerHeavyAttack3State : Istate
     public void OnExit()
     {
         playerBlackboard.attack = 0f;
+        playerBlackboard.heavy = false;
         playerBlackboard.isHeavyAttack = false;
     }
 
@@ -1511,6 +1600,7 @@ public class PlayerShootState : Istate
 
     public void OnEnter()
     {
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.PlayerShoot);
         playerBlackboard.playerAnimator.Play("Shoot");
         isShoot = true;
         playerBlackboard.rb.velocity = new Vector2(0, playerBlackboard.rb.velocity.y);
@@ -1574,14 +1664,12 @@ public class PlayerHurtState : Istate
     public void OnEnter()
     {
         playerBlackboard.playerAnimator.Play("Hurt");
-        playerBlackboard.playerTransform.gameObject.layer = 12;
     }
 
     public void OnExit()
     {
         playerBlackboard.isHit = false;
         playerBlackboard.rb.velocity = new Vector2(0, playerBlackboard.rb.velocity.y);
-        playerBlackboard.playerTransform.gameObject.layer = 7;
     }
 
     public void OnFixUpdate()

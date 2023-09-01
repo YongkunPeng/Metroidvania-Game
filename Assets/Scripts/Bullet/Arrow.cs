@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class Arrow : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class Arrow : MonoBehaviour
     public BoxCollider2D col;
     public float damage = 3f;
     [SerializeField] private float speed = 13f;
+    [SerializeField] private int attackPause = 3;
     private IEnumerator ie;
     private Coroutine cor;
     private Vector3 offset;
@@ -65,11 +67,15 @@ public class Arrow : MonoBehaviour
         {
             rb.simulated = false;
             mushroom.getHurt(damage);
+            GameManager.Instance.HitPause(attackPause);
+            GetComponent<CinemachineImpulseSource>().GenerateImpulse();
         }
         if (goblin != null)
         {
             rb.simulated = false;
             goblin.getHurt(damage);
+            GameManager.Instance.HitPause(attackPause);
+            GetComponent<CinemachineImpulseSource>().GenerateImpulse();
         }
     }
 

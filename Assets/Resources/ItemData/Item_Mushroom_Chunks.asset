@@ -15,5 +15,6 @@ MonoBehaviour:
   itemName: "\u8611\u83C7\u788E\u5757"
   itemDes: "\u4ECE\u8611\u83C7\u4EBA\u8EAB\u4E0A\u5265\u843D\u7684\u788E\u5757\uFF0C\u770B\u7740\u86EE\u6076\u5FC3\u7684\uFF0C\u5E94\u8BE5\u6709\u6BD2......"
   itemSprite: {fileID: 1327302457, guid: d62df72b3fcf1a44987963b0501a288b, type: 3}
-  buyPrice: 20
-  sellPrice: 10
+  buyPrice: 15
+  sellPrice: 8
+  canUse: 0

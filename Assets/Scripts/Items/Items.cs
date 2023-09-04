@@ -14,10 +14,12 @@ public class Items : ScriptableObject
     public Sprite itemSprite; // 物品图片
     public int buyPrice; // 购买价格
     public int sellPrice; // 贩卖价格
+    public bool canUse; // 是否可被使用
 }
 
 public class ItemsConst // 物品名
 {
     public const string Arrow = "箭矢";
     public const string MushroomChunks = "蘑菇碎块";
+    public const string LifePotion = "生命药剂";
 }

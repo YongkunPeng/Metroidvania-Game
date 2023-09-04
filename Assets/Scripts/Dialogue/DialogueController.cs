@@ -140,8 +140,11 @@ public class DialogueController : MonoBehaviour
 
     IEnumerator HideDialogue()
     {
-        yield return new WaitForSeconds(2);
-        transform.parent.gameObject.SetActive(false);
+        if (gameObject.activeInHierarchy == true)
+        {
+            yield return new WaitForSeconds(2);
+            transform.parent.gameObject.SetActive(false);
+        }
     }
 
     public void Accept()

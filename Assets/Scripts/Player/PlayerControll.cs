@@ -68,13 +68,21 @@ public class PlayerControll : MonoBehaviour
 
     public LayerMask feetLayerMask; // 接触地面判断射线
 
+    private void Awake()
+    {
+        sprite = transform.GetComponent<SpriteRenderer>();
+        // 为玩家黑板赋予刚体和动画控制器
+        playerBlackboard.rb = GetComponent<Rigidbody2D>();
+        playerBlackboard.playerAnimator = GetComponent<Animator>();
+        playerBlackboard.playerTransform = this.transform;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        sprite = transform.GetComponent<SpriteRenderer>();
-
         playerBlackboard.playerID = GameManager.Instance.userData.username;
         playerBlackboard.health = GameManager.Instance.userData.health;
+        playerBlackboard.goldCoinCnt = GameManager.Instance.userData.coinCnt;
 
         // 设置玩家其他属性
         playerBlackboard.baseLightAttack = 5;
@@ -84,11 +92,6 @@ public class PlayerControll : MonoBehaviour
         playerBlackboard.lightAttackOffset = 0.3f;
         playerBlackboard.heavtAttackOffset = 0.5f;
         playerBlackboard.lastDash = -3f;
-
-        // 为玩家黑板赋予刚体和动画控制器
-        playerBlackboard.rb = GetComponent<Rigidbody2D>();
-        playerBlackboard.playerAnimator = GetComponent<Animator>();
-        playerBlackboard.playerTransform = this.transform;
 
         playerFSM = new FSM(playerBlackboard);
         
@@ -133,11 +136,10 @@ public class PlayerControll : MonoBehaviour
     }
 
     /// <summary>
-    /// 根据GameManager内userdata给予玩家相应生命值、箭矢数、金币数、用户名
+    /// 根据GameManager内userdata给予玩家相应箭矢数、金币数
     /// </summary>
     public void UpdateChangeablePlayerData()
     {
-        playerBlackboard.goldCoinCnt = GameManager.Instance.userData.coinCnt;
         if (GameManager.Instance.userData.itemsDict.ContainsKey(ItemsConst.Arrow))
         {
             playerBlackboard.arrowCnt = GameManager.Instance.userData.itemsDict[ItemsConst.Arrow];
@@ -241,22 +243,50 @@ public class PlayerControll : MonoBehaviour
         arrowCnt = playerBlackboard.arrowCnt;
     }
 
-    public void GetData(ref float life, ref int goldCoinCnt)
+    // 获取玩家生命、金币
+    public void GetCoinData(ref int goldCoinCnt)
+    {
+        goldCoinCnt = playerBlackboard.goldCoinCnt;
+    }
+
+    // 获取玩家金币
+    public void GetLifeCoinData(ref float life, ref int goldCoinCnt)
     {
         life = playerBlackboard.health;
         goldCoinCnt = playerBlackboard.goldCoinCnt;
     }
 
+    // 重攻击播放，帧事件
     public void PlayHeavyAttackSound()
     {
         AudioSourceManager.Instance.PlaySound(GlobalAudioClips.PlayerHeavyAttack);
     }
 
-    public void HealLife()
+    // 增加/减少金币，并判断能否买卖出
+    public bool ChangeCoinCnt(int num)
     {
-        if (playerBlackboard.health < 90)
+        if (playerBlackboard.goldCoinCnt + num < 9999 && playerBlackboard.goldCoinCnt + num >= 0)
         {
-            playerBlackboard.health += 10;
+            playerBlackboard.goldCoinCnt += num;
+            return true;
+        }
+        else if (playerBlackboard.goldCoinCnt + num >= 9999)
+        {
+            playerBlackboard.goldCoinCnt = 9999;
+            return true;
+        }
+        else
+        { // 减少金币数大于现有金币
+            return false;
+        }
+    }
+
+    // 回复生命
+    public void HealLife(float num)
+    {
+        if (playerBlackboard.health + num < 100f)
+        {
+            playerBlackboard.health += num;
         }
         else
         {

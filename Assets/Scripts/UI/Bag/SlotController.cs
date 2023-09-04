@@ -8,6 +8,7 @@ public class SlotController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public int slotID;
     public Items slotItem;
     [SerializeField] private ItemTipUI itemTipUI;
+    [SerializeField] private GameObject optionPanel;
     private Vector2 mousePos;
 
     private void Update()
@@ -90,12 +91,11 @@ public class SlotController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if (slotItem != null)
         {
-            Debug.Log("ÎïÆ·Ãû£º" + slotItem.itemName);
-            if (slotItem.itemName == "¼ýÊ¸")
-            {
-                GameManager.Instance.RemoveItem(slotItem);
-                GameObject.FindObjectOfType<PlayerControll>().HealLife();
-            }
+            OptionPanel.currItem = slotItem;
+            Vector2 mouse;
+            optionPanel.SetActive(true);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(GameObject.FindGameObjectWithTag("Bag").transform as RectTransform, Input.mousePosition, null, out mouse);
+            optionPanel.transform.localPosition = mouse;
         }
     }
 }

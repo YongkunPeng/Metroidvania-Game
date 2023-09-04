@@ -14,28 +14,28 @@ public class CanvasManager : MonoBehaviour
         OpenBag();
     }
 
+    /// <summary>
+    /// 打开各个界面(该界面未打开，且不存在其它界面时)
+    /// </summary>
     private void OpenBag()
     {
-        if (Input.GetKeyDown(KeyCode.I) 
-            && !UIManager.Instance.panelDict.ContainsKey(UIConst.PlayerBag) 
+        if (   !UIManager.Instance.panelDict.ContainsKey(UIConst.PlayerBag)
             && !UIManager.Instance.panelDict.ContainsKey(UIConst.PlayerMission)
-            && !UIManager.Instance.panelDict.ContainsKey(UIConst.Settings))
-        { // 按下I且缓存中没有背包界面和任务界面
-            UIManager.Instance.OpenPanel(UIConst.PlayerBag);
-        }
-        if (Input.GetKeyDown(KeyCode.M) 
-            && !UIManager.Instance.panelDict.ContainsKey(UIConst.PlayerBag) 
-            && !UIManager.Instance.panelDict.ContainsKey(UIConst.PlayerMission)
-            && !UIManager.Instance.panelDict.ContainsKey(UIConst.Settings))
-        { // 按下M且缓存中没有背包界面和任务界面
-            UIManager.Instance.OpenPanel(UIConst.PlayerMission);
-        }
-        if (Input.GetKeyDown(KeyCode.Escape)
-            && !UIManager.Instance.panelDict.ContainsKey(UIConst.PlayerBag) 
-            && !UIManager.Instance.panelDict.ContainsKey(UIConst.PlayerMission)
-            && !UIManager.Instance.panelDict.ContainsKey(UIConst.Settings))
+            && !UIManager.Instance.panelDict.ContainsKey(UIConst.Settings)
+            && !UIManager.Instance.panelDict.ContainsKey(UIConst.Shop))
         {
-            UIManager.Instance.OpenPanel(UIConst.Settings);
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                UIManager.Instance.OpenPanel(UIConst.PlayerBag);
+            }
+            else if (Input.GetKeyDown(KeyCode.M))
+            {
+                UIManager.Instance.OpenPanel(UIConst.PlayerMission);
+            }
+            else if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                UIManager.Instance.OpenPanel(UIConst.Settings);
+            }
         }
     }
 }

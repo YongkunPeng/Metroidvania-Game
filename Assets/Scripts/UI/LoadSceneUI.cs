@@ -14,9 +14,9 @@ public class LoadSceneUI : BasePanel
     {
         OpenPanel(UIConst.LoadScene);
 
-        loadValue = transform.GetChild(1).GetComponent<Text>();
-        loadSlider = transform.GetChild(2).GetComponent<Slider>();
-        loadTip = transform.GetChild(3).GetComponent<Text>();
+        loadValue = transform.GetChild(1).GetChild(0).GetComponent<Text>();
+        loadSlider = transform.GetChild(1).GetChild(1).GetComponent<Slider>();
+        loadTip = transform.GetChild(1).GetChild(2).GetComponent<Text>();
     }
 
     public void LoadLevelByIndex(int index)

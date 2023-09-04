@@ -28,7 +28,7 @@ public class CheckPoint : MonoBehaviour
             Coroutine cor = StartCoroutine(ie);
             if (player != null)
             {
-                player.GetComponent<PlayerControll>().GetData(ref life, ref coinCnt);
+                player.GetComponent<PlayerControll>().GetLifeCoinData(ref life, ref coinCnt);
                 GameManager.Instance.SaveUserData(life, coinCnt);
             }
         }

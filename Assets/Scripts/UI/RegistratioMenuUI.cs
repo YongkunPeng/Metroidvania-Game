@@ -48,24 +48,27 @@ public class RegistratioMenuUI : BasePanel
             userData.itemsDict = new Dictionary<string, int>();
             userData.slotDict.Add(0, ItemsConst.Arrow);
             userData.itemsDict.Add(ItemsConst.Arrow, 5);
+            userData.slotDict.Add(1, ItemsConst.LifePotion);
+            userData.itemsDict.Add(ItemsConst.LifePotion, 3);
             LocalConfig.SaveUserData(userData);
             GameManager.Instance.userData = userData;
             GameManager.Instance.slotDict = userData.slotDict;
             GameManager.Instance.itemsDict = userData.itemsDict;
             GameManager.Instance.missionList = userData.missionList;
             GameManager.Instance.username = userData.username;
-            SceneManager.LoadScene(1);
+            SceneLoadManager.Instance.LoadLevelByIndex(1);
+            ClosePanel();
         }
         else if (!ValidateUsername(username))
-        {
+        { // 玩家名不合法
             transform.GetChild(6).gameObject.SetActive(true);
         }
         else if (File.Exists(Application.persistentDataPath + "/users/" + username + ".json"))
-        {
+        { // 玩家名重复
             transform.GetChild(7).gameObject.SetActive(true);
         }
         else if (files.Length >= 2)
-        {
+        { // 超出存档数
             transform.GetChild(8).gameObject.SetActive(true);
         }
     }

@@ -45,6 +45,14 @@ public class AudioSourceManager : MonoBehaviour
         PlayBGM(GlobalAudioClips.BGM1);
     }
 
+    private void Update()
+    {
+        if (GameManager.Instance.isPaused == true)
+        {
+            walkSoundAudioSource.Stop();
+        }
+    }
+
     /// <summary>
     /// 加载音频资源
     /// </summary>
@@ -129,8 +137,11 @@ public class GlobalAudioClips
 {
     #region 其它音效
 
-    // 点击按钮音效
+    // 点击菜单按钮音效
     public const string ClickSound = "Music/SFX/Other/Click Button";
+
+    // 点击商店按钮音效
+    public const string ShopSound = "Music/SFX/Other/Shop Button";
 
     #endregion
 
@@ -170,6 +181,12 @@ public class GlobalAudioClips
     #endregion
 
     #region 蘑菇人音效
+
+    // 拍击
+    public const string MushroomAttack1 = "Music/SFX/Mushroom/MushroomAttack1";
+
+    // 撕咬
+    public const string MushroomAttack2 = "Music/SFX/Mushroom/MushroomAttack2";
 
     // 喷射毒液
     public const string MushroomShoot = "Music/SFX/Mushroom/MushroomShoot";

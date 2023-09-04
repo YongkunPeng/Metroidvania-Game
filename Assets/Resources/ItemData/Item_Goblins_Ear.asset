@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0e7c077015648c4caba5761c2516fbb, type: 3}
+  m_Name: Item_Goblins_Ear
+  m_EditorClassIdentifier: 
+  itemName: "\u54E5\u5E03\u6797\u7684\u8033\u6735"
+  itemDes: "\u4ECE\u54E5\u5E03\u6797\u8EAB\u4E0A\u5272\u4E0B\u7684\u8033\u6735\uFF0C\u68EE\u6797\u91CC\u7684\u730E\u4EBA\u901A\u8FC7\u8FD9\u79CD\u65B9\u5F0F\u8BB0\u5F55\u8363\u8A89\uFF0C\u5EF6\u7EED\u81F3\u4ECA......"
+  itemSprite: {fileID: -1844628548, guid: f04ba96693c1d504dabe8f572a263722, type: 3}
+  buyPrice: 20
+  sellPrice: 10
+  canUse: 0

@@ -40,14 +40,11 @@ public class PlayerInfoUI : BasePanel
 
     private void Update()
     {
-        if (!GameManager.Instance.isPaused)
-        {
-            player.GetComponent<PlayerControll>().GetPlayerInfo(ref life, ref cold, ref goldCoinCnt, ref arrowCnt);
-            LifeBarControll();
-            DashColdControll();
-            ArrowCntControll();
-            CoinCntControll();
-        }
+        player.GetComponent<PlayerControll>().GetPlayerInfo(ref life, ref cold, ref goldCoinCnt, ref arrowCnt);
+        LifeBarControll();
+        DashColdControll();
+        ArrowCntControll();
+        CoinCntControll();
     }
 
     private void OnDestroy()

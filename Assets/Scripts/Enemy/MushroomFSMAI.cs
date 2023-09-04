@@ -130,6 +130,21 @@ public class MushroomFSMAI : MonoBehaviour
         }
     }
 
+    public void PlayAttack1Sound()
+    {
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.MushroomAttack1);
+    }
+
+    public void PlayAttack2Sound()
+    {
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.MushroomAttack2);
+    }
+
+    public void PlayAttack3Sound()
+    {
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.MushroomShoot);
+    }
+
     // 受击扣除血量方法(在玩家脚本中调用)
     public void getHurt(float damage)
     {
@@ -631,6 +646,7 @@ public class MushroomAttack3State : Istate
         this.mushroomFSM = fsm;
         this.mushroomBlackboard = fsm.blackboard as MushroomBlackboard;
     }
+
     public void OnCheck()
     {
         
@@ -638,7 +654,6 @@ public class MushroomAttack3State : Istate
 
     public void OnEnter()
     {
-        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.MushroomShoot);
         targetPosition = mushroomBlackboard.targetTransform.position;
         mushroomBlackboard.mushroomAnimator.Play("Attack3");
         canShoot = true;

@@ -62,7 +62,8 @@ public class UIManager
             {UIConst.PlayerInfo, "Player Info"},
             {UIConst.PlayerBag, "Bag"},
             {UIConst.PlayerMission, "Missions"},
-            {UIConst.LoadScene, "LoadScene"}
+            {UIConst.LoadScene, "LoadScene"},
+            {UIConst.Shop, "ShopMenu"}
         };
     }
 
@@ -123,4 +124,5 @@ public class UIConst // 存储界面名常量
     public const string PlayerMission = "PlayerMission";
     public const string Settings = "Settings";
     public const string LoadScene = "LoadScene";
+    public const string Shop = "Shop";
 }

@@ -12,6 +12,7 @@ TagManager:
   - Item
   - Bag
   - MainMenu
+  - Shop
   layers:
   - Default
   - TransparentFX
@@ -54,6 +55,9 @@ TagManager:
     locked: 0
   - name: ground
     uniqueID: 2496371761
+    locked: 0
+  - name: NPC
+    uniqueID: 3200707575
     locked: 0
   - name: Enemy
     uniqueID: 288902473

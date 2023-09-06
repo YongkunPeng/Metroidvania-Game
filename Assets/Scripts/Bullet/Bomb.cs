@@ -30,7 +30,7 @@ public class Bomb : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.CompareTag("Player"))
         {
             PlayerControll player = collision.GetComponent<PlayerControll>();
             player.getHurt(damage, transform.position);
@@ -38,11 +38,13 @@ public class Bomb : MonoBehaviour
         }
     }
 
+    // ±¨’®“Ù∆µ
     public void PlayExplosionSound()
     {
         AudioSourceManager.Instance.PlaySound(GlobalAudioClips.GoblinBombExplosion);
     }
 
+    // ±¨’®∂Ÿ÷°
     public void AttackPause()
     {
         transform.GetComponent<CinemachineImpulseSource>().GenerateImpulse();

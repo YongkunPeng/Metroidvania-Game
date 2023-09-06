@@ -49,6 +49,7 @@ public class PlayerSellItemsControll : MonoBehaviour
         if (isSell)
         {
             Debug.Log("卖出：" + this.item.sellPrice);
+            TipsBoxManager.Instance.ShowTipsBox("卖出物品：" + this.item.itemName, 1f);
             AudioSourceManager.Instance.PlaySound(GlobalAudioClips.ShopSound);
             GameManager.Instance.RemoveItem(this.item);
             transform.parent.parent.parent.parent.GetComponent<ShopMenu>().ChangeShouldUpdate();

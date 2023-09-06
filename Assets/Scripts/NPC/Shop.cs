@@ -22,13 +22,19 @@ public class Shop : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        isClose = true;
-        keyboardInfo.SetActive(true);
+        if (collision.CompareTag("Player"))
+        {
+            isClose = true;
+            keyboardInfo.SetActive(true);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        isClose = false;
-        keyboardInfo.SetActive(false);
+        if (collision.CompareTag("Player"))
+        {
+            isClose = false;
+            keyboardInfo.SetActive(false);
+        }
     }
 }

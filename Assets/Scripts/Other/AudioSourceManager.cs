@@ -191,9 +191,15 @@ public class GlobalAudioClips
     // ≈Á…‰∂æ“∫
     public const string MushroomShoot = "Music/SFX/Mushroom/MushroomShoot";
 
+    // ƒ¢πΩ»ÀÀ¿Õˆ
+    public const string MushroomDead = "Music/SFX/Mushroom/MushroomDead";
+
     #endregion
 
     #region ∏Á≤º¡÷“Ù–ß
+
+    // ∏Á≤º¡÷≈¸ø≥
+    public const string GoblinAttack = "Music/SFX/Goblin/GoblinAttack";
 
     // ’®µØ±¨’®
     public const string GoblinBombExplosion = "Music/SFX/Goblin/GoblinBombExplosion";

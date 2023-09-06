@@ -39,6 +39,7 @@ public class Mission
         currCnt += cnt;
         if (currCnt >= goalCnt)
         {
+            TipsBoxManager.Instance.ShowTipsBox("任务：<color=red>" + missionName + "</color>已完成", 3f);
             missionStatus = MissionStatus.Completed;
         }
     }

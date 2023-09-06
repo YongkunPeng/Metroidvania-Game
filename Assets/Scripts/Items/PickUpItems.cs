@@ -16,6 +16,8 @@ public class PickUpItems : MonoBehaviour
         col = GetComponent<BoxCollider2D>();
         itemRender = GetComponent<SpriteRenderer>();
         newColor = itemRender.color;
+
+        rb.AddForce(new Vector2(Random.Range(-2f, 2f), 5f), ForceMode2D.Impulse);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -27,10 +29,20 @@ public class PickUpItems : MonoBehaviour
         }
         if (collision.CompareTag("Player"))
         {
-            bool canPicked = GameManager.Instance.AddItem(item);
-            if (canPicked)
-            { // 可被拾取时启动销毁协程
-                StartCoroutine(DestroyItem());
+            if (transform.CompareTag("Item"))
+            { // 物品
+                bool canPicked = GameManager.Instance.AddItem(item, 1);
+                if (canPicked)
+                { // 可被拾取时启动销毁协程
+                    TipsBoxManager.Instance.ShowTipsBox("拾取物品：" + item.itemName, 1f);
+                    StartCoroutine(DestroyItem());
+                }
+            }
+            else if (transform.CompareTag("Coin"))
+            { // 金币
+                GameObject.FindObjectOfType<PlayerControll>().ChangeCoinCnt(1);
+                gameObject.SetActive(false);
+                Destroy(gameObject);
             }
         }
     }

@@ -5,6 +5,8 @@ using UnityEngine;
 public class MissionDelegate : MonoBehaviour
 {
     public Mission mission;
+    [SerializeField] private List<string> itemsRewardName = new List<string>(); // 奖励物品名
+    [SerializeField] private List<int> itemsRewardCnt = new List<int>(); // 奖励数量
 
     private void Awake()
     { // 判断任务列表中有无该任务，防止切换场景后重复接取
@@ -14,6 +16,15 @@ public class MissionDelegate : MonoBehaviour
             {
                 this.mission = mission;
             }
+        }
+    }
+
+    private void OnEnable()
+    {
+        for (int i = 0; i < itemsRewardName.Count; i++)
+        { // 新建字典，并根据列表填充
+            mission.itemsReward = new Dictionary<string, int>();
+            mission.itemsReward.Add(itemsRewardName[i], itemsRewardCnt[i]);
         }
     }
 

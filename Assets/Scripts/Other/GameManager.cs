@@ -93,18 +93,19 @@ public class GameManager : MonoBehaviour
     /// 向背包数据中添加物品，返回该物体是否可被拾取
     /// </summary>
     /// <param name="item">待添加的物品信息</param>
-    public bool AddItem(Items item)
+    /// <param name="cnt">添加数量</param>
+    public bool AddItem(Items item, int cnt)
     {
-        if (itemsDict.ContainsKey(item.itemName) && itemsDict[item.itemName] < 99)
-        { // 背包中已经存在该物品，且数量小于99，则数量+1
-            itemsDict[item.itemName] += 1;
+        if (itemsDict.ContainsKey(item.itemName) && itemsDict[item.itemName] + cnt <= 99)
+        { // 背包中已经存在该物品，且拾取后数量小于等于99，则数量+cnt
+            itemsDict[item.itemName] += cnt;
             if (UIManager.Instance.panelDict.ContainsKey(UIConst.PlayerBag))
             { // 背包UI打开时，更新背包显示信息
                 GameObject.FindGameObjectWithTag("Bag").GetComponent<BagUI>().UpdateBagUI();
             }
             return true;
         }
-        else if (!itemsDict.ContainsKey(item.itemName) && slotDict.Count < 10 && itemsDict.Count < 10)
+        else if (!itemsDict.ContainsKey(item.itemName) && slotDict.Count < 10 && itemsDict.Count < 10 && cnt <= 99)
         { // 背包中不含该物品，且还有空间
             for (int i = 0; i < 10; i++)
             {
@@ -121,14 +122,14 @@ public class GameManager : MonoBehaviour
                 if (canUseSlot)
                 { // 当前i所指物品槽未被占用，跳出循环
                     slotDict.Add(i, item.itemName);
-                    itemsDict.Add(item.itemName, 1);
+                    itemsDict.Add(item.itemName, cnt);
                     return true;
                 }
             }
-            Debug.LogWarning("无法拾取物品，已无空位！");
+            TipsBoxManager.Instance.ShowTipsBox("无法获取物品：<color=red>" + item.itemName + "</color>，已无空位", 3f);
             return false;
         }
-        Debug.LogWarning("无法拾取物品，该物品已超出上限！");
+        TipsBoxManager.Instance.ShowTipsBox("无法获取物品：<color=red>" + item.itemName + "</color>该物品已超出上限", 3f);
         return false;
     }
 

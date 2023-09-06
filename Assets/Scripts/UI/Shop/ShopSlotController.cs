@@ -45,9 +45,14 @@ public class ShopSlotController : MonoBehaviour, IPointerEnterHandler, IPointerE
         if (isBuy)
         {
             Debug.Log("买入：" + slotItem.buyPrice);
+            TipsBoxManager.Instance.ShowTipsBox("买入物品：" + slotItem.itemName, 1f);
             AudioSourceManager.Instance.PlaySound(GlobalAudioClips.ShopSound);
-            GameManager.Instance.AddItem(slotItem);
+            GameManager.Instance.AddItem(slotItem, 1);
             transform.parent.parent.parent.parent.parent.GetComponent<ShopMenu>().ChangeShouldUpdate();
+        }
+        else if (!isBuy)
+        {
+            TipsBoxManager.Instance.ShowTipsBox("金币不足", 1f);
         }
     }
 }

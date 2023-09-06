@@ -114,6 +114,7 @@ public class ArchivesUI : BasePanel
     /// </summary>
     public void DeleteUserData1()
     {
+        TipsBoxManager.Instance.ShowTipsBox("ÒÑÉ¾³ý´æµµ£º<color=red>" + files[0].Name.Replace(".json", "") + "</color>", 2f);
         files[0].Delete();
         UpdateArchivesUI();
     }
@@ -123,6 +124,7 @@ public class ArchivesUI : BasePanel
     /// </summary>
     public void DeleteUserData2()
     {
+        TipsBoxManager.Instance.ShowTipsBox("ÒÑÉ¾³ý´æµµ£º<color=red>" + files[1].Name.Replace(".json", "") + "</color>", 2f);
         files[1].Delete();
         UpdateArchivesUI();
     }

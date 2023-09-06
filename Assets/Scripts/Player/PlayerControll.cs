@@ -173,6 +173,7 @@ public class PlayerControll : MonoBehaviour
         int currAttackPause = 0;
         MushroomFSMAI mushroom = collision.gameObject.GetComponent<MushroomFSMAI>();
         GoblinFSMAI goblin = collision.gameObject.GetComponent<GoblinFSMAI>();
+        SamuraiFSMAI samurai = collision.gameObject.GetComponent<SamuraiFSMAI>();
 
         if (playerBlackboard.light)
         {
@@ -196,6 +197,12 @@ public class PlayerControll : MonoBehaviour
             transform.GetChild(1).GetComponent<CinemachineImpulseSource>().GenerateImpulse();
             GameManager.Instance.HitPause(currAttackPause);
             goblin.getHurt(playerBlackboard.attack);
+        }
+        if (samurai != null)
+        {
+            transform.GetChild(1).GetComponent<CinemachineImpulseSource>().GenerateImpulse();
+            GameManager.Instance.HitPause(currAttackPause);
+            samurai.getHurt(playerBlackboard.attack);
         }
     }
 
@@ -296,13 +303,14 @@ public class PlayerControll : MonoBehaviour
 
     IEnumerator CanBeHurt()
     {
+        WaitForSeconds waitTime = new WaitForSeconds(0.1f);
         float startTime = Time.time;
         float endTime = startTime;
         playerBlackboard.playerTransform.gameObject.layer = 12;
         while (endTime - startTime <= 1f)
         {
             endTime = Time.time;
-            yield return new WaitForSeconds(0.1f);
+            yield return waitTime; // 重复使用同一waitforsecond，防止GC产生
             sprite.enabled = !sprite.enabled;
         }
         sprite.enabled = true;
@@ -1032,6 +1040,7 @@ public class PlayerDashState : Istate
     public void OnEnter()
     {
         AudioSourceManager.Instance.PlaySound(GlobalAudioClips.PlayerDash);
+        playerBlackboard.playerTransform.gameObject.layer = 12;
         playerBlackboard.lastDash = Time.time; // 记录最后冲刺的时间
         playerBlackboard.playerAnimator.Play("Dash");
     }
@@ -1040,6 +1049,7 @@ public class PlayerDashState : Istate
     {
         // 重置速度
         playerBlackboard.rb.velocity = Vector2.zero;
+        playerBlackboard.playerTransform.gameObject.layer = 7;
     }
 
     public void OnFixUpdate()

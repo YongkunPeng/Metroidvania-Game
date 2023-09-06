@@ -14,6 +14,7 @@ public class DialogueController : MonoBehaviour
     [SerializeField] private int index = 0;
     [SerializeField] private GameObject choosePanel;
     [SerializeField] private GameObject knight;
+    [SerializeField] private Mission knightMisson;
     [SerializeField] private Mission.MissionStatus status;
     [SerializeField] private bool isTyping = true; // 是否正在打字
     public Tweener typeTween;
@@ -30,7 +31,8 @@ public class DialogueController : MonoBehaviour
         index = 0;
 
         // 根据任务状态加载不同对话
-        status = knight.GetComponent<MissionDelegate>().mission.missionStatus;
+        knightMisson = knight.GetComponent<MissionDelegate>().mission;
+        status = knightMisson.missionStatus;
         if (status == Mission.MissionStatus.Unaccepted)
         {
             textAsset = Resources.Load<TextAsset>("Text/Knight/Knight Dialog1");
@@ -104,7 +106,14 @@ public class DialogueController : MonoBehaviour
                 { // 无选择需要，说完最后一句话时，启动携程数秒后关闭对话框
                     if (status == Mission.MissionStatus.Completed)
                     { // 若文本为完成任务文本，给予奖励，修改任务状态
-                        knight.GetComponent<MissionDelegate>().mission.missionStatus = Mission.MissionStatus.Rewarded;
+                        GameObject.FindObjectOfType<PlayerControll>().ChangeCoinCnt(knightMisson.goldReward); // 获取任务赏金
+                        foreach (var pair in knightMisson.itemsReward)
+                        { // 获取物品奖励
+                            GameManager.Instance.AddItem(GameManager.Instance.resourceDict[pair.Key], pair.Value);
+                            TipsBoxManager.Instance.ShowTipsBox("获取任务奖励：<color=red>" + pair.Key + " * " + pair.Value + "</color>", 1.5f);
+                        }
+                        knight.GetComponent<MissionDelegate>().mission.missionStatus = Mission.MissionStatus.Rewarded; // 修改任务状态
+                        TipsBoxManager.Instance.ShowTipsBox("以交付任务：" + knightMisson.missionName, 3f);
                     }
                     StartCoroutine(HideDialogue());
                 }

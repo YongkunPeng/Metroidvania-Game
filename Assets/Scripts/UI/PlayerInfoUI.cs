@@ -67,7 +67,7 @@ public class PlayerInfoUI : BasePanel
         if (cold > 0f)
         {
             isDash = true;
-            coldImage.fillAmount = cold / 2f;
+            coldImage.fillAmount = cold / 1f;
         }
         else if (cold < 0f && isDash)
         {

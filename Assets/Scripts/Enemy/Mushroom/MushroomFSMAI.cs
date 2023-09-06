@@ -17,21 +17,23 @@ public class MushroomBlackboard : Blackboard
     // 获得目标对象的transform
     public Transform targetTransform;
 
+    [Header("待命、销毁、攻击间隔时间")]
     public float idleTime; // 原地待命时间
     public float deadTime; // 对象销毁时间
     public float coolTime; // 攻击间隔时间
 
-    // 巡逻速度
+    [Header("移动速度")]
     public float patrolSpeed;
 
-    // 检测攻击范围
+    [Header("各攻击检测范围")]
     public LayerMask attackLayerMask;
     public Transform attackPoint;
     public int chooseAttackSkill;
     public float radius1;
     public float radius2;
     public float radius3;
-    
+
+    [Header("状态判断")]
     public bool isHit; // 是否受击
     public bool isGround; // 是否着地
 
@@ -41,29 +43,44 @@ public class MushroomBlackboard : Blackboard
     public float attack3Offset;
     public int attackPause;
 
-    // 受伤位移
+    [Header("受伤位移")]
     public float hurtOffset;
 
-    // 射弹
-    public GameObject bulletPre;
+    [Header("生成预制体")]
+    public GameObject bulletPre; // 射弹
+    public GameObject blood; // 血液粒子
+    public GameObject dropItemPre; // 掉落物
+    public GameObject coin; // 金币
 
-    // 给予玩家的攻击
+    [Header("攻击力(根据攻击类型变换)")]
     public float attack;
+
+    [Header("金币掉落数范围")]
+    public int min;
+    public int max;
+
+    [Header("移动范围(原位置加减)")]
+    public Vector3 originPos;
+    public float leftOffset;
+    public float rightOffset;
 }
 
 public class MushroomFSMAI : MonoBehaviour
 {
     private FSM mushroomFSM;
     public MushroomBlackboard mushroomBlackboard = new MushroomBlackboard();
-    
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
         mushroomBlackboard.mushroomAnimator = transform.GetComponent<Animator>();
         mushroomBlackboard.rb = transform.GetComponent<Rigidbody2D>();
         mushroomBlackboard.mushroomTransform = this.transform;
         mushroomBlackboard.targetTransform = this.transform;
-        
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {   
         mushroomFSM = new FSM(mushroomBlackboard);
 
         mushroomFSM.AddState(StateType.Idle, new MushroomIdleState(mushroomFSM));
@@ -77,6 +94,8 @@ public class MushroomFSMAI : MonoBehaviour
         mushroomFSM.AddState(StateType.Cool, new MushroomCoolState(mushroomFSM));
 
         mushroomFSM.SwitchState(StateType.Idle);
+
+        mushroomBlackboard.originPos = transform.position;
     }
 
     // Update is called once per frame
@@ -246,8 +265,8 @@ public class MushroomPatrolState : Istate
     {
         mushroomBlackboard.mushroomAnimator.Play("Walk");
 
-        float offsetX = Random.Range(-3f, 3f);
-        targetPosition = new Vector2(mushroomBlackboard.targetTransform.position.x + offsetX, mushroomBlackboard.targetTransform.position.y);
+        float offsetX = Random.Range(mushroomBlackboard.originPos.x - mushroomBlackboard.leftOffset, mushroomBlackboard.originPos.x + mushroomBlackboard.rightOffset);
+        targetPosition = new Vector2(offsetX, mushroomBlackboard.targetTransform.position.y);
     }
 
     public void OnExit()
@@ -310,6 +329,8 @@ public class MushroomHurtState : Istate
     public void OnEnter()
     {
         mushroomBlackboard.mushroomAnimator.Play("Hurt");
+        GameObject blood = ObjectPool.Instance.Get(mushroomBlackboard.blood);
+        blood.transform.position = mushroomBlackboard.mushroomTransform.position;
     }
 
     public void OnExit()
@@ -371,6 +392,14 @@ public class MushroomDeadState : Istate
     {
         deadTimer = 0;
         mushroomBlackboard.mushroomAnimator.Play("Dead");
+
+        GameObject dropItem = GameObject.Instantiate(mushroomBlackboard.dropItemPre, mushroomBlackboard.mushroomTransform.position, Quaternion.identity);
+        for (int i = 0; i < Random.Range(mushroomBlackboard.min, mushroomBlackboard.max); i++)
+        {
+            GameObject.Instantiate(mushroomBlackboard.coin, mushroomBlackboard.mushroomTransform.position, Quaternion.identity);
+        }
+
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.MushroomDead);
 
         foreach (Mission mission in GameManager.Instance.missionList)
         {

@@ -17,37 +17,51 @@ public class GoblinBlackboard : Blackboard
     // 获得目标对象的transform
     public Transform targetTransform;
 
-    public float idleTime; // 原地待命时间
-    public float deadTime; // 对象销毁时间
-    public float coolTime; // 攻击间隔时间
+    [Header("待命、销毁、攻击间隔时间")]
+    public float idleTime;
+    public float deadTime;
+    public float coolTime;
 
-    // 巡逻速度
+    [Header("移动速度")]
     public float patrolSpeed;
 
-    // 检测范围
+    [Header("各攻击检测范围")]
     public LayerMask attackLayerMask;
     public Transform attackPoint;
     public Transform evadePoint;
     public float radius;
     public int chooseAttackSkill;
 
-    public bool isHit; // 是否受击
-    public bool isGround; // 是否着地
+    [Header("状态判断")]
+    public bool isHit;
+    public bool isGround;
 
-    // 攻击位移
+    [Header("攻击相关")]
     public float attack1Offset;
     public float attack2Offset;
     public float attack3Offset;
     public int attackPause;
 
-    // 受伤位移
+    [Header("受伤位移")]
     public float hurtOffset;
 
-    // 射弹
-    public GameObject bulletPre;
+    [Header("生成预制体")]
+    public GameObject bulletPre; // 射弹
+    public GameObject blood; // 血液粒子
+    public GameObject dropItemPre; // 掉落物
+    public GameObject coin; // 金币
 
-    // 给予玩家的攻击
+    [Header("攻击力(根据攻击类型变换)")]
     public float attack;
+
+    [Header("金币掉落数范围")]
+    public int min;
+    public int max;
+
+    [Header("移动范围(原位置加减)")]
+    public Vector3 originPos;
+    public float leftOffset;
+    public float rightOffset;
 }
 
 
@@ -56,14 +70,17 @@ public class GoblinFSMAI : MonoBehaviour
     private FSM goblinFSM;
     public GoblinBlackboard goblinBlackboard = new GoblinBlackboard();
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         goblinBlackboard.goblinAnimator = GetComponent<Animator>();
         goblinBlackboard.rb = GetComponent<Rigidbody2D>();
         goblinBlackboard.goblinTransform = this.transform;
         goblinBlackboard.targetTransform = this.transform;
+    }
 
+    
+    void Start()
+    {
         goblinFSM = new FSM(goblinBlackboard);
 
         goblinFSM.AddState(StateType.Idle, new GoblinIdleState(goblinFSM));
@@ -78,9 +95,11 @@ public class GoblinFSMAI : MonoBehaviour
         goblinFSM.AddState(StateType.Dead, new GoblinDeadState(goblinFSM));
 
         goblinFSM.SwitchState(StateType.Idle);
+
+        goblinBlackboard.originPos = transform.position; // 获取初始位置，便于指定范围内随机巡逻
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         goblinFSM.OnCheck();
@@ -151,8 +170,15 @@ public class GoblinFSMAI : MonoBehaviour
     {
         goblinBlackboard.isGround = isGround;
     }
+
+    // 播放劈砍音效
+    public void GoblinAttackSound()
+    {
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.GoblinAttack);
+    }
 }
 
+// 闲置
 public class GoblinIdleState : Istate
 {
     private FSM goblinFSM;
@@ -206,6 +232,7 @@ public class GoblinIdleState : Istate
     }
 }
 
+// 巡逻
 public class GoblinPatrolState : Istate
 {
     private FSM goblinFSM;
@@ -227,8 +254,8 @@ public class GoblinPatrolState : Istate
     {
         goblinBlackboard.goblinAnimator.Play("Walk");
 
-        float offsetX = Random.Range(-3f, 3f);
-        targetPosition = new Vector2(goblinBlackboard.targetTransform.position.x + offsetX, goblinBlackboard.targetTransform.position.y);
+        float offsetX = Random.Range(goblinBlackboard.originPos.x - goblinBlackboard.leftOffset, goblinBlackboard.originPos.x + goblinBlackboard.rightOffset);
+        targetPosition = new Vector2(offsetX, goblinBlackboard.targetTransform.position.y);
     }
 
     public void OnExit()
@@ -268,6 +295,7 @@ public class GoblinPatrolState : Istate
     }
 }
 
+// 追击
 public class GoblinChaseState : Istate
 {
     private FSM goblinFSM;
@@ -361,6 +389,7 @@ public class GoblinChaseState : Istate
     }
 }
 
+// 攻击1
 public class GoblinAttack1State : Istate
 {
     private FSM goblinFSM;
@@ -416,6 +445,7 @@ public class GoblinAttack1State : Istate
     }
 }
 
+// 攻击2
 public class GoblinAttack2State : Istate
 {
     private FSM goblinFSM;
@@ -441,6 +471,7 @@ public class GoblinAttack2State : Istate
         goblinFSM.FlipToPoint(goblinBlackboard.goblinTransform, targetPosition);
         goblinBlackboard.attack = 8f;
 
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.PlayerDash);
         goblinBlackboard.goblinAnimator.Play("Attack2");
     }
 
@@ -472,6 +503,7 @@ public class GoblinAttack2State : Istate
     }
 }
 
+// 攻击3
 public class GoblinAttack3State : Istate
 {
     private FSM goblinFSM;
@@ -538,6 +570,7 @@ public class GoblinAttack3State : Istate
     }
 }
 
+// 回避
 public class GoblinEvadeState : Istate
 {
     private FSM goblinFSM;
@@ -595,6 +628,7 @@ public class GoblinEvadeState : Istate
     }
 }
 
+// 攻击冷却
 public class GoblinCoolState : Istate
 {
     private FSM goblinFSM;
@@ -656,6 +690,7 @@ public class GoblinCoolState : Istate
     }
 }
 
+// 受伤
 public class GoblinHurtState : Istate
 {
     private FSM goblinFSM;
@@ -677,6 +712,8 @@ public class GoblinHurtState : Istate
     public void OnEnter()
     {
         goblinBlackboard.goblinAnimator.Play("Hurt");
+        GameObject blood = ObjectPool.Instance.Get(goblinBlackboard.blood);
+        blood.transform.position = goblinBlackboard.goblinTransform.position;
     }
 
     public void OnExit()
@@ -714,6 +751,7 @@ public class GoblinHurtState : Istate
     }
 }
 
+// 死亡
 public class GoblinDeadState : Istate
 {
     private FSM goblinFSM;
@@ -737,6 +775,12 @@ public class GoblinDeadState : Istate
         deadTimer = 0;
         goblinBlackboard.goblinAnimator.Play("Dead");
         goblinBlackboard.rb.velocity = new Vector2(-2f * goblinBlackboard.goblinTransform.localScale.x, 4);
+
+        GameObject dropItem = GameObject.Instantiate(goblinBlackboard.dropItemPre, goblinBlackboard.goblinTransform.position, Quaternion.identity); // 掉落战利品
+        for (int i = 0; i < Random.Range(goblinBlackboard.min, goblinBlackboard.max); i++)
+        { // 掉落金币
+            GameObject.Instantiate(goblinBlackboard.coin, goblinBlackboard.goblinTransform.position, Quaternion.identity);
+        }
 
         AudioSourceManager.Instance.PlaySound(GlobalAudioClips.GoblinDead);
 

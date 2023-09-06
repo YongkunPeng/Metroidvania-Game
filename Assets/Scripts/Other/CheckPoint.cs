@@ -30,6 +30,7 @@ public class CheckPoint : MonoBehaviour
             {
                 player.GetComponent<PlayerControll>().GetLifeCoinData(ref life, ref coinCnt);
                 GameManager.Instance.SaveUserData(life, coinCnt);
+                TipsBoxManager.Instance.ShowTipsBox("´æµµ³É¹¦", 2f);
             }
         }
     }

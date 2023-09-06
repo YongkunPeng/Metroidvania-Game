@@ -12,10 +12,9 @@ GameObject:
   - component: {fileID: 3398023502868718883}
   - component: {fileID: 3398023502868718880}
   - component: {fileID: 3398023502868718884}
-  - component: {fileID: -2006711087972445185}
   - component: {fileID: 3398023502868718881}
   m_Layer: 15
-  m_Name: ArrowItem
+  m_Name: DropItem_GoblinsEar
   m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,8 +28,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3398023502868718885}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.143, y: -4.18, z: 0}
-  m_LocalScale: {x: 0.26092276, y: 0.26092276, z: 0.26092276}
+  m_LocalPosition: {x: -2.125, y: -3.808, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -75,9 +74,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 389111953
-  m_SortingLayer: 5
-  m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: f06aabf066d486541b8cba0317cfa050, type: 3}
+  m_SortingLayer: 6
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -1844628548, guid: f04ba96693c1d504dabe8f572a263722, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -108,7 +107,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 5
+  m_Constraints: 4
 --- !u!61 &3398023502868718884
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -122,34 +121,19 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.100126565, y: -0.064416125}
+  m_Offset: {x: 0.0009456873, y: 0.0004799366}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.5, y: 1.5}
+    oldSize: {x: 0.2777778, y: 0.2888889}
     newSize: {x: 0.14, y: 0.15}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.9421364, y: 1.0485755}
+  m_Size: {x: 0.23023629, y: 0.25082827}
   m_EdgeRadius: 0
---- !u!114 &-2006711087972445185
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3398023502868718885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
-  m_EffectDistance: {x: 100, y: 100}
-  m_UseGraphicAlpha: 1
 --- !u!114 &3398023502868718881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,4 +146,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 230e6b719b1e14a479b2bac3d6c6ab68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 818e42b65b2a9ec4a85b43814895522b, type: 2}
+  item: {fileID: 11400000, guid: b0c13d91a6449744196dc15807d406d3, type: 2}

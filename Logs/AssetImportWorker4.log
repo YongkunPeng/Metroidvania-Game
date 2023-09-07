@@ -15,7 +15,7 @@ E:/UnityProject/FSMTest
 -logFile
 Logs/AssetImportWorker4.log
 -srvPort
-2448
+2055
 Successfully changed project path to: E:/UnityProject/FSMTest
 E:/UnityProject/FSMTest
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
@@ -47,12 +47,12 @@ E:/UnityProject/FSMTest
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Player connection [10488] Host "[IP] 169.254.53.180 [Port] 0 [Flags] 2 [Guid] 3636370 [EditorId] 3636370 [Version] 1048832 [Id] WindowsEditor(7,LAPTOP-3QKKJTNN) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+Player connection [19496] Host "[IP] 169.254.53.180 [Port] 0 [Flags] 2 [Guid] 2147193498 [EditorId] 2147193498 [Version] 1048832 [Id] WindowsEditor(7,LAPTOP-3QKKJTNN) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
 
-Player connection [10488] Host "[IP] 169.254.53.180 [Port] 0 [Flags] 2 [Guid] 3636370 [EditorId] 3636370 [Version] 1048832 [Id] WindowsEditor(7,LAPTOP-3QKKJTNN) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [19496] Host "[IP] 169.254.53.180 [Port] 0 [Flags] 2 [Guid] 2147193498 [EditorId] 2147193498 [Version] 1048832 [Id] WindowsEditor(7,LAPTOP-3QKKJTNN) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
 
 AS: AutoStreaming module initializing.
-Refreshing native plugins compatible for Editor in 124.75 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 172.53 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2021.3.16f1c1 (56dbfdd6697f)
 [Subsystems] Discovering subsystems at path E:/UnityEditor/2021.3.16f1c1/Editor/Data/Resources/UnitySubsystems
@@ -68,42 +68,42 @@ Initialize mono
 Mono path[0] = 'E:/UnityEditor/2021.3.16f1c1/Editor/Data/Managed'
 Mono path[1] = 'E:/UnityEditor/2021.3.16f1c1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'E:/UnityEditor/2021.3.16f1c1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56336
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56840
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: E:/UnityEditor/2021.3.16f1c1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.003243 seconds.
+Registered in 0.004594 seconds.
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 118.90 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 151.90 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  0.706 seconds
+- Completed reload, in  0.885 seconds
 Domain Reload Profiling:
-	ReloadAssembly (707ms)
-		BeginReloadAssembly (89ms)
+	ReloadAssembly (886ms)
+		BeginReloadAssembly (111ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (1ms)
-		EndReloadAssembly (503ms)
-			LoadAssemblies (83ms)
+		EndReloadAssembly (632ms)
+			LoadAssemblies (105ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (113ms)
+			SetupTypeCache (129ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (29ms)
-			SetupLoadedEditorAssemblies (298ms)
+			RebuildScriptCaches (36ms)
+			SetupLoadedEditorAssemblies (394ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (7ms)
+				InitializePlatformSupportModulesInManaged (8ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (119ms)
-				BeforeProcessingInitializeOnLoad (1ms)
-				ProcessInitializeOnLoadAttributes (120ms)
-				ProcessInitializeOnLoadMethodAttributes (51ms)
+				RefreshPlugins (152ms)
+				BeforeProcessingInitializeOnLoad (3ms)
+				ProcessInitializeOnLoadAttributes (170ms)
+				ProcessInitializeOnLoadMethodAttributes (61ms)
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.020067 seconds.
+Registered in 0.022059 seconds.

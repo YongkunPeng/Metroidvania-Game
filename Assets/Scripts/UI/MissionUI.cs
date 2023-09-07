@@ -57,4 +57,9 @@ public class MissionUI : BasePanel
             Time.timeScale = 1f;
         }
     }
+
+    private void OnDestroy()
+    {
+        ClosePanel();
+    }
 }

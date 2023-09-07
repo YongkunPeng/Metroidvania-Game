@@ -43,13 +43,19 @@ public class RegistratioMenuUI : BasePanel
             userData.username = username;
             userData.health = 100;
             userData.coinCnt = 0;
+            userData.sceneID = 1;
+            userData.checkPointID = 1;
             userData.missionList = new List<Mission>();
             userData.slotDict = new Dictionary<int, string>();
             userData.itemsDict = new Dictionary<string, int>();
+
+            #region 添加初始物品
             userData.slotDict.Add(0, ItemsConst.Arrow);
             userData.itemsDict.Add(ItemsConst.Arrow, 5);
             userData.slotDict.Add(1, ItemsConst.LifePotion);
             userData.itemsDict.Add(ItemsConst.LifePotion, 3);
+            #endregion
+
             LocalConfig.SaveUserData(userData);
             GameManager.Instance.userData = userData;
             GameManager.Instance.slotDict = userData.slotDict;

@@ -202,7 +202,7 @@ GameObject:
   - component: {fileID: 8074352649529869331}
   - component: {fileID: 8074352649529869328}
   - component: {fileID: 8074352649529869334}
-  - component: {fileID: 8074352649529869357}
+  - component: {fileID: 3051535270015840835}
   - component: {fileID: 8074352649529869335}
   - component: {fileID: 8074352649529869330}
   m_Layer: 7
@@ -251,7 +251,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -304,8 +304,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!70 &8074352649529869357
-CapsuleCollider2D:
+--- !u!61 &3051535270015840835
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -317,9 +317,19 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.000000029802322, y: 0.006958008}
-  m_Size: {x: 0.42200518, y: 1.0472493}
-  m_Direction: 0
+  m_Offset: {x: -0.013905883, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.53333336, y: 1.0333333}
+    newSize: {x: 0.53333336, y: 1.0333333}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.43877292, y: 1.0333333}
+  m_EdgeRadius: 0
 --- !u!95 &8074352649529869335
 Animator:
   serializedVersion: 5
@@ -380,7 +390,7 @@ MonoBehaviour:
     dashTime: 0.2
     dashTimeLeft: 0
     lastDash: 0
-    dashCool: 1.5
+    dashCool: 1
     dashSpeed: 10
     dashCoolCurr: 0
     climbSpeed: 2

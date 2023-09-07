@@ -209,6 +209,16 @@ public class GlobalAudioClips
 
     #endregion
 
+    #region ·¢¿ñÎäÊ¿ÒôĞ§
+
+    // ¹¥»÷2°Îµ¶
+    public const string SamuraiDraw = "Music/SFX/Samurai/SamuraiDraw";
+
+    // ¹¥»÷2»Ó¿³
+    public const string SamuraiAttack2 = "Music/SFX/Samurai/SamuraiAttack2";
+
+    #endregion
+
     #region ±³¾°ÒôÀÖ
 
     public const string BGM1 = "Music/BGM/BGM1";

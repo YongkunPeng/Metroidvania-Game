@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,6 +29,7 @@ public class SamuraiBlackboard : Blackboard
     public LayerMask targetLayer;
     public float attack1Length;
     public float attack2Length;
+    public float attack3Length;
 
     [Header("状态判断")]
     public bool isHit;
@@ -42,8 +44,9 @@ public class SamuraiBlackboard : Blackboard
     public GameObject dropItemPre; // 掉落物
     public GameObject coin; // 金币
 
-    [Header("攻击力(根据攻击类型变换)")]
+    [Header("攻击力相关")]
     public float attack;
+    public int attackPause;
 
     [Header("金币掉落数范围")]
     public int min;
@@ -54,9 +57,13 @@ public class SamuraiFSMAI : MonoBehaviour
 {
     private FSM samuraiFSM;
     public SamuraiBlackboard samuraiBlackboard = new SamuraiBlackboard();
-    [SerializeField] private GameObject shinningEffect;
     [SerializeField] private bool healToughness; // 恢复韧性协程是否已被调用
-    
+
+    [Header("特效游戏物体")]
+    [SerializeField] private GameObject shinningEffect; // 刀光特效
+    [SerializeField] private GameObject redEyeEffect; // 红眼特效
+    [SerializeField] private GameObject bloodBurst; // 爆气特效
+
     [Header("材质")]
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Material originMaterial;
@@ -86,6 +93,7 @@ public class SamuraiFSMAI : MonoBehaviour
         samuraiFSM.AddState(StateType.Attack1, new SamuraiAttack1State(samuraiFSM));
         samuraiFSM.AddState(StateType.Attack2, new SamuraiAttack2State(samuraiFSM));
         samuraiFSM.AddState(StateType.Attack3, new SamuraiAttack3State(samuraiFSM));
+        samuraiFSM.AddState(StateType.Attack4, new SamuraiAttack4State(samuraiFSM));
         samuraiFSM.AddState(StateType.Evade, new SamuraiEvadeState(samuraiFSM));
         samuraiFSM.AddState(StateType.Jump, new SamuraiJumpState(samuraiFSM));
         samuraiFSM.AddState(StateType.Fall, new SamuraiFallState(samuraiFSM));
@@ -104,6 +112,18 @@ public class SamuraiFSMAI : MonoBehaviour
     {
         samuraiFSM.OnCheck();
         samuraiFSM.OnUpdate();
+        RedEyeEffectActive();
+    }
+    
+    // 二阶段特效
+    private void RedEyeEffectActive()
+    {
+        if (samuraiBlackboard.health <= samuraiBlackboard.maxHealth / 2 && !redEyeEffect.activeSelf)
+        {
+            redEyeEffect.SetActive(true);
+            bloodBurst.SetActive(true);
+            samuraiBlackboard.speed = 6;
+        }
     }
 
     // 扣血方法
@@ -151,7 +171,10 @@ public class SamuraiFSMAI : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("命中玩家");
+            PlayerControll player = collision.GetComponent<PlayerControll>();
+            player.getHurt(samuraiBlackboard.attack, transform.position);
+            GameManager.Instance.HitPause(samuraiBlackboard.attackPause);
+            transform.GetChild(0).GetComponent<CinemachineImpulseSource>().GenerateImpulse();
         }
     }
 
@@ -160,6 +183,7 @@ public class SamuraiFSMAI : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, Vector3.right * transform.localScale.x * samuraiBlackboard.attack1Length);
         Gizmos.DrawRay(transform.position - new Vector3(0, 0.1f, 0), Vector3.right * transform.localScale.x * samuraiBlackboard.attack2Length);
+        Gizmos.DrawRay(transform.position - new Vector3(0, 0.2f, 0), Vector3.right * transform.localScale.x * samuraiBlackboard.attack3Length);
         Gizmos.color = Color.blue;
     }
 
@@ -187,6 +211,22 @@ public class SamuraiFSMAI : MonoBehaviour
         }
         spriteRenderer.material = originMaterial;
     }
+
+    #region 音效
+
+    // 攻击2音效
+    public void Attack2Sound()
+    {
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.SamuraiAttack2);
+    }
+
+    // 攻击2拔刀音效
+    public void Attack2DrawSound()
+    {
+        AudioSourceManager.Instance.PlaySound(GlobalAudioClips.SamuraiDraw);
+    }
+
+    #endregion
 }
 
 // 闲置
@@ -215,6 +255,7 @@ public class SamuraiIdleState : Istate
     public void OnExit()
     {
         idleTimer = 0;
+        samuraiBlackboard.rb.velocity = Vector2.zero;
     }
 
     public void OnFixUpdate()
@@ -225,6 +266,11 @@ public class SamuraiIdleState : Istate
     public void OnUpdate()
     {
         idleTimer += Time.deltaTime;
+        if (samuraiBlackboard.health <= 0f)
+        { // 生命为0，死亡
+            samuraiFSM.SwitchState(StateType.Dead);
+        }
+
         if (samuraiBlackboard.isHit == true && samuraiBlackboard.toughness <= 0)
         { // 受击且韧性为0
             samuraiFSM.SwitchState(StateType.Hurt);
@@ -265,8 +311,7 @@ public class SamuraiChaseState : Istate
         samuraiBlackboard.chooseAttackSkill = 0;
         if (samuraiBlackboard.health <= samuraiBlackboard.maxHealth / 2)
         {
-            Debug.Log("攻击2");
-            samuraiBlackboard.chooseAttackSkill = Random.Range(0, 2);
+            samuraiBlackboard.chooseAttackSkill = Random.Range(0, 3);
         }
 
         if (samuraiBlackboard.isHit == true && samuraiBlackboard.toughness <= 0)
@@ -277,7 +322,7 @@ public class SamuraiChaseState : Istate
 
     public void OnExit()
     {
-
+        samuraiBlackboard.rb.velocity = Vector2.zero;
     }
 
     public void OnFixUpdate()
@@ -288,6 +333,16 @@ public class SamuraiChaseState : Istate
     public void OnUpdate()
     {
         samuraiFSM.FlipToTransform(samuraiBlackboard.samuraiTransform, samuraiBlackboard.targetTransform); // 始终面向敌人
+
+        if (samuraiBlackboard.health <= 0f)
+        { // 生命为0，死亡
+            samuraiFSM.SwitchState(StateType.Dead);
+        }
+
+        if (samuraiBlackboard.isHit == true && samuraiBlackboard.toughness <= 0)
+        { // 受击且韧性为0
+            samuraiFSM.SwitchState(StateType.Hurt);
+        }
 
         if (Vector2.Distance(samuraiBlackboard.samuraiTransform.position, samuraiBlackboard.targetTransform.position) < 1 
             || samuraiBlackboard.targetTransform.position.y - samuraiBlackboard.samuraiTransform.position.y > 0.5)
@@ -317,6 +372,14 @@ public class SamuraiChaseState : Istate
             if (ray.collider != null)
             {
                 samuraiFSM.SwitchState(StateType.Attack2);
+            }
+        }
+        else if (samuraiBlackboard.chooseAttackSkill == 2)
+        {
+            RaycastHit2D ray = Physics2D.Raycast(samuraiBlackboard.samuraiTransform.position, Vector3.right * samuraiBlackboard.samuraiTransform.localScale.x, samuraiBlackboard.attack3Length, samuraiBlackboard.targetLayer);
+            if (ray.collider != null)
+            {
+                samuraiFSM.SwitchState(StateType.Attack1);
             }
         }
     }
@@ -360,15 +423,20 @@ public class SamuraiEvadeState : Istate
 
     public void OnUpdate()
     {
+        if (samuraiBlackboard.health <= 0f)
+        { // 生命为0，死亡
+            samuraiFSM.SwitchState(StateType.Dead);
+        }
+
         if (samuraiBlackboard.isHit == true && samuraiBlackboard.toughness <= 0)
         { // 受击且韧性为0
             samuraiFSM.SwitchState(StateType.Hurt);
         }
 
         evadeTimer += Time.deltaTime;
-        if (evadeTimer <= 0.5f)
+        if (evadeTimer <= 0.3f)
         { // 后退
-            samuraiBlackboard.rb.velocity = new Vector2(-samuraiBlackboard.samuraiTransform.localScale.x * samuraiBlackboard.speed * Time.deltaTime * 600, 0);
+            samuraiBlackboard.rb.velocity = new Vector2(-samuraiBlackboard.samuraiTransform.localScale.x * samuraiBlackboard.speed * Time.deltaTime * 300, 0);
         }
         else if (evadeTimer > 0.5f)
         { // 超过计时
@@ -399,12 +467,15 @@ public class SamuraiAttack1State : Istate
     public void OnEnter()
     {
         samuraiFSM.FlipToTransform(samuraiBlackboard.samuraiTransform, samuraiBlackboard.targetTransform);
+        samuraiBlackboard.attack = 8;
+        samuraiBlackboard.attackPause = 4;
+        samuraiBlackboard.samuraiTransform.GetChild(0).GetComponent<CinemachineImpulseSource>().m_ImpulseDefinition.m_AmplitudeGain = 1;
         samuraiBlackboard.samuraiAnimator.Play("Attack1");
     }
 
     public void OnExit()
     {
-        
+        samuraiBlackboard.rb.velocity = Vector2.zero;
     }
 
     public void OnFixUpdate()
@@ -414,15 +485,27 @@ public class SamuraiAttack1State : Istate
 
     public void OnUpdate()
     {
-        info = samuraiBlackboard.samuraiAnimator.GetCurrentAnimatorStateInfo(0);
-        if (info.normalizedTime >= 0.95f)
-        {
-            samuraiFSM.SwitchState(StateType.Attack3);
+        if (samuraiBlackboard.health <= 0f)
+        { // 生命为0，死亡
+            samuraiFSM.SwitchState(StateType.Dead);
         }
 
         if (samuraiBlackboard.isHit == true && samuraiBlackboard.toughness <= 0)
         { // 受击且韧性为0
             samuraiFSM.SwitchState(StateType.Hurt);
+        }
+
+        info = samuraiBlackboard.samuraiAnimator.GetCurrentAnimatorStateInfo(0);
+        if (info.normalizedTime >= 0.95f)
+        {
+            if (samuraiBlackboard.chooseAttackSkill < 2)
+            {
+                samuraiFSM.SwitchState(StateType.Attack3);
+            }
+            else if (samuraiBlackboard.chooseAttackSkill == 2)
+            {
+                samuraiFSM.SwitchState(StateType.Attack4);
+            }
         }
     }
 }
@@ -449,12 +532,15 @@ public class SamuraiAttack2State : Istate
     public void OnEnter()
     {
         samuraiFSM.FlipToTransform(samuraiBlackboard.samuraiTransform, samuraiBlackboard.targetTransform);
+        samuraiBlackboard.attack = 12;
+        samuraiBlackboard.attackPause = 8;
+        samuraiBlackboard.samuraiTransform.GetChild(0).GetComponent<CinemachineImpulseSource>().m_ImpulseDefinition.m_AmplitudeGain = 3;
         samuraiBlackboard.samuraiAnimator.Play("Attack2");
     }
 
     public void OnExit()
     {
-
+        samuraiBlackboard.rb.velocity = Vector2.zero;
     }
 
     public void OnFixUpdate()
@@ -464,15 +550,20 @@ public class SamuraiAttack2State : Istate
 
     public void OnUpdate()
     {
-        info = samuraiBlackboard.samuraiAnimator.GetCurrentAnimatorStateInfo(0);
-        if (info.normalizedTime >= 0.95f)
-        {
-            samuraiFSM.SwitchState(StateType.Attack3);
+        if (samuraiBlackboard.health <= 0f)
+        { // 生命为0，死亡
+            samuraiFSM.SwitchState(StateType.Dead);
         }
 
         if (samuraiBlackboard.isHit == true && samuraiBlackboard.toughness <= 0)
         { // 受击且韧性为0
             samuraiFSM.SwitchState(StateType.Hurt);
+        }
+
+        info = samuraiBlackboard.samuraiAnimator.GetCurrentAnimatorStateInfo(0);
+        if (info.normalizedTime >= 0.95f)
+        {
+            samuraiFSM.SwitchState(StateType.Attack3);
         }
     }
 }
@@ -500,6 +591,9 @@ public class SamuraiAttack3State : Istate
     public void OnEnter()
     {
         choose = Random.Range(0, 3);
+        samuraiBlackboard.attack = 10;
+        samuraiBlackboard.attackPause = 6;
+        samuraiBlackboard.samuraiTransform.GetChild(0).GetComponent<CinemachineImpulseSource>().m_ImpulseDefinition.m_AmplitudeGain = 2;
         samuraiBlackboard.samuraiAnimator.Play("Attack3");
         if (samuraiBlackboard.chooseAttackSkill == 1)
         { // 攻击2转来攻击3时，调整朝向
@@ -509,7 +603,7 @@ public class SamuraiAttack3State : Istate
 
     public void OnExit()
     {
-
+        samuraiBlackboard.rb.velocity = Vector2.zero;
     }
 
     public void OnFixUpdate()
@@ -521,6 +615,16 @@ public class SamuraiAttack3State : Istate
     {
         info = samuraiBlackboard.samuraiAnimator.GetCurrentAnimatorStateInfo(0);
 
+        if (samuraiBlackboard.health <= 0f)
+        { // 生命为0，死亡
+            samuraiFSM.SwitchState(StateType.Dead);
+        }
+
+        if (samuraiBlackboard.isHit == true && samuraiBlackboard.toughness <= 0)
+        { // 受击且韧性为0
+            samuraiFSM.SwitchState(StateType.Hurt);
+        }
+
         if (info.normalizedTime >= 0.95f && choose < 2)
         {
             samuraiFSM.SwitchState(StateType.Evade);
@@ -529,10 +633,75 @@ public class SamuraiAttack3State : Istate
         {
             samuraiFSM.SwitchState(StateType.Jump);
         }
+    }
+}
+
+// 攻击4
+public class SamuraiAttack4State : Istate
+{
+    private FSM samuraiFSM;
+    private SamuraiBlackboard samuraiBlackboard;
+
+    private AnimatorStateInfo info;
+    private int choose;
+
+    public SamuraiAttack4State(FSM fsm)
+    {
+        samuraiFSM = fsm;
+        samuraiBlackboard = fsm.blackboard as SamuraiBlackboard;
+    }
+
+    public void OnCheck()
+    {
+        
+    }
+
+    public void OnEnter()
+    {
+        choose = Random.Range(0, 3);
+        samuraiBlackboard.attack = 10;
+        samuraiBlackboard.attackPause = 6;
+        samuraiBlackboard.samuraiTransform.GetChild(0).GetComponent<CinemachineImpulseSource>().m_ImpulseDefinition.m_AmplitudeGain = 2;
+        samuraiBlackboard.samuraiAnimator.Play("Attack3");
+    }
+
+    public void OnExit()
+    {
+        if (samuraiBlackboard.health <= samuraiBlackboard.maxHealth / 2)
+        {
+            GameObject gameObject = ObjectPool.Instance.Get(samuraiBlackboard.bulletPre);
+            gameObject.transform.position = samuraiBlackboard.samuraiTransform.position;
+            gameObject.GetComponent<SlashFX>().SetDirection(samuraiBlackboard.samuraiTransform.localScale);
+        }
+        samuraiBlackboard.rb.velocity = Vector2.zero;
+    }
+
+    public void OnFixUpdate()
+    {
+        
+    }
+
+    public void OnUpdate()
+    {
+        info = samuraiBlackboard.samuraiAnimator.GetCurrentAnimatorStateInfo(0);
+
+        if (samuraiBlackboard.health <= 0f)
+        { // 生命为0，死亡
+            samuraiFSM.SwitchState(StateType.Dead);
+        }
 
         if (samuraiBlackboard.isHit == true && samuraiBlackboard.toughness <= 0)
         { // 受击且韧性为0
             samuraiFSM.SwitchState(StateType.Hurt);
+        }
+
+        if (info.normalizedTime >= 0.95f && choose < 2)
+        {
+            samuraiFSM.SwitchState(StateType.Evade);
+        }
+        else if (info.normalizedTime >= 0.95f && choose == 2)
+        {
+            samuraiFSM.SwitchState(StateType.Jump);
         }
     }
 }
@@ -564,7 +733,7 @@ public class SamuraiJumpState : Istate
 
     public void OnExit()
     {
-
+        samuraiBlackboard.rb.velocity = Vector2.zero;
     }
 
     public void OnFixUpdate()
@@ -574,14 +743,19 @@ public class SamuraiJumpState : Istate
 
     public void OnUpdate()
     {
-        if (samuraiBlackboard.rb.velocity.y < 0f)
-        { // 下落
-            samuraiFSM.SwitchState(StateType.Fall);
+        if (samuraiBlackboard.health <= 0f)
+        { // 生命为0，死亡
+            samuraiFSM.SwitchState(StateType.Dead);
         }
 
         if (samuraiBlackboard.isHit == true && samuraiBlackboard.toughness <= 0)
         { // 受击且韧性为0
             samuraiFSM.SwitchState(StateType.Hurt);
+        }
+
+        if (samuraiBlackboard.rb.velocity.y < 0f)
+        { // 下落
+            samuraiFSM.SwitchState(StateType.Fall);
         }
     }
 }
@@ -610,7 +784,7 @@ public class SamuraiFallState : Istate
 
     public void OnExit()
     {
-
+        samuraiBlackboard.rb.velocity = Vector2.zero;
     }
 
     public void OnFixUpdate()
@@ -620,6 +794,16 @@ public class SamuraiFallState : Istate
 
     public void OnUpdate()
     {
+        if (samuraiBlackboard.health <= 0f)
+        { // 生命为0，死亡
+            samuraiFSM.SwitchState(StateType.Dead);
+        }
+
+        if (samuraiBlackboard.isHit == true && samuraiBlackboard.toughness <= 0)
+        { // 受击且韧性为0
+            samuraiFSM.SwitchState(StateType.Hurt);
+        }
+
         if (samuraiBlackboard.isGround == true)
         { // 落地
             samuraiFSM.SwitchState(StateType.Idle);
@@ -627,11 +811,6 @@ public class SamuraiFallState : Istate
         else
         { // 加速下落
             samuraiBlackboard.rb.velocity += Vector2.up * Physics2D.gravity.y * (samuraiBlackboard.fallMultiplier - 1) * Time.deltaTime;
-        }
-
-        if (samuraiBlackboard.isHit == true && samuraiBlackboard.toughness <= 0)
-        { // 受击且韧性为0
-            samuraiFSM.SwitchState(StateType.Hurt);
         }
     }
 }
@@ -664,7 +843,7 @@ public class SamuraiHurtState : Istate
 
     public void OnExit()
     {
-        
+        samuraiBlackboard.rb.velocity = Vector2.zero;
     }
 
     public void OnFixUpdate()
@@ -726,7 +905,7 @@ public class SamuraiDeadState : Istate
 
     public void OnExit()
     {
-
+        samuraiBlackboard.rb.velocity = Vector2.zero;
     }
 
     public void OnFixUpdate()

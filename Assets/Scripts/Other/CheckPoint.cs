@@ -7,6 +7,8 @@ public class CheckPoint : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private bool isClose;
     [SerializeField] private GameObject keyboardInfo;
+    [SerializeField] private int sceneID; // 场景ID
+    [SerializeField] private int checkPointID; // 记录点ID
     private Color color;
     private AnimatorStateInfo info;
     private GameObject player;
@@ -29,9 +31,18 @@ public class CheckPoint : MonoBehaviour
             if (player != null)
             {
                 player.GetComponent<PlayerControll>().GetLifeCoinData(ref life, ref coinCnt);
-                GameManager.Instance.SaveUserData(life, coinCnt);
+                GameManager.Instance.SaveUserData(life, coinCnt, sceneID, checkPointID);
                 TipsBoxManager.Instance.ShowTipsBox("存档成功", 2f);
             }
+        }
+    }
+
+    // 获取记录点ID
+    public int CheckPointID
+    {
+        get
+        {
+            return checkPointID;
         }
     }
 

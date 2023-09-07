@@ -65,6 +65,7 @@ public class PlayerControll : MonoBehaviour
     private FSM playerFSM;
     public PlayerBlackboard playerBlackboard = new PlayerBlackboard();
     public SpriteRenderer sprite;
+    CheckPoint[] checkPoints;
 
     public LayerMask feetLayerMask; // 接触地面判断射线
 
@@ -75,6 +76,15 @@ public class PlayerControll : MonoBehaviour
         playerBlackboard.rb = GetComponent<Rigidbody2D>();
         playerBlackboard.playerAnimator = GetComponent<Animator>();
         playerBlackboard.playerTransform = this.transform;
+
+        checkPoints = GameObject.FindObjectsOfType<CheckPoint>();
+        foreach (CheckPoint check in checkPoints)
+        {
+            if (GameManager.Instance.userData.checkPointID == check.CheckPointID)
+            {
+                transform.position = check.transform.position;
+            }
+        }
     }
 
     // Start is called before the first frame update
@@ -124,6 +134,7 @@ public class PlayerControll : MonoBehaviour
     void Update()
     {
         UpdateChangeablePlayerData();
+        OpenRestartUI();
 
         CanDash();
         playerFSM.OnCheck();
@@ -133,6 +144,17 @@ public class PlayerControll : MonoBehaviour
     private void FixedUpdate()
     {
         playerFSM.OnFixUpdate();
+    }
+
+    /// <summary>
+    /// 死亡时打开死亡界面
+    /// </summary>
+    public void OpenRestartUI()
+    {
+        if (playerBlackboard.health <= 0 && !UIManager.Instance.panelDict.ContainsKey(UIConst.RestartMenu))
+        {
+            UIManager.Instance.OpenPanel(UIConst.RestartMenu);
+        }
     }
 
     /// <summary>

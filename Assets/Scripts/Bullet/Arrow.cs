@@ -7,7 +7,7 @@ public class Arrow : MonoBehaviour
 {
     public Rigidbody2D rb;
     public BoxCollider2D col;
-    public float damage = 3f;
+    public float damage = 10f;
     [SerializeField] private float speed = 13f;
     [SerializeField] private int attackPause = 3;
     private IEnumerator ie;
@@ -63,6 +63,7 @@ public class Arrow : MonoBehaviour
         
         MushroomFSMAI mushroom = collision.gameObject.GetComponent<MushroomFSMAI>();
         GoblinFSMAI goblin = collision.gameObject.GetComponent<GoblinFSMAI>();
+        SamuraiFSMAI samurai = collision.gameObject.GetComponent<SamuraiFSMAI>();
         if (mushroom != null)
         {
             rb.simulated = false;
@@ -77,6 +78,13 @@ public class Arrow : MonoBehaviour
             GameManager.Instance.HitPause(attackPause);
             GetComponent<CinemachineImpulseSource>().GenerateImpulse();
         }
+        if (samurai != null)
+        {
+            rb.simulated = false;
+            samurai.getHurt(damage);
+            GameManager.Instance.HitPause(attackPause);
+            GetComponent<CinemachineImpulseSource>().GenerateImpulse();
+        }
     }
 
     IEnumerator PushArrow()
@@ -85,7 +93,7 @@ public class Arrow : MonoBehaviour
         {
             GetComponent<SpriteRenderer>().color = setColor;
             setColor.a = Mathf.Lerp(setColor.a, 0, 0.05f);
-            yield return new WaitForFixedUpdate();
+            yield return null;
         }
         ObjectPool.Instance.Push(gameObject);
     }

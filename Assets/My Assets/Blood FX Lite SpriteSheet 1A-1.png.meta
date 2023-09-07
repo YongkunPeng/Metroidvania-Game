@@ -1,0 +1,353 @@
+fileFormatVersion: 2
+guid: 6dcc72aeb59755841adacdd3c911b775
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 30
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Blood FX 2
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 28
+        width: 42
+        height: 27
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9976a576c7d80484c8bb9ae74d1a3c79
+      internalID: -1637539199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Blood FX 8
+      rect:
+        serializedVersion: 2
+        x: 957
+        y: 28
+        width: 64
+        height: 54
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4578f3486bb9754bb90e5041199f124
+      internalID: 223009288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Blood FX 9
+      rect:
+        serializedVersion: 2
+        x: 1093
+        y: 28
+        width: 64
+        height: 54
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1cb6737f9ee7cd40a29311317ce0c0c
+      internalID: -1260206319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Blood FX 1
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 28
+        width: 13
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 205e520f70752bd4ab9ea4fe1ded4f91
+      internalID: 614602550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Blood FX 3
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 28
+        width: 60
+        height: 51
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f0df4671e31aed48aec1720814d1618
+      internalID: -1224772019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Blood FX 4
+      rect:
+        serializedVersion: 2
+        x: 413
+        y: 28
+        width: 63
+        height: 55
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45aaaa4c47a02a245bccf4767095c67a
+      internalID: 174388358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Blood FX 5
+      rect:
+        serializedVersion: 2
+        x: 549
+        y: 28
+        width: 64
+        height: 56
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86e5932723ac5144a9402e0fd35f2d7c
+      internalID: -1300763723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Blood FX 6
+      rect:
+        serializedVersion: 2
+        x: 685
+        y: 28
+        width: 64
+        height: 56
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a0488b9d14c199a4eb2feebd185a3b2f
+      internalID: -486571516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Blood FX 7
+      rect:
+        serializedVersion: 2
+        x: 821
+        y: 28
+        width: 64
+        height: 54
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 54a1bf592011a824298d1dec66a9be46
+      internalID: 2090078295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Blood FX Lite SpriteSheet 1A-1_17: 1676829608
+      Blood FX Lite SpriteSheet 1A-1_10: 2146439333
+      Blood FX 3: -1224772019
+      Blood FX 4: 174388358
+      Blood FX Lite SpriteSheet 1A-1_31: 314227019
+      Blood FX 6: -486571516
+      Blood FX Lite SpriteSheet 1A-1_11: 2185603
+      Blood FX Lite SpriteSheet 1A-1_40: -49196124
+      Blood FX 5: -1300763723
+      Blood FX Lite SpriteSheet 1A-1_12: -1026209874
+      Blood FX Lite SpriteSheet 1A-1_37: -445286561
+      Blood FX Lite SpriteSheet 1A-1_22: 719933483
+      Blood FX Lite SpriteSheet 1A-1_38: -1075267492
+      Blood FX Lite SpriteSheet 1A-1_39: -1176378397
+      Blood FX 8: 223009288
+      Blood FX Lite SpriteSheet 1A-1_34: 1785091804
+      Blood FX Lite SpriteSheet 1A-1_20: 904538345
+      Blood FX Lite SpriteSheet 1A-1_26: -1683912560
+      Blood FX Lite SpriteSheet 1A-1_33: 962912321
+      Blood FX Lite SpriteSheet 1A-1_13: -1101968943
+      Blood FX Lite SpriteSheet 1A-1_14: -1924041132
+      Blood FX Lite SpriteSheet 1A-1_24: -143995794
+      Blood FX Lite SpriteSheet 1A-1_28: 1552656617
+      Blood FX Lite SpriteSheet 1A-1_29: 325978683
+      Blood FX Lite SpriteSheet 1A-1_8: -64201822
+      Blood FX Lite SpriteSheet 1A-1_36: 365774741
+      Blood FX Lite SpriteSheet 1A-1_6: 1848498148
+      Blood FX Lite SpriteSheet 1A-1_5: 1271896486
+      Blood FX Lite SpriteSheet 1A-1_27: 1530244261
+      Blood FX Lite SpriteSheet 1A-1_30: 625096633
+      Blood FX Lite SpriteSheet 1A-1_18: -1388416304
+      Blood FX Lite SpriteSheet 1A-1_15: -1195971559
+      Blood FX Lite SpriteSheet 1A-1_19: -2070664222
+      Blood FX 7: 2090078295
+      Blood FX Lite SpriteSheet 1A-1_16: -1989416238
+      Blood FX Lite SpriteSheet 1A-1_9: 1011267071
+      Blood FX 1: 614602550
+      Blood FX Lite SpriteSheet 1A-1_32: 328911481
+      Blood FX 2: -1637539199
+      Blood FX Lite SpriteSheet 1A-1_25: -1345146682
+      Blood FX 9: -1260206319
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

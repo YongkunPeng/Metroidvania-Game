@@ -64,7 +64,8 @@ public class UIManager
             {UIConst.PlayerMission, "Missions"},
             {UIConst.LoadScene, "LoadScene"},
             {UIConst.Shop, "ShopMenu"},
-            {UIConst.TipsBox, "TipsBox"}
+            {UIConst.TipsBox, "TipsBox"},
+            {UIConst.RestartMenu, "RestartMenu"}
         };
     }
 
@@ -117,14 +118,15 @@ public class UIManager
 
 public class UIConst // 存储界面名常量
 {
-    public const string MainMenu = "MainMenu";
-    public const string RegistrationMenu = "RegistrationMenu";
-    public const string Archives = "Archives";
-    public const string PlayerInfo = "PlayerInfo";
-    public const string PlayerBag = "PlayerBag";
-    public const string PlayerMission = "PlayerMission";
-    public const string Settings = "Settings";
-    public const string LoadScene = "LoadScene";
-    public const string Shop = "Shop";
-    public const string TipsBox = "TipsBox";
+    public const string MainMenu = "MainMenu"; // 主菜单
+    public const string RegistrationMenu = "RegistrationMenu"; // 新游戏菜单
+    public const string Archives = "Archives"; // 存档菜单
+    public const string PlayerInfo = "PlayerInfo"; // 玩家信息菜单
+    public const string PlayerBag = "PlayerBag"; // 背包
+    public const string PlayerMission = "PlayerMission"; // 任务
+    public const string Settings = "Settings"; // 设置
+    public const string LoadScene = "LoadScene"; // 场景过渡
+    public const string Shop = "Shop"; // 商店
+    public const string RestartMenu = "RestartMenu"; // 死亡菜单
+    public const string TipsBox = "TipsBox"; // 弹窗
 }

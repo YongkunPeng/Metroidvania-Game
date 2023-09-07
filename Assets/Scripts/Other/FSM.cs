@@ -33,7 +33,7 @@ public enum StateType
     Attack1, //敌人攻击1
     Attack2, //敌人攻击2
     Attack3, //敌人攻击3
-
+    Attack4, //敌人攻击4
 }
 
 // 状态类接口，规范实现

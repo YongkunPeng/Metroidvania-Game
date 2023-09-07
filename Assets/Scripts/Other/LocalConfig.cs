@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 using System.IO; // 文件的读写
 using Newtonsoft.Json; // 数据序列化和反序列化
 using UnityEngine;
@@ -73,6 +74,7 @@ public class LocalConfig
     }
 }
 
+[Serializable]
 public class UserData
 { // 用户数据类
     public string username; // 用户存档名
@@ -81,6 +83,8 @@ public class UserData
     public Dictionary<int, string> slotDict; // 背包中物品所在槽
     public Dictionary<string, int> itemsDict; // 背包中物品的数量
     public List<Mission> missionList;
+    public int sceneID; // 所在场景
+    public int checkPointID; // 检查点ID
 
     public UserData(string username, float health, int arrowCnt, int coinCnt)
     {

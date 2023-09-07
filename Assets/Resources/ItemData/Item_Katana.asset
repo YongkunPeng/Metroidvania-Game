@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0e7c077015648c4caba5761c2516fbb, type: 3}
+  m_Name: Item_Katana
+  m_EditorClassIdentifier: 
+  itemName: "\u5996\u5F02\u7684\u6B66\u58EB\u5200"
+  itemDes: "\u53D1\u72C2\u6D6A\u4EBA\u6240\u4F7F\u7528\u7684\u6B66\u58EB\u5200\uFF0C\u6D6A\u4EBA\u62B1\u7740\u53AE\u6740\u7684\u51B3\u5FC3\u6B65\u5165\u68EE\u6797\u6DF1\u5904\uFF0C\u4E0D\u77E5\u4E0D\u89C9\u4E2D\u5374\u5DF2\u9677\u5165\u5176\u4E2D\u3002"
+  itemSprite: {fileID: -802670868, guid: 5cd40099f4261e44bb7a447ff965362b, type: 3}
+  buyPrice: 100
+  sellPrice: 200
+  canUse: 0

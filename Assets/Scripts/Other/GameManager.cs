@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-
+        Debug.Log(Time.timeScale);
     }
 
     private void FixedUpdate()
@@ -84,6 +84,10 @@ public class GameManager : MonoBehaviour
         #endregion
     }
 
+    /// <summary>
+    /// 攻击顿帧
+    /// </summary>
+    /// <param name="duration"></param>
     public void HitPause(int duration)
     {
         StartCoroutine(Pause(duration));
@@ -206,26 +210,33 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="life">玩家生命值</param>
     /// <param name="coinCnt">玩家金币数</param>
-    public void SaveUserData(float life, int coinCnt)
+    public void SaveUserData(float life, int coinCnt, int sceneID, int checkPointID)
     {
         userData.health = life;
         userData.coinCnt = coinCnt;
+        userData.sceneID = sceneID;
+        userData.checkPointID = checkPointID;
         LocalConfig.SaveUserData(userData);
+        InitUserData(userData); // 保存成功后同步Gamemanager内的玩家数据
         Debug.Log("保存完成！");
     }
 
     /// <summary>
-    /// 加载玩家数据并跳转到游戏场景
+    /// 加载玩家数据并根据bool跳转到游戏场景
     /// </summary>
     /// <param name="userData">玩家数据UserData</param>
-    public void InitUserData(UserData userData)
+    /// <param name="isLoad">是否跳转场景</param>
+    public void InitUserData(UserData userData, bool isLoad = false)
     {
         this.userData = userData;
         username = userData.username;
         slotDict = userData.slotDict;
         itemsDict = userData.itemsDict;
         missionList = userData.missionList;
-        SceneLoadManager.Instance.LoadLevelByIndex(1);
+        if (isLoad)
+        {
+            SceneLoadManager.Instance.LoadLevelByIndex(userData.sceneID);
+        }
     }
 
     /// <summary>

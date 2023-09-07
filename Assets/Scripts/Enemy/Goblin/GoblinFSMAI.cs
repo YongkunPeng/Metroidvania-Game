@@ -78,7 +78,6 @@ public class GoblinFSMAI : MonoBehaviour
         goblinBlackboard.targetTransform = this.transform;
     }
 
-    
     void Start()
     {
         goblinFSM = new FSM(goblinBlackboard);
@@ -99,7 +98,6 @@ public class GoblinFSMAI : MonoBehaviour
         goblinBlackboard.originPos = transform.position; // 获取初始位置，便于指定范围内随机巡逻
     }
 
-    
     void Update()
     {
         goblinFSM.OnCheck();

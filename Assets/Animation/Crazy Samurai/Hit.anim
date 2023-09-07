@@ -20,7 +20,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: {x: 0.218, y: 0.48, z: 0}
+        value: {x: 0.204, y: 0.483, z: 0}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -29,7 +29,7 @@ AnimationClip:
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       - serializedVersion: 3
         time: 0.1
-        value: {x: -0.002, y: 0.541, z: 0}
+        value: {x: 0.001, y: 0.529, z: 0}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -39,15 +39,15 @@ AnimationClip:
       - serializedVersion: 3
         time: 0.2
         value: {x: 0.111, y: 0.517, z: 0}
-        inSlope: {x: 0.56, y: 0, z: 0}
-        outSlope: {x: 0.56, y: 0, z: 0}
+        inSlope: {x: 0.45999992, y: -0.090000026, z: 0}
+        outSlope: {x: 0.45999992, y: -0.090000026, z: 0}
         tangentMode: 0
         weightedMode: 0
         inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       - serializedVersion: 3
         time: 0.3
-        value: {x: 0.139, y: 0.524, z: 0}
+        value: {x: 0.134, y: 0.511, z: 0}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -57,7 +57,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: red eyes
+    path: red eye
   m_ScaleCurves: []
   m_FloatCurves: []
   m_PPtrCurves:
@@ -82,7 +82,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 2250482436
+      path: 4280000645
       attribute: 1
       script: {fileID: 0}
       typeID: 4
@@ -126,7 +126,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.218
+        value: 0.204
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -135,7 +135,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.1
-        value: -0.002
+        value: 0.001
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -145,15 +145,15 @@ AnimationClip:
       - serializedVersion: 3
         time: 0.2
         value: 0.111
-        inSlope: 0.56
-        outSlope: 0.56
+        inSlope: 0.45999992
+        outSlope: 0.45999992
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.3
-        value: 0.139
+        value: 0.134
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -164,7 +164,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.x
-    path: red eyes
+    path: red eye
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -172,7 +172,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.48
+        value: 0.483
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -181,7 +181,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.1
-        value: 0.541
+        value: 0.529
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -191,15 +191,15 @@ AnimationClip:
       - serializedVersion: 3
         time: 0.2
         value: 0.517
-        inSlope: 0
-        outSlope: 0
+        inSlope: -0.090000026
+        outSlope: -0.090000026
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.3
-        value: 0.524
+        value: 0.511
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -210,7 +210,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.y
-    path: red eyes
+    path: red eye
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -256,7 +256,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.z
-    path: red eyes
+    path: red eye
     classID: 4
     script: {fileID: 0}
   m_EulerEditorCurves: []

@@ -96,7 +96,7 @@ public class ArchivesUI : BasePanel
     {
         selectedData = userData1.transform.GetChild(0).GetChild(0).GetComponent<Text>().text;
         UserData data = LocalConfig.LoadUserData(selectedData);
-        GameManager.Instance.InitUserData(data);
+        GameManager.Instance.InitUserData(data, true);
     }
 
     /// <summary>
@@ -106,7 +106,7 @@ public class ArchivesUI : BasePanel
     {
         selectedData = userData2.transform.GetChild(0).GetChild(0).GetComponent<Text>().text;
         UserData data = LocalConfig.LoadUserData(selectedData);
-        GameManager.Instance.InitUserData(data);
+        GameManager.Instance.InitUserData(data, true);
     }
 
     /// <summary>

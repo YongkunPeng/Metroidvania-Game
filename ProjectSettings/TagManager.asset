@@ -32,7 +32,7 @@ TagManager:
   - CheckPoint
   - NPC
   - Item
-  - 
+  - FrontGround
   - 
   - 
   - 
@@ -55,6 +55,9 @@ TagManager:
   - name: Background
     uniqueID: 3317746223
     locked: 0
+  - name: BottomGround
+    uniqueID: 3636424911
+    locked: 0
   - name: ground
     uniqueID: 2496371761
     locked: 0
@@ -75,4 +78,7 @@ TagManager:
     locked: 0
   - name: UI
     uniqueID: 3870571999
+    locked: 0
+  - name: FrontGround
+    uniqueID: 3038585233
     locked: 0

@@ -47,7 +47,7 @@ public class Arrow : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Enemy")
+        if (collision.CompareTag("Enemy"))
         {
             cor = StartCoroutine(ie);
             rb.simulated = false;
@@ -55,7 +55,7 @@ public class Arrow : MonoBehaviour
             offset = transform.position - enemyTransform.position;
         }
 
-        if (collision.tag == "Ground")
+        if (collision.CompareTag("Ground"))
         {
             rb.simulated = false;
             cor = StartCoroutine(ie);

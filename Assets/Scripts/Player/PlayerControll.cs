@@ -12,12 +12,15 @@ public class PlayerBlackboard : Blackboard
     public Rigidbody2D rb;
     // 获取对象动画控制器
     public Animator playerAnimator;
+    // 碰撞器
+    public CapsuleCollider2D col;
     // 使状态类能调用对象的transform
     public Transform playerTransform;
 
     [Header("条件判断")]
     public bool isHit = false; // 是否受击
     public bool isGround; // 是否在地面
+    public bool isOnSlope; // 是否在斜坡上
     public bool isClimb; // 是否爬墙
     public bool isLightAttack; // 是否追加轻攻击
     public bool isHeavyAttack; // 是否追加重攻击
@@ -50,10 +53,14 @@ public class PlayerBlackboard : Blackboard
     [Header("其它")]
     public float intervalTime = 0.5f; // 追加攻击的允许间隔时间
     public float attack = 0f; // 将要给予敌人的攻击
-    public PhysicsMaterial2D noFriction; // 无摩擦材质，用于爬墙时使用
+    public PhysicsMaterial2D noFriction; // 无摩擦材质，防止坡上滑下
+    public PhysicsMaterial2D maxFriction; // 高摩擦材质，防止爬墙卡墙
     public int goldCoinCnt; // 金币数量
     public int arrowCnt; // 箭矢数量
     public string playerID; // 玩家名，用于存储文件命名
+    public float slotCheckDistance; // 坡度检查射线的长度
+    public float maxSlopeAngle; // 可攀爬的最大坡度
+    public LayerMask groundLayer; // 地面层
 
     [Header("生成预制体")]
     public GameObject shadow;
@@ -72,11 +79,12 @@ public class PlayerControll : MonoBehaviour
     private void Awake()
     {
         sprite = transform.GetComponent<SpriteRenderer>();
-        // 为玩家黑板赋予刚体和动画控制器
+        playerBlackboard.col = GetComponent<CapsuleCollider2D>();
         playerBlackboard.rb = GetComponent<Rigidbody2D>();
         playerBlackboard.playerAnimator = GetComponent<Animator>();
         playerBlackboard.playerTransform = this.transform;
 
+        // 检测出生点
         checkPoints = GameObject.FindObjectsOfType<CheckPoint>();
         foreach (CheckPoint check in checkPoints)
         {
@@ -87,7 +95,6 @@ public class PlayerControll : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         playerBlackboard.playerID = GameManager.Instance.userData.username;
@@ -130,7 +137,6 @@ public class PlayerControll : MonoBehaviour
         playerFSM.SwitchState(StateType.Idle);
     }
 
-    // Update is called once per frame
     void Update()
     {
         UpdateChangeablePlayerData();
@@ -360,12 +366,14 @@ public class PlayerIdleState : Istate
 
     public void OnEnter()
     {
+        playerBlackboard.rb.sharedMaterial = playerBlackboard.maxFriction;
+        playerBlackboard.rb.velocity = Vector2.zero;
         playerBlackboard.playerAnimator.Play("Idle");
     }
 
     public void OnExit()
     {
-        
+        playerBlackboard.rb.sharedMaterial = null;
     }
 
     public void OnFixUpdate()
@@ -431,6 +439,14 @@ public class PlayerRunState : Istate
     private PlayerBlackboard playerBlackboard;
     private float horizontal_x;
 
+    private Vector2 colSize; // 碰撞器尺寸
+    private Vector2 slopeNormal; // 斜坡法线
+    private Vector2 newVelocity; // 速度
+    private float slopeAngle; // 现坡度
+    private float slopeAngleOld; // 原坡度，用于与坡度比较，判断是否出现坡度变动
+    private float slopeAngleSide;
+    private bool canWalkSlope; // 是否可以上坡
+
     public PlayerRunState(FSM fsm)
     {
         playerFSM = fsm;
@@ -444,6 +460,7 @@ public class PlayerRunState : Istate
 
     public void OnEnter()
     {
+        colSize = playerBlackboard.col.size;
         playerBlackboard.playerAnimator.Play("Run");
         AudioSourceManager.Instance.PlayPlayerWalkSound();
     }
@@ -455,7 +472,8 @@ public class PlayerRunState : Istate
 
     public void OnFixUpdate()
     {
-        playerBlackboard.rb.velocity = new Vector2(horizontal_x * playerBlackboard.speed, playerBlackboard.rb.velocity.y); // 玩家移动
+        SlopeCheck();
+        Move();
 
         // 根据输入方向设置朝向
         if (horizontal_x > 0)
@@ -465,11 +483,6 @@ public class PlayerRunState : Istate
         else if (horizontal_x < 0)
         {
             playerBlackboard.playerTransform.localScale = new Vector3(-1, 1, 1);
-        }
-
-        if (Mathf.Abs(horizontal_x) < 0.1f) // 按下移动键后切换为跑动状态
-        {
-            playerFSM.SwitchState(StateType.Idle);
         }
     }
 
@@ -523,6 +536,99 @@ public class PlayerRunState : Istate
         {
             playerFSM.SwitchState(StateType.Fall);
         }
+
+        // 按下移动键后切换为跑动状态
+        if (Mathf.Abs(horizontal_x) < 0.1f)
+        {
+            playerFSM.SwitchState(StateType.Idle);
+        }
+    }
+
+    private void Move()
+    {
+        if (playerBlackboard.isGround && !playerBlackboard.isOnSlope)
+        { // 着地且未处于斜坡
+            newVelocity.Set(horizontal_x * playerBlackboard.speed, 0f);
+            playerBlackboard.rb.velocity = newVelocity;
+        }
+        else if (playerBlackboard.isGround && playerBlackboard.isOnSlope && canWalkSlope)
+        { // 着地且处于斜坡
+            newVelocity.Set(playerBlackboard.speed * slopeNormal.x * -horizontal_x, playerBlackboard.speed * slopeNormal.y * -horizontal_x);
+            playerBlackboard.rb.velocity = newVelocity;
+        }
+    }
+
+    /// <summary>
+    /// 斜坡检查
+    /// </summary>
+    private void SlopeCheck()
+    {
+        Vector2 checkPos = playerBlackboard.playerTransform.position - new Vector3(0, colSize.y / 2); // 方形碰撞器底部点
+        SlopeCheckHorizontal(checkPos);
+        SlopeCheckVertical(checkPos);
+    }
+
+    /// <summary>
+    /// 水平斜坡检查
+    /// </summary>
+    /// <param name="checkPos">起点</param>
+    private void SlopeCheckHorizontal(Vector2 checkPos)
+    { // 在玩家脚底前后各发出一条射线，判断前后是否有坡，从而控制isOnSlope的值
+        RaycastHit2D slopeHitFront = Physics2D.Raycast(checkPos, playerBlackboard.playerTransform.right, playerBlackboard.slotCheckDistance, playerBlackboard.groundLayer);
+        RaycastHit2D slopeHitBack = Physics2D.Raycast(checkPos, -playerBlackboard.playerTransform.right, playerBlackboard.slotCheckDistance, playerBlackboard.groundLayer);
+        if (slopeHitFront)
+        { // 前方有坡
+            playerBlackboard.isOnSlope = true;
+            slopeAngleSide = Vector2.Angle(slopeHitFront.normal, Vector2.up);
+        }
+        else if (slopeHitBack)
+        { // 后方有坡
+            playerBlackboard.isOnSlope = true;
+            slopeAngleSide = Vector2.Angle(slopeHitBack.normal, Vector2.up);
+        }
+        else
+        {
+            playerBlackboard.isOnSlope = false;
+            slopeAngleSide = 0f;
+        }
+    }
+
+    /// <summary>
+    /// 垂直斜坡检查
+    /// </summary>
+    /// <param name="checkPos">起点</param>
+    private void SlopeCheckVertical(Vector2 checkPos)
+    { // 且坡度，从而得到速度向量
+        RaycastHit2D hit = Physics2D.Raycast(checkPos, Vector2.down, playerBlackboard.slotCheckDistance, playerBlackboard.groundLayer);
+
+        if (hit)
+        {
+            Debug.Log("斜坡位置：" + hit.point);
+            Debug.Log("斜坡法向量：" + hit.normal);
+            
+            slopeNormal = Vector2.Perpendicular(hit.normal).normalized; // 返回垂直于该法线的向量，即法线正轴逆时针选择90度(详见API)
+            slopeAngle = Vector2.Angle(hit.normal, Vector2.up); // 坡度
+
+            if (slopeAngle != slopeAngleOld)
+            {
+                playerBlackboard.isOnSlope = true;
+            }
+            slopeAngleOld = slopeAngle;
+
+            Debug.Log("坡度：" + slopeAngle);
+            Debug.DrawRay(hit.point, hit.normal, Color.red); // 法线
+            Debug.DrawRay(hit.point, slopeNormal, Color.green); // 斜坡向量
+        }
+
+        // 该坡度是否可走
+        if (slopeAngle > playerBlackboard.maxSlopeAngle || slopeAngleSide > playerBlackboard.maxSlopeAngle)
+        {
+            canWalkSlope = false;
+        }
+        else
+        {
+            canWalkSlope = true;
+        }
     }
 }
 
@@ -572,9 +678,13 @@ public class PlayerJumpState : Istate
         }
 
         // 着地且速度竖直方向为负时，进入下落状态
-        if ((playerBlackboard.isGround == false) && (playerBlackboard.rb.velocity.y < 0))
+        if ((playerBlackboard.isGround == false) && (playerBlackboard.rb.velocity.y <= 0f))
         {
             playerFSM.SwitchState(StateType.Fall);
+        }
+        else if((playerBlackboard.isGround == true) && (playerBlackboard.rb.velocity.y <= 0f))
+        { // 头顶存在很低的天花板，起跳但未离地
+            playerFSM.SwitchState(StateType.Idle);
         }
     }
 

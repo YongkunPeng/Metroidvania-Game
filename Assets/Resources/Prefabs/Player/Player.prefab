@@ -202,7 +202,7 @@ GameObject:
   - component: {fileID: 8074352649529869331}
   - component: {fileID: 8074352649529869328}
   - component: {fileID: 8074352649529869334}
-  - component: {fileID: 3051535270015840835}
+  - component: {fileID: 2882417201259689010}
   - component: {fileID: 8074352649529869335}
   - component: {fileID: 8074352649529869330}
   m_Layer: 7
@@ -270,7 +270,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1967929029
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 1
   m_Sprite: {fileID: -1643427582, guid: 91d677876b9b61945b7891e578cd0467, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -304,8 +304,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &3051535270015840835
-BoxCollider2D:
+--- !u!70 &2882417201259689010
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -317,19 +317,9 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.013905883, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.53333336, y: 1.0333333}
-    newSize: {x: 0.53333336, y: 1.0333333}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.43877292, y: 1.0333333}
-  m_EdgeRadius: 0
+  m_Offset: {x: 0, y: 0.02}
+  m_Size: {x: 0.4, y: 1.05}
+  m_Direction: 0
 --- !u!95 &8074352649529869335
 Animator:
   serializedVersion: 5
@@ -370,9 +360,11 @@ MonoBehaviour:
     jumpSpeed: 0
     rb: {fileID: 0}
     playerAnimator: {fileID: 0}
+    col: {fileID: 0}
     playerTransform: {fileID: 0}
     isHit: 0
     isGround: 0
+    isOnSlope: 0
     isClimb: 0
     isLightAttack: 0
     isHeavyAttack: 0
@@ -397,9 +389,15 @@ MonoBehaviour:
     intervalTime: 1
     attack: 0
     noFriction: {fileID: 6200000, guid: c3ec1626ec7a48445b219bfe21233789, type: 2}
+    maxFriction: {fileID: 6200000, guid: 1cd29c080e28e064a9d115d7933afd92, type: 2}
     goldCoinCnt: 0
     arrowCnt: 0
     playerID: 
+    slotCheckDistance: 0.5
+    maxSlopeAngle: 60
+    groundLayer:
+      serializedVersion: 2
+      m_Bits: 1024
     shadow: {fileID: 366715494253594551, guid: 6b845de5b3a590b4d84e95285bdc7523, type: 3}
     arrow: {fileID: 5504241203854503938, guid: eda5254715345904b923a835ccfd9b04, type: 3}
   sprite: {fileID: 0}
@@ -431,7 +429,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8074352649609497694}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.028, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -454,3 +452,4 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   isGround: 0
+  lenth: 0.2

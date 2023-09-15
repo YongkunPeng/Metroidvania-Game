@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CanvasManager : MonoBehaviour
 {
@@ -11,14 +12,15 @@ public class CanvasManager : MonoBehaviour
 
     void Update()
     {
-        OpenBag();
+        OpenUI();
     }
 
     /// <summary>
     /// 打开各个界面(该界面未打开，且不存在其它界面时)
     /// </summary>
-    private void OpenBag()
+    private void OpenUI()
     {
+        // 只可存在一个界面
         if (   !UIManager.Instance.panelDict.ContainsKey(UIConst.PlayerBag)
             && !UIManager.Instance.panelDict.ContainsKey(UIConst.PlayerMission)
             && !UIManager.Instance.panelDict.ContainsKey(UIConst.Settings)

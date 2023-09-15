@@ -35,9 +35,15 @@ public class SceneLoadManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void LoadLevelByIndex(int index)
+    public void LoadLevelByIndexWithSlider(int index)
     {
-        UIManager.Instance.OpenPanel(UIConst.LoadScene);
-        GameObject.FindObjectOfType<LoadSceneUI>().LoadLevelByIndex(index);
+        LoadSceneUI loadUI = UIManager.Instance.OpenPanel(UIConst.LoadScene) as LoadSceneUI;
+        loadUI.LoadLevelByIndex(index);
+    }
+
+    public void LoadLevelByIndexWithDark(int index)
+    {
+        LoadSceneWithDarkUI loadUI = UIManager.Instance.OpenPanel(UIConst.LoadSceneWithDark) as LoadSceneWithDarkUI;
+        loadUI.LoadLevelByIndex(index);
     }
 }

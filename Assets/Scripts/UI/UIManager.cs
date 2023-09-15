@@ -65,7 +65,9 @@ public class UIManager
             {UIConst.LoadScene, "LoadScene"},
             {UIConst.Shop, "ShopMenu"},
             {UIConst.TipsBox, "TipsBox"},
-            {UIConst.RestartMenu, "RestartMenu"}
+            {UIConst.RestartMenu, "RestartMenu"},
+            {UIConst.LoadSceneWithDark, "LoadSceneWithDark"},
+            {UIConst.BossInfo, "Boss Info"}
         };
     }
 
@@ -125,8 +127,10 @@ public class UIConst // 存储界面名常量
     public const string PlayerBag = "PlayerBag"; // 背包
     public const string PlayerMission = "PlayerMission"; // 任务
     public const string Settings = "Settings"; // 设置
-    public const string LoadScene = "LoadScene"; // 场景过渡
+    public const string LoadScene = "LoadScene"; // 场景过渡(需点击进入)
+    public const string LoadSceneWithDark = "LoadSceneWithDark"; // 场景过渡(渐变直接进入)
     public const string Shop = "Shop"; // 商店
     public const string RestartMenu = "RestartMenu"; // 死亡菜单
     public const string TipsBox = "TipsBox"; // 弹窗
+    public const string BossInfo = "BossInfo"; // BOSS信息
 }

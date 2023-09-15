@@ -115,7 +115,7 @@ public class GoblinFSMAI : MonoBehaviour
         Gizmos.DrawWireSphere(goblinBlackboard.attackPoint.position, 0.35f);
         Gizmos.DrawWireSphere(goblinBlackboard.evadePoint.position, 0.35f);
         Gizmos.DrawRay(goblinBlackboard.goblinTransform.position + new Vector3(0, 0.1f, 0), Vector2.right * goblinBlackboard.goblinTransform.localScale.x * 2f);
-        Gizmos.DrawRay(goblinBlackboard.goblinTransform.position - new Vector3(0, 0.3f, 0), Vector2.right * goblinBlackboard.goblinTransform.localScale.x * 2.5f);
+        Gizmos.DrawRay(goblinBlackboard.goblinTransform.position - new Vector3(0, 0.2f, 0), Vector2.right * goblinBlackboard.goblinTransform.localScale.x * 3.2f);
     }
 
     // 攻击位移帧事件
@@ -411,7 +411,7 @@ public class GoblinAttack1State : Istate
     {
         targetPosition = goblinBlackboard.targetTransform.position;
         goblinFSM.FlipToPoint(goblinBlackboard.goblinTransform, targetPosition);
-        goblinBlackboard.attack = 5f;
+        goblinBlackboard.attack = 10f;
 
         goblinBlackboard.goblinAnimator.Play("Attack1");
     }
@@ -467,7 +467,7 @@ public class GoblinAttack2State : Istate
     {
         targetPosition = goblinBlackboard.targetTransform.position;
         goblinFSM.FlipToPoint(goblinBlackboard.goblinTransform, targetPosition);
-        goblinBlackboard.attack = 8f;
+        goblinBlackboard.attack = 20f;
 
         AudioSourceManager.Instance.PlaySound(GlobalAudioClips.PlayerDash);
         goblinBlackboard.goblinAnimator.Play("Attack2");
@@ -482,7 +482,7 @@ public class GoblinAttack2State : Istate
 
     public void OnFixUpdate()
     {
-
+        
     }
 
     public void OnUpdate()
@@ -524,18 +524,19 @@ public class GoblinAttack3State : Istate
 
     public void OnEnter()
     {
-        targetPosition = goblinBlackboard.targetTransform.position;
+        targetPosition = goblinBlackboard.goblinTransform.position;
 
-        goblinFSM.FlipToPoint(goblinBlackboard.goblinTransform, targetPosition);
+        goblinFSM.FlipToPoint(goblinBlackboard.goblinTransform, goblinBlackboard.targetTransform.position);
 
         goblinBlackboard.goblinAnimator.Play("Attack3");
 
         // 计算抛掷炸弹的初速度
         Vector2 dir = (goblinBlackboard.targetTransform.position - goblinBlackboard.goblinTransform.position).normalized;
-        float distance = Vector2.Distance(goblinBlackboard.targetTransform.position, goblinBlackboard.goblinTransform.position);
+        float distance = Vector2.Distance(goblinBlackboard.targetTransform.position, targetPosition);
         float speedValue = (distance * Physics.gravity.magnitude) / (Mathf.Sin(2 * Mathf.Deg2Rad * 60));
         speedValue = Mathf.Sqrt(speedValue);
         initialVelocity = dir * speedValue;
+        Debug.Log("发射速度：" + initialVelocity);
     }
 
     public void OnExit()
@@ -589,18 +590,19 @@ public class GoblinEvadeState : Istate
     public void OnEnter()
     {
         // 后跳
+        goblinBlackboard.goblinTransform.gameObject.layer = 12;
         goblinBlackboard.rb.velocity = new Vector2(-2f * goblinBlackboard.goblinTransform.localScale.x, 4);
         goblinBlackboard.goblinAnimator.Play("Evade");
     }
 
     public void OnExit()
     {
-
+        goblinBlackboard.goblinTransform.gameObject.layer = 6;
     }
 
     public void OnFixUpdate()
     {
-        target = Physics2D.Raycast(goblinBlackboard.goblinTransform.position - new Vector3(0, 0.3f, 0), Vector2.right * goblinBlackboard.goblinTransform.localScale.x, 2.5f, goblinBlackboard.attackLayerMask);
+        target = Physics2D.Raycast(goblinBlackboard.goblinTransform.position - new Vector3(0, 0.2f, 0), Vector2.right * goblinBlackboard.goblinTransform.localScale.x, 3.2f, goblinBlackboard.attackLayerMask);
     }
 
     public void OnUpdate()
@@ -610,7 +612,7 @@ public class GoblinEvadeState : Istate
             goblinFSM.SwitchState(StateType.Hurt);
         }
 
-        if ((goblinBlackboard.isGround == true) && (goblinBlackboard.rb.velocity.y < 0.1f))
+        if (goblinBlackboard.isGround == true && MathF.Abs(goblinBlackboard.rb.velocity.y) <= 0.1f)
         {
             if (target.collider != null)
             {
@@ -667,7 +669,7 @@ public class GoblinCoolState : Istate
             goblinFSM.SwitchState(StateType.Hurt);
         }
 
-        if (Vector2.Distance(goblinBlackboard.targetTransform.position, goblinBlackboard.goblinTransform.position) < 1f)
+        if (Vector2.Distance(goblinBlackboard.targetTransform.position, goblinBlackboard.goblinTransform.position) < 2f)
         {
             if (coolTimer >= goblinBlackboard.coolTime)
             { // 结束等待

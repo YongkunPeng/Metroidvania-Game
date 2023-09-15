@@ -33,7 +33,7 @@ public class SettingsUI : BasePanel
 
     private void OnEnable()
     {
-        mainMeneBtn.onClick.AddListener(() => SceneLoadManager.Instance.LoadLevelByIndex(0));
+        mainMeneBtn.onClick.AddListener(() => SceneLoadManager.Instance.LoadLevelByIndexWithSlider(0));
     }
 
     private void Start()

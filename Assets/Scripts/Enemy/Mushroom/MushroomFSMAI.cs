@@ -560,7 +560,7 @@ public class MushroomAttack1State : Istate
 
         mushroomBlackboard.mushroomAnimator.Play("Attack1");
 
-        mushroomBlackboard.attack = 10f;
+        mushroomBlackboard.attack = 15f;
     }
 
     public void OnExit()
@@ -622,7 +622,7 @@ public class MushroomAttack2State : Istate
 
         mushroomBlackboard.mushroomAnimator.Play("Attack2");
 
-        mushroomBlackboard.attack = 20f;
+        mushroomBlackboard.attack = 25f;
     }
 
     public void OnExit()

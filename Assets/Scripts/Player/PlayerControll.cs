@@ -59,7 +59,6 @@ public class PlayerBlackboard : Blackboard
     public int arrowCnt; // 箭矢数量
     public string playerID; // 玩家名，用于存储文件命名
     public float slotCheckDistance; // 坡度检查射线的长度
-    public float maxSlopeAngle; // 可攀爬的最大坡度
     public LayerMask groundLayer; // 地面层
 
     [Header("生成预制体")]
@@ -69,12 +68,14 @@ public class PlayerBlackboard : Blackboard
 
 public class PlayerControll : MonoBehaviour
 {
+    public static string startPoint; // 记录起点
     private FSM playerFSM;
     public PlayerBlackboard playerBlackboard = new PlayerBlackboard();
     public SpriteRenderer sprite;
     CheckPoint[] checkPoints;
 
     public LayerMask feetLayerMask; // 接触地面判断射线
+
 
     private void Awake()
     {
@@ -85,13 +86,17 @@ public class PlayerControll : MonoBehaviour
         playerBlackboard.playerTransform = this.transform;
 
         // 检测出生点
-        checkPoints = GameObject.FindObjectsOfType<CheckPoint>();
-        foreach (CheckPoint check in checkPoints)
+        if (GameManager.Instance.shouldTransmit)
         {
-            if (GameManager.Instance.userData.checkPointID == check.CheckPointID)
+            checkPoints = GameObject.FindObjectsOfType<CheckPoint>();
+            foreach (CheckPoint check in checkPoints)
             {
-                transform.position = check.transform.position;
+                if (GameManager.Instance.userData.checkPointID == check.CheckPointID)
+                {
+                    transform.position = check.transform.position;
+                }
             }
+            GameManager.Instance.shouldTransmit = false;
         }
     }
 
@@ -380,7 +385,7 @@ public class PlayerIdleState : Istate
     {
         // 当有移动时切换奔跑状态
         horizontal_x = Input.GetAxisRaw("Horizontal");
-        if (horizontal_x != 0)
+        if (horizontal_x != 0f)
         {
             playerFSM.SwitchState(StateType.Run);
         }
@@ -401,7 +406,7 @@ public class PlayerIdleState : Istate
         }
 
         // 需要间隔检测，放入Update中
-        if ((playerBlackboard.isGround == true) && (Input.GetButtonDown("Jump")))
+        if (playerBlackboard.isGround == true && Input.GetButtonDown("Jump"))
         {
             playerFSM.SwitchState(StateType.Jump);
         }
@@ -445,7 +450,6 @@ public class PlayerRunState : Istate
     private float slopeAngle; // 现坡度
     private float slopeAngleOld; // 原坡度，用于与坡度比较，判断是否出现坡度变动
     private float slopeAngleSide;
-    private bool canWalkSlope; // 是否可以上坡
 
     public PlayerRunState(FSM fsm)
     {
@@ -497,7 +501,7 @@ public class PlayerRunState : Istate
         }
 
         // 切换为跳跃状态
-        if ((playerBlackboard.isGround == true) && (Input.GetButtonDown("Jump")))
+        if (playerBlackboard.isGround == true && Input.GetButtonDown("Jump"))
         {
             playerFSM.SwitchState(StateType.Jump);
         }
@@ -551,7 +555,7 @@ public class PlayerRunState : Istate
             newVelocity.Set(horizontal_x * playerBlackboard.speed, 0f);
             playerBlackboard.rb.velocity = newVelocity;
         }
-        else if (playerBlackboard.isGround && playerBlackboard.isOnSlope && canWalkSlope)
+        else if (playerBlackboard.isGround && playerBlackboard.isOnSlope)
         { // 着地且处于斜坡
             newVelocity.Set(playerBlackboard.speed * slopeNormal.x * -horizontal_x, playerBlackboard.speed * slopeNormal.y * -horizontal_x);
             playerBlackboard.rb.velocity = newVelocity;
@@ -576,15 +580,23 @@ public class PlayerRunState : Istate
     { // 在玩家脚底前后各发出一条射线，判断前后是否有坡，从而控制isOnSlope的值
         RaycastHit2D slopeHitFront = Physics2D.Raycast(checkPos, playerBlackboard.playerTransform.right, playerBlackboard.slotCheckDistance, playerBlackboard.groundLayer);
         RaycastHit2D slopeHitBack = Physics2D.Raycast(checkPos, -playerBlackboard.playerTransform.right, playerBlackboard.slotCheckDistance, playerBlackboard.groundLayer);
+        Debug.DrawRay(checkPos, playerBlackboard.playerTransform.right * playerBlackboard.slotCheckDistance, Color.black);
+        Debug.DrawRay(checkPos, -playerBlackboard.playerTransform.right * playerBlackboard.slotCheckDistance, Color.black);
         if (slopeHitFront)
-        { // 前方有坡
-            playerBlackboard.isOnSlope = true;
+        { // 左侧有坡
             slopeAngleSide = Vector2.Angle(slopeHitFront.normal, Vector2.up);
+            if (slopeAngleSide <= 89)
+            {
+                playerBlackboard.isOnSlope = true;
+            }
         }
         else if (slopeHitBack)
-        { // 后方有坡
-            playerBlackboard.isOnSlope = true;
+        { // 右侧有坡
             slopeAngleSide = Vector2.Angle(slopeHitBack.normal, Vector2.up);
+            if (slopeAngleSide <= 89)
+            {
+                playerBlackboard.isOnSlope = true;
+            }
         }
         else
         {
@@ -619,16 +631,6 @@ public class PlayerRunState : Istate
             Debug.DrawRay(hit.point, hit.normal, Color.red); // 法线
             Debug.DrawRay(hit.point, slopeNormal, Color.green); // 斜坡向量
         }
-
-        // 该坡度是否可走
-        if (slopeAngle > playerBlackboard.maxSlopeAngle || slopeAngleSide > playerBlackboard.maxSlopeAngle)
-        {
-            canWalkSlope = false;
-        }
-        else
-        {
-            canWalkSlope = true;
-        }
     }
 }
 
@@ -638,6 +640,9 @@ public class PlayerJumpState : Istate
     private FSM playerFSM;
     private PlayerBlackboard playerBlackboard;
     private float horizontal_x;
+
+    private float startTime;
+    private float endTime;
 
     public PlayerJumpState(FSM fsm)
     {
@@ -652,6 +657,7 @@ public class PlayerJumpState : Istate
 
     public void OnEnter()
     {
+        startTime = Time.time;
         // 跳跃
         AudioSourceManager.Instance.PlaySound(GlobalAudioClips.PlayerJump);
         playerBlackboard.playerAnimator.Play("Jump");
@@ -692,6 +698,7 @@ public class PlayerJumpState : Istate
     {
         // 玩家跳跃过程的水平移动
         horizontal_x = Input.GetAxisRaw("Horizontal");
+        endTime = Time.time;
 
         // 按下攻击键进入轻攻击状态
         if (Input.GetKeyDown(KeyCode.J))
@@ -846,11 +853,12 @@ public class PlayerFallingState : Istate
     public void OnEnter()
     {
         playerBlackboard.playerAnimator.Play("Falling");
+        playerBlackboard.rb.sharedMaterial = playerBlackboard.noFriction;
     }
 
     public void OnExit()
     {
-        
+        playerBlackboard.rb.sharedMaterial = null;
     }
 
     public void OnFixUpdate()
@@ -1054,7 +1062,7 @@ public class PlayerClimbJumpState : Istate
     private FSM playerFSM;
     private PlayerBlackboard playerBlackboard;
     private float horizontal_x;
-    private const float horizontalInputTime = 0.2f;
+    private const float horizontalInputTime = 0.2f; // 判断时间
     private float horizontalInputTimer; 
 
     public PlayerClimbJumpState(FSM fsm)
@@ -1106,6 +1114,11 @@ public class PlayerClimbJumpState : Istate
         if ((playerBlackboard.isGround == false) && (playerBlackboard.rb.velocity.y < 0))
         {
             playerFSM.SwitchState(StateType.Fall);
+        }
+
+        if ((playerBlackboard.isGround == true) && horizontalInputTime <= horizontalInputTimer)
+        {
+            playerFSM.SwitchState(StateType.Land);
         }
     }
 
@@ -1247,7 +1260,7 @@ public class PlayerLightAttack1State : Istate
     {
         info = playerBlackboard.playerAnimator.GetCurrentAnimatorStateInfo(0);
         
-        if (playerBlackboard.isGround == true)
+        if (playerBlackboard.isGround)
         { // 只在地面时，增加攻击位移
             playerBlackboard.rb.velocity = new Vector2(playerBlackboard.playerTransform.localScale.x * playerBlackboard.lightAttackOffset, playerBlackboard.rb.velocity.y);
         }
@@ -1338,7 +1351,7 @@ public class PlayerLightAttack2State : Istate
     {
         info = playerBlackboard.playerAnimator.GetCurrentAnimatorStateInfo(0);
 
-        if (playerBlackboard.isGround == true)
+        if (playerBlackboard.isGround)
         { // 只在地面时，增加攻击位移
             playerBlackboard.rb.velocity = new Vector2(playerBlackboard.playerTransform.localScale.x * playerBlackboard.lightAttackOffset, playerBlackboard.rb.velocity.y);
         }
@@ -1430,7 +1443,7 @@ public class PlayerLightAttack3State : Istate
     {
         info = playerBlackboard.playerAnimator.GetCurrentAnimatorStateInfo(0);
 
-        if (playerBlackboard.isGround == true)
+        if (playerBlackboard.isGround)
         { // 只在地面时，增加攻击位移
             playerBlackboard.rb.velocity = new Vector2(playerBlackboard.playerTransform.localScale.x * playerBlackboard.lightAttackOffset, playerBlackboard.rb.velocity.y);
         }
@@ -1521,7 +1534,7 @@ public class PlayerHeavyAttack1State : Istate
     {
         info = playerBlackboard.playerAnimator.GetCurrentAnimatorStateInfo(0);
 
-        if (playerBlackboard.isGround == true)
+        if (playerBlackboard.isGround)
         { // 只在地面时，增加攻击位移
             playerBlackboard.rb.velocity = new Vector2(playerBlackboard.playerTransform.localScale.x * playerBlackboard.heavtAttackOffset, playerBlackboard.rb.velocity.y);
         }
@@ -1611,7 +1624,7 @@ public class PlayerHeavyAttack2State : Istate
     {
         info = playerBlackboard.playerAnimator.GetCurrentAnimatorStateInfo(0);
 
-        if (playerBlackboard.isGround == true)
+        if (playerBlackboard.isGround)
         { // 只在地面时，增加攻击位移
             playerBlackboard.rb.velocity = new Vector2(playerBlackboard.playerTransform.localScale.x * playerBlackboard.heavtAttackOffset, playerBlackboard.rb.velocity.y);
         }
@@ -1699,7 +1712,7 @@ public class PlayerHeavyAttack3State : Istate
 
     public void OnFixUpdate()
     {
-        if (playerBlackboard.isGround == true)
+        if (playerBlackboard.isGround)
         { // 只在地面时，增加攻击位移
             playerBlackboard.rb.velocity = new Vector2(playerBlackboard.playerTransform.localScale.x * playerBlackboard.heavtAttackOffset, playerBlackboard.rb.velocity.y);
         }
@@ -1857,9 +1870,5 @@ public class PlayerHurtState : Istate
         {
             playerFSM.SwitchState(StateType.Idle);
         }
-        //else if (info.normalizedTime <= 0.99f)
-        //{
-        //    playerBlackboard.rb.velocity = new Vector2(-playerBlackboard.hurtOffset * playerBlackboard.playerTransform.localScale.x, 1f);
-        //}
     }
 }

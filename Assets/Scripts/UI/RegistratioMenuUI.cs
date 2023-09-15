@@ -30,6 +30,7 @@ public class RegistratioMenuUI : BasePanel
     public void StartNewUserData()
     {
         AudioSourceManager.Instance.PlaySound(GlobalAudioClips.ClickSound);
+
         DirectoryInfo directoryInfo = new DirectoryInfo(Application.persistentDataPath + "/users");
         FileInfo[] files = directoryInfo.GetFiles("*.json")
             .Where(file => file.Extension.ToLower() == ".json")
@@ -62,7 +63,7 @@ public class RegistratioMenuUI : BasePanel
             GameManager.Instance.itemsDict = userData.itemsDict;
             GameManager.Instance.missionList = userData.missionList;
             GameManager.Instance.username = userData.username;
-            SceneLoadManager.Instance.LoadLevelByIndex(1);
+            SceneLoadManager.Instance.LoadLevelByIndexWithSlider(1);
             ClosePanel();
         }
         else if (!ValidateUsername(username))

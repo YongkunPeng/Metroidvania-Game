@@ -43,7 +43,7 @@ public class LocalConfig
         // 转换为json字符串
         string jsonData = JsonConvert.SerializeObject(data);
         // 加密
-        // jsonData = Encrypt(jsonData);
+        jsonData = Encrypt(jsonData);
         // 写入json文件，按用户名分类
         File.WriteAllText(Application.persistentDataPath + string.Format("/users/{0}.json", data.username), jsonData);
     }
@@ -62,7 +62,7 @@ public class LocalConfig
             // 读取所有内容
             string jsonData = File.ReadAllText(path);
             // 解密
-            // jsonData = Decrypt(jsonData);
+            jsonData = Decrypt(jsonData);
             UserData data = JsonConvert.DeserializeObject<UserData>(jsonData);
             return data;
         }
@@ -85,6 +85,7 @@ public class UserData
     public List<Mission> missionList;
     public int sceneID; // 所在场景
     public int checkPointID; // 检查点ID
+    public bool killBoss = false; // 是否击杀BOSS
 
     public UserData(string username, float health, int arrowCnt, int coinCnt)
     {

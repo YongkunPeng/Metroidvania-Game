@@ -196,9 +196,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fc736a90c4bad948a513279c5c25abe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldTransmit: 0
   isPaused: 0
   missionList: []
   slots: []
+  userData:
+    username: 
+    health: 0
+    coinCnt: 0
+    missionList: []
+    sceneID: 0
+    checkPointID: 0
+    killBoss: 0
   username: 
 --- !u!4 &270253190
 Transform:

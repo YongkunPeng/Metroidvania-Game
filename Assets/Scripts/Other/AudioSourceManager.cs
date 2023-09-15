@@ -143,6 +143,9 @@ public class GlobalAudioClips
     // µã»÷ÉÌµê°´Å¥ÒôĞ§
     public const string ShopSound = "Music/SFX/Other/Shop Button";
 
+    // ´æµµÒôĞ§
+    public const string CheckPoint = "Music/SFX/Other/CheckPoint";
+
     #endregion
 
     #region Íæ¼ÒÒôĞ§
@@ -211,17 +214,31 @@ public class GlobalAudioClips
 
     #region ·¢¿ñÎäÊ¿ÒôĞ§
 
+    // ¹¥»÷1°Îµ¶
+    public const string SamuraiDrawNormal = "Music/SFX/Samurai/SamuraiDrawNormal";
+
+    // ¹¥»÷1»Ó¿³
+    public const string SamuraiAttack1 = "Music/SFX/Samurai/SamuraiAttack1";
+
     // ¹¥»÷2°Îµ¶
     public const string SamuraiDraw = "Music/SFX/Samurai/SamuraiDraw";
 
     // ¹¥»÷2»Ó¿³
     public const string SamuraiAttack2 = "Music/SFX/Samurai/SamuraiAttack2";
 
+    // ¹¥»÷3»Ó¿³
+    public const string SamuraiAttack3 = "Music/SFX/Samurai/SamuraiAttack3";
+
+    // ¹¥»÷4½£Æø
+    public const string SamuraiAttack4 = "Music/SFX/Samurai/SamuraiAttack4";
+
     #endregion
 
     #region ±³¾°ÒôÀÖ
 
     public const string BGM1 = "Music/BGM/BGM1";
+
+    public const string BossFight = "Music/BGM/BossFight";
 
     #endregion
 }

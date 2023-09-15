@@ -30,6 +30,8 @@ public class CheckPoint : MonoBehaviour
             Coroutine cor = StartCoroutine(ie);
             if (player != null)
             {
+                AudioSourceManager.Instance.PlaySound(GlobalAudioClips.CheckPoint);
+                player.GetComponent<PlayerControll>().HealLife(100f);
                 player.GetComponent<PlayerControll>().GetLifeCoinData(ref life, ref coinCnt);
                 GameManager.Instance.SaveUserData(life, coinCnt, sceneID, checkPointID);
                 TipsBoxManager.Instance.ShowTipsBox("´æµµ³É¹¦", 2f);

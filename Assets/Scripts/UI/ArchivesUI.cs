@@ -94,6 +94,7 @@ public class ArchivesUI : BasePanel
     /// </summary>
     public void LoadUserData1()
     {
+        GameManager.Instance.shouldTransmit = true;
         selectedData = userData1.transform.GetChild(0).GetChild(0).GetComponent<Text>().text;
         UserData data = LocalConfig.LoadUserData(selectedData);
         GameManager.Instance.InitUserData(data, true);
@@ -104,6 +105,7 @@ public class ArchivesUI : BasePanel
     /// </summary>
     public void LoadUserData2()
     {
+        GameManager.Instance.shouldTransmit = true;
         selectedData = userData2.transform.GetChild(0).GetChild(0).GetComponent<Text>().text;
         UserData data = LocalConfig.LoadUserData(selectedData);
         GameManager.Instance.InitUserData(data, true);

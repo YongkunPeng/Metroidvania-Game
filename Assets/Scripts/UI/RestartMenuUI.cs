@@ -23,7 +23,7 @@ public class RestartMenuUI : BasePanel
     /// </summary>
     public void LoadMainMenu()
     {
-        SceneLoadManager.Instance.LoadLevelByIndex(0);
+        SceneLoadManager.Instance.LoadLevelByIndexWithSlider(0);
     }
 
     /// <summary>
@@ -31,6 +31,9 @@ public class RestartMenuUI : BasePanel
     /// </summary>
     public void RestartGame()
     {
+        AudioSourceManager.Instance.PlayBGM(GlobalAudioClips.BGM1);
+        GameManager.Instance.userData = LocalConfig.LoadUserData(GameManager.Instance.username);
+        GameManager.Instance.shouldTransmit = true; // ËÀÍö·µ»Ø¼ÇÂ¼µã
         GameManager.Instance.InitUserData(GameManager.Instance.userData, true);
     }
 

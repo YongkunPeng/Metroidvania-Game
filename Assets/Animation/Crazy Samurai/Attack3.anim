@@ -201,7 +201,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.5
-        value: 1.4968964
+        value: 2.1014414
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -209,8 +209,17 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
+        time: 0.5833333
+        value: 2.085016
+        inSlope: -0.6570147
+        outSlope: -0.6570147
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
         time: 0.6
-        value: 1.4468482
+        value: 1.9869746
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -256,7 +265,16 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.5
-        value: 3.6298063
+        value: 2.4207163
+        inSlope: 0.5684373
+        outSlope: 0.5684373
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.5833333
+        value: 2.4799285
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -265,7 +283,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.6
-        value: 3.5297098
+        value: 2.449457
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -319,8 +337,17 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
+        time: 0.5833333
+        value: -0.10178143
+        inSlope: -0.66056955
+        outSlope: -0.66056955
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
         time: 0.6
-        value: -0.1182957
+        value: -0.11829567
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -590,7 +617,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.5
-        value: 1.4968964
+        value: 2.1014414
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -598,8 +625,17 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
+        time: 0.5833333
+        value: 2.085016
+        inSlope: -0.6570147
+        outSlope: -0.6570147
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
         time: 0.6
-        value: 1.4468482
+        value: 1.9869746
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -645,7 +681,16 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.5
-        value: 3.6298063
+        value: 2.4207163
+        inSlope: 0.5684373
+        outSlope: 0.5684373
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.5833333
+        value: 2.4799285
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -654,7 +699,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.6
-        value: 3.5297098
+        value: 2.449457
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -708,8 +753,17 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
+        time: 0.5833333
+        value: -0.10178143
+        inSlope: -0.66056955
+        outSlope: -0.66056955
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
         time: 0.6
-        value: -0.1182957
+        value: -0.11829567
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1087,5 +1141,12 @@ AnimationClip:
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 2
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.48333332
+    functionName: Attack3Sound
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
     intParameter: 0
     messageOptions: 0

@@ -47,7 +47,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 15.5
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -69,7 +69,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 4096
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
@@ -9984,8 +9984,8 @@ TextureImporter:
       tileset_365: -672139100
       tileset_378: 1952604933
       tileset_85: 65193292
-      tileset_367: 41145913
       tileset_451: 694852616
+      tileset_367: 41145913
       tileset_326: 41139472
       tileset_212: 1717812669
       tileset_247: -331888333
@@ -10009,8 +10009,8 @@ TextureImporter:
       tileset_164: -2052847391
       tileset_273: 188534443
       tileset_335: -766283983
-      tileset_298: 260602517
       tileset_388: 21719963
+      tileset_298: 260602517
       tileset_147: -734289990
       tileset_230: 10337729
       tileset_291: 611519346
@@ -10112,9 +10112,9 @@ TextureImporter:
       tileset_141: 532970027
       tileset_158: -1506275430
       tileset_361: -1415896341
-      tileset_258: -33629557
       tileset_413: -1840226070
       tileset_448: -2065599314
+      tileset_258: -33629557
       tileset_80: -640897603
       tileset_91: -245159896
       tileset_292: 1725072767
@@ -10127,8 +10127,8 @@ TextureImporter:
       tileset_446: 1675541298
       tileset_426: -2103902174
       tileset_331: 1654233987
-      tileset_104: 489380706
       tileset_406: 1020454786
+      tileset_104: 489380706
       tileset_7: 522195601
       tileset_317: 950865336
       tileset_461: 243401215

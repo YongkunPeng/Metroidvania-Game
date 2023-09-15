@@ -6,7 +6,7 @@ using UnityEngine.Rendering.Universal;
 
 public class SlashFX : MonoBehaviour
 {
-    [SerializeField] private float speed = 4000f; // 弹幕速度
+    [SerializeField] private float speed = 2500f; // 弹幕速度
     [SerializeField] private int attackPause = 3; // 停顿时间
     [SerializeField] private float damage = 10f; // 伤害
     private BoxCollider2D col;

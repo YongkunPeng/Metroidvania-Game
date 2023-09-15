@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     private static GameManager _Instance;
+    public bool shouldTransmit; // 是否需要将玩家移动到出生点
     public bool isPaused; // 记录游戏是否暂停
     public Dictionary<int, string> slotDict; // 物品槽所含物品
     public Dictionary<string, int> itemsDict; // 玩家背包数据
@@ -58,7 +59,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(Time.timeScale);
+        
     }
 
     private void FixedUpdate()
@@ -83,6 +84,7 @@ public class GameManager : MonoBehaviour
         }
         #endregion
     }
+
 
     /// <summary>
     /// 攻击顿帧
@@ -217,8 +219,7 @@ public class GameManager : MonoBehaviour
         userData.sceneID = sceneID;
         userData.checkPointID = checkPointID;
         LocalConfig.SaveUserData(userData);
-        InitUserData(userData); // 保存成功后同步Gamemanager内的玩家数据
-        Debug.Log("保存完成！");
+        InitUserData(userData, false); // 保存成功后同步Gamemanager内的玩家数据
     }
 
     /// <summary>
@@ -235,7 +236,7 @@ public class GameManager : MonoBehaviour
         missionList = userData.missionList;
         if (isLoad)
         {
-            SceneLoadManager.Instance.LoadLevelByIndex(userData.sceneID);
+            SceneLoadManager.Instance.LoadLevelByIndexWithSlider(userData.sceneID);
         }
     }
 

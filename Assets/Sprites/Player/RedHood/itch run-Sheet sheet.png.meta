@@ -33,7 +33,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -69,7 +69,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 4096
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
@@ -621,7 +621,7 @@ TextureImporter:
     nameFileIdTable:
       itch run-Sheet sheet_10: 314751578
       itch run-Sheet sheet_18: -1023743097
-      itch run-Sheet sheet_19: -1810526990
+      itch run-Sheet sheet_1: -349586324
       itch run-Sheet sheet_6: 846902075
       itch run-Sheet sheet_3: -1576203519
       itch run-Sheet sheet_4: 2142958268
@@ -641,8 +641,8 @@ TextureImporter:
       itch run-Sheet sheet_9: -89992694
       itch run-Sheet sheet_21: -314163098
       itch run-Sheet sheet_20: -1747357035
-      itch run-Sheet sheet_1: -349586324
       itch run-Sheet sheet_16: 545971173
+      itch run-Sheet sheet_19: -1810526990
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -147,8 +147,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1952776b382dc49a2777308ad309ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
-  col: {fileID: 0}
+  rb: {fileID: 5504241203854503937}
+  col: {fileID: 5504241203854503936}
   damage: 10
   speed: 20
   attackPause: 3

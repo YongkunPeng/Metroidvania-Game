@@ -33,7 +33,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -69,7 +69,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 4096
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
@@ -2813,16 +2813,16 @@ TextureImporter:
       red hood itch free Copy-Sheet mirror_57: 1433034550
       red hood itch free Copy-Sheet mirror_85: 1344523907
       red hood itch free Copy-Sheet mirror_34: 1273411550
-      red hood itch free Copy-Sheet mirror_24: -1127513873
-      red hood itch free Copy-Sheet mirror_108: 1732285410
-      red hood itch free Copy-Sheet mirror_44: -1579862119
       red hood itch free Copy-Sheet mirror_58: -1163003054
       red hood itch free Copy-Sheet mirror_78: -666214310
-      red hood itch free Copy-Sheet mirror_28: 509403560
-      red hood itch free Copy-Sheet mirror_114: 1911501294
+      red hood itch free Copy-Sheet mirror_24: -1127513873
+      red hood itch free Copy-Sheet mirror_44: -1579862119
+      red hood itch free Copy-Sheet mirror_108: 1732285410
       red hood itch free Copy-Sheet mirror_27: 1946809425
-      red hood itch free Copy-Sheet mirror_6: 1515685526
+      red hood itch free Copy-Sheet mirror_114: 1911501294
       red hood itch free Copy-Sheet mirror_62: 1025909495
+      red hood itch free Copy-Sheet mirror_28: 509403560
+      red hood itch free Copy-Sheet mirror_6: 1515685526
       red hood itch free Copy-Sheet mirror_39: 1796023563
       red hood itch free Copy-Sheet mirror_20: 569441487
       red hood itch free Copy-Sheet mirror_90: -1294759809

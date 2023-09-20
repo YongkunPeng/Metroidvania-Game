@@ -33,7 +33,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -67,7 +67,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 4096
     resizeAlgorithm: 0
     textureFormat: 4
     textureCompression: 0
@@ -687,10 +687,10 @@ TextureImporter:
       UI books & more_7: 488519420
       UI books & more_216: 1943940486
       UI books & more_157: -183910389
-      UI books & more_65: -1246167217
-      UI books & more_154: -931248608
-      UI books & more_93: -1694464161
       UI books & more_167: 573039102
+      UI books & more_65: -1246167217
+      UI books & more_93: -1694464161
+      UI books & more_154: -931248608
       UI books & more_5: -1804255863
       UI books & more_54: 735780017
       UI books & more_73: -478817956
@@ -779,6 +779,7 @@ TextureImporter:
       UI books & more_162: 23334674
       UI books & more_77: -858926239
       UI books & more_203: -1838560607
+      UI books & more_217: 1655824827
       UI books & more_145: -779689247
       UI books & more_149: 2055867199
       UI books & more_89: -1873814277
@@ -788,7 +789,6 @@ TextureImporter:
       UI books & more_156: 1994256202
       UI books & more_72: -1448290163
       UI books & more_179: 214879677
-      UI books & more_217: 1655824827
       UI books & more_224: -1709312928
       UI books & more_230: 1219348243
       UI books & more_10: 1441439860

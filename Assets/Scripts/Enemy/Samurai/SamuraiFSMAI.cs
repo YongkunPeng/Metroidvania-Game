@@ -726,7 +726,7 @@ public class SamuraiAttack4State : Istate
             samuraiFSM.SwitchState(StateType.Hurt);
         }
 
-        if (info.normalizedTime >= 0.4f && !slash)
+        if (info.normalizedTime >= 0.6f && !slash)
         {
             front.Set(0.5f * samuraiBlackboard.samuraiTransform.localScale.x, 0, 0);
             slash = true;

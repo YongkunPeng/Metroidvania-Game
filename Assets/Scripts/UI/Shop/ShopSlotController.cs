@@ -17,7 +17,7 @@ public class ShopSlotController : MonoBehaviour, IPointerEnterHandler, IPointerE
         buyBtn = GetComponent<Button>();
     }
 
-    private void OnEnable()
+    private void Start()
     {
         // Ìí¼Ó¹ºÂò¼àÌý
         buyBtn.onClick.AddListener(BuyItem);

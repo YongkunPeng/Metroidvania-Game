@@ -41,7 +41,7 @@ public class BagUI : BasePanel
                 GameObject.Instantiate(item, slots[pair.Key].transform);
 
                 // 更新背包中已有道具的格子，即slot下最后一个子物体
-                slots[pair.Key].transform.GetChild(slots[pair.Key].transform.childCount-1).GetChild(0).GetComponent<Image>().color = new Color(1, 1, 1, 1);
+                slots[pair.Key].transform.GetChild(slots[pair.Key].transform.childCount - 1).GetChild(0).GetComponent<Image>().color = new Color(1, 1, 1, 1);
                 slots[pair.Key].transform.GetChild(slots[pair.Key].transform.childCount - 1).GetChild(0).GetComponent<Image>().sprite = GameManager.Instance.resourceDict[pair.Value].itemSprite;
                 slots[pair.Key].transform.GetChild(slots[pair.Key].transform.childCount - 1).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1, 1, 1, 1);
                 slots[pair.Key].transform.GetChild(slots[pair.Key].transform.childCount - 1).GetChild(0).GetChild(0).GetComponent<Text>().text = GameManager.Instance.itemsDict[pair.Value].ToString();

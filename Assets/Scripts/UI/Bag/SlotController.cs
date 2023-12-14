@@ -29,7 +29,7 @@ public class SlotController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     }
 
     /// <summary>
-    /// 根据该背包格子，查询字典中该背包格子的物品，获取该物品信息，否则清空
+    /// 根据该背包格子，查询字典中该背包格子的物品
     /// </summary>
     /// <returns>该背包格子所含物品的Items</returns>
     private Items GetItem()
